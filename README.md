@@ -41,9 +41,10 @@ Hermes is an autonomous AI developer agent built for Telegram. It runs 24/7 on a
 - **🌐 Hybrid Server ↔ Local Rig:** Run the bot 24/7 in Docker while your heavy hardware stays safe at home.
 - **🧠 Continuous Self-Learning (`/learn <url>`):** Paste any GitHub repo, ArXiv research paper, HuggingFace model, raw script, or technical article. Hermes digests the architecture, summarizes key takeaways, and permanently commits them to long-term memory across all future chats.
 - **🎮 Deep Learning & Hardware Aware:** Designed with awareness of an **NVIDIA GeForce RTX 4060 Laptop GPU (8GB VRAM)**. Recommends AMP (`float16`/`bfloat16`), Gradient Accumulation, and QLoRA/bitsandbytes to prevent CUDA Out Of Memory (OOM).
-- **🔒 Enterprise-Grade Security:**
+- **🔒 Enterprise-Grade Security & Autonomous Control:**
   - **Telegram ID Whitelist (RBAC):** Only your authorized Telegram ID can interact with or command the bot. Strangers are immediately blocked.
   - **Human-in-the-Loop Confirmation:** Destructive commands (`jalankan_cmd`, `tulis_file`) trigger an interactive Telegram approval button before execution.
+  - **⚡ Toggleable Auto-Accept Mode:** Want Hermes to work autonomously without manual approval prompts? Toggle Auto-Accept instantly via `/settings` or `/autoaccept on`!
   - **Secret Shield:** Files like `.env` are strictly blocked from tool inspection.
 - **📂 Persistent Multi-Session Engine:** Supports multiple named chats (e.g. `/new Training Model`), session switching (`/sessions`), and per-session context isolation saved to disk.
 - **⚡ Zero-Touch Background Worker:** The Windows laptop worker runs silently as a background service via VBScript without pop-up command windows.
@@ -55,6 +56,8 @@ Hermes is an autonomous AI developer agent built for Telegram. It runs 24/7 on a
 | Command | Description |
 | :--- | :--- |
 | `/start` | Overview and quick navigation |
+| `/settings` | Interactive panel to toggle Auto-Accept & bot preferences |
+| `/autoaccept [on/off]` | Instant shortcut to enable or disable autonomous execution |
 | `/laptop` or `/status` | Real-time connection latency and laptop worker health check |
 | `/gpu` | Real-time NVIDIA GPU stats (VRAM usage, temperature, utilization, processes) |
 | `/env` | Checks Python version, PyTorch, CUDA, cuDNN, and uv tooling |

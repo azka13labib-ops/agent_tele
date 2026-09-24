@@ -9,6 +9,7 @@ const SYSTEM_PROMPT = require('./system_prompt');
 const { dlToolDefinitions, handleDlTool } = require('./tools_dl');
 const knowledgeManager = require('./knowledge_manager');
 const { executeTool: executeLocalTool } = require('./tools_executor');
+const settingsManager = require('./settings_manager');
 
 const REMOTE_WORKER_URL = process.env.REMOTE_WORKER_URL; // Jika diisi, bot me-relay eksekusi tools ke worker di laptop
 const WORKER_SECRET = process.env.WORKER_SECRET || 'hermes-tailscale-secret';
@@ -376,17 +377,34 @@ async function runAgentLoop(chatId) {
       const isSensitive = ['jalankan_cmd', 'tulis_file'].includes(functionName);
 
       if (isSensitive) {
-        const actionId = `${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
-        pendingActions[chatId] = {
-          actionId,
-          toolCallId: toolCall.id,
-          functionName,
-          functionArgs,
-          sessionId: session.id
-        };
+        if (settingsManager.isAutoAccept()) {
+          const actionLabel = functionName === 'jalankan_cmd'
+            ? `⚡ *[Auto-Accept]* Menjalankan PowerShell:\n\`${functionArgs.perintah}\``
+            : `✍️ *[Auto-Accept]* Menulis file:\n\`${functionArgs.namaFile}\``;
 
-        await sendConfirmationMessage(chatId, actionId, functionName, functionArgs);
-        return; // Jeda loop sampai user konfirmasi
+          await safeSendMessage(chatId, actionLabel);
+          const result = await executeTool(functionName, functionArgs);
+
+          messages.push({
+            role: "tool",
+            tool_call_id: toolCall.id,
+            content: String(result)
+          });
+
+          sessionManager.saveSessionMessages(chatId, session.id, messages);
+        } else {
+          const actionId = `${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+          pendingActions[chatId] = {
+            actionId,
+            toolCallId: toolCall.id,
+            functionName,
+            functionArgs,
+            sessionId: session.id
+          };
+
+          await sendConfirmationMessage(chatId, actionId, functionName, functionArgs);
+          return; // Jeda loop sampai user konfirmasi
+        }
       } else {
         const statusLabel =
           functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
@@ -467,6 +485,48 @@ async function handleUserConfirmation(chatId, isApproved, passedPending = null) 
     sessionManager.saveSessionMessages(chatId, session.id, messages);
     await runAgentLoop(chatId);
   }
+}
+
+// ─────────────────────────────────────────────
+// Helper Tampilkan Menu Pengaturan (UI)
+// ─────────────────────────────────────────────
+async function renderSettingsPanel(chatId, messageId = null) {
+  const autoAccept = settingsManager.isAutoAccept();
+  const statusBadge = autoAccept ? "🟢 *AKTIF (Auto-Accept ON)*" : "🔴 *NONAKTIF (Human-in-the-Loop)*";
+  const desc = autoAccept
+    ? "_Semua perintah terminal (PowerShell) & penulisan berkas akan otomatis dieksekusi tanpa jeda konfirmasi manual._"
+    : "_Setiap perintah terminal & penulisan berkas akan menanyakan persetujuan (Izinkan/Tolak) sebelum dieksekusi._";
+
+  const text =
+    `⚙️ *PENGATURAN BOT HERMES*\n\n` +
+    `⚡ *Mode Auto-Accept (Eksekusi Otomatis):*\n` +
+    `• Status: ${statusBadge}\n` +
+    `• Penjelasan: ${desc}\n\n` +
+    `_Gunakan tombol di bawah untuk beralih mode secara instan._`;
+
+  const buttonText = autoAccept ? "🔴 Matikan Auto-Accept (Perlu Izin)" : "🟢 Aktifkan Auto-Accept (Eksekusi Instan)";
+  const keyboard = {
+    inline_keyboard: [
+      [{ text: buttonText, callback_data: "toggle_setting_auto_accept" }],
+      [{ text: "🔄 Refresh Pengaturan", callback_data: "refresh_settings" }]
+    ]
+  };
+
+  if (messageId) {
+    try {
+      await bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'Markdown',
+        reply_markup: keyboard
+      });
+      return;
+    } catch {
+      // Abaikan jika pesan sama atau gagal diedit
+    }
+  }
+
+  await safeSendMessage(chatId, text, { reply_markup: keyboard });
 }
 
 // ─────────────────────────────────────────────
@@ -605,6 +665,26 @@ bot.on('callback_query', async (query) => {
     }
     return;
   }
+
+  // 6. Toggle Auto-Accept Setting
+  if (data === 'toggle_setting_auto_accept') {
+    const newStatus = settingsManager.toggleAutoAccept();
+    try {
+      await bot.answerCallbackQuery(query.id, {
+        text: newStatus ? "⚡ Auto-Accept diaktifkan!" : "🛡️ Auto-Accept dimatikan (perlu izin)",
+        show_alert: false
+      });
+    } catch {}
+    return renderSettingsPanel(chatId, query.message.message_id);
+  }
+
+  // 7. Refresh Settings Panel
+  if (data === 'refresh_settings') {
+    try {
+      await bot.answerCallbackQuery(query.id, { text: "🔄 Pengaturan diperbarui" });
+    } catch {}
+    return renderSettingsPanel(chatId, query.message.message_id);
+  }
 });
 
 // ─────────────────────────────────────────────
@@ -645,6 +725,8 @@ bot.on('message', async (msg) => {
       `• \`/sessions\` : Lihat & ganti sesi obrolan yang tersimpan\n` +
       `• \`/new [nama]\` : Buat sesi baru (contoh: \`/new Training Model\`)\n` +
       `• \`/session\` : Info detail sesi yang sedang aktif\n` +
+      `• \`/settings\` : Pengaturan bot (Toggle Auto-Accept tanpa konfirmasi manual)\n` +
+      `• \`/autoaccept [on/off]\` : Shortcut cepat aktifkan/matikan eksekusi instan\n` +
       `• \`/reset\` : Bersihkan memory sesi saat ini\n\n` +
       `🧠 *Self-Learning & Continuous Intelligence:*\n` +
       `Cukup ketik: _"Hermes tolong pelajarin link https://..."_ atau gunakan \`/learn <link>\`. Hermes bisa mempelajari repo GitHub, paper arXiv, model HuggingFace, dokumentasi teknis, atau artikel tutorial, lalu mengingat intisarinya selamanya!\n\n` +
@@ -830,6 +912,32 @@ bot.on('message', async (msg) => {
     return safeSendMessage(chatId, `🧹 *Memory sesi "${active.title}" telah direset!* Siap mulai topik baru.`);
   }
 
+  // ── /settings atau /setting: Panel Pengaturan Bot ──
+  if (text === '/settings' || text === '/setting') {
+    return renderSettingsPanel(chatId);
+  }
+
+  // ── /autoaccept: Shortcut toggle auto-accept ──
+  if (text.startsWith('/autoaccept')) {
+    const arg = text.replace(/^\/autoaccept/, '').trim().toLowerCase();
+    let newStatus;
+    if (arg === 'on' || arg === 'true' || arg === '1' || arg === 'aktif' || arg === 'enable') {
+      newStatus = settingsManager.setAutoAccept(true);
+    } else if (arg === 'off' || arg === 'false' || arg === '0' || arg === 'mati' || arg === 'disable') {
+      newStatus = settingsManager.setAutoAccept(false);
+    } else {
+      newStatus = settingsManager.toggleAutoAccept();
+    }
+
+    const statusText = newStatus ? "🟢 *AKTIF (Eksekusi Instan Tanpa Konfirmasi)*" : "🔴 *NONAKTIF (Meminta Konfirmasi Manual)*";
+    return safeSendMessage(
+      chatId,
+      `⚙️ *Pengaturan Auto-Accept Berhasil Diubah!*\n\n` +
+      `• Status: ${statusText}\n\n` +
+      `_Gunakan \`/settings\` untuk membuka menu pengaturan interaktif._`
+    );
+  }
+
   // ── Konfirmasi Pending Action via Teks ────────
   if (pendingActions[chatId]) {
     const pending = pendingActions[chatId];
@@ -873,6 +981,7 @@ console.log("🤖 Bot Hermes AI Agent (v3.0 - Hybrid Server/Laptop) Aktif!");
 console.log(`🌐 Provider: ${AI_BASE_URL} | Model: ${AI_MODEL}`);
 console.log(`📡 Mode Host: ${REMOTE_WORKER_URL ? 'SERVER (Remote Worker: ' + REMOTE_WORKER_URL + ')' : 'LOCAL (Laptop Windows)'}`);
 console.log(`🔒 Access Control (Whitelist): ${OWNER_IDS.length > 0 ? 'AKTIF (Owner ID: ' + OWNER_IDS.join(', ') + ')' : '⚠️ TERBUKA (Harap isi OWNER_ID di .env)'}`);
+console.log(`⚡ Mode Auto-Accept: ${settingsManager.isAutoAccept() ? '🟢 AKTIF (Eksekusi Instan)' : '🛡️ NONAKTIF (Human-in-the-Loop)'}`);
 console.log("🧠 Self-Learning & Knowledge Base: Aktif (/learn, /brain)");
 console.log("⚡ Hardware & DL Suite: Aktif (RTX 4060 GPU Tools)");
 console.log("📂 Sistem Multi-Session: Aktif & Tersimpan di Disk");
