@@ -1,0 +1,47 @@
+[
+  {
+    "id": "url_attention_is_all_you_need_1790285409336",
+    "type": "research_paper",
+    "title": "Attention Is All You Need",
+    "source": "https://arxiv.org/abs/1706.03762",
+    "tags": [
+      "arxiv",
+      "paper-ai",
+      "research",
+      "transformer",
+      "attention"
+    ],
+    "summary": "Paper ini memperkenalkan arsitektur Transformer, yang pertama kali mengandalkan mekanisme attention sepenuhnya tanpa memakai RNN/CNN untuk pemrosesan sekuensial. Transformer menjadi fondasi bagi model NLP modern seperti BERT, GPT, dan berbagai model multimodal. Kontribusi utamanya adalah multi-head self-attention, positional encoding, dan pelatihan yang sangat paralel dengan performa SOTA di bidang machine translation.",
+    "keyTakeaways": [
+      "Arsitektur Transformer menggantikan recurrent dan convolution layers dengan mekanisme attention, sehingga komputasi dapat diparalelkan dan jarak antar token dalam sekuens menjadi pendek (O(1) untuk setiap pasangan token).",
+      "Inti dari Transformer adalah Scaled Dot-Product Attention: Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V.",
+      "Multi-head attention memungkinkan model memperhatikan informasi dari berbagai representasi subspace secara bersamaan, meningkatkan kemampuan ekspresif dibanding attention tunggal.",
+      "Posisi token dalam sekuens disuntikkan melalui positional encoding dengan fungsi sinus/kosinus, karena attention tidak memiliki urutan bawaan.",
+      "Teknik pelatihan penting: Adam optimizer dengan learning rate warmup, label smoothing, dropout, residual connection, dan layer normalization."
+    ],
+    "noteFile": "knowledge/notes/url_attention_is_all_you_need_1790285409273.md",
+    "learnedAt": 1790285409336
+  },
+  {
+    "id": "url_readme_md_1790285365892",
+    "type": "code_file",
+    "title": "nanoGPT (Andrej Karpathy)",
+    "source": "https://raw.githubusercontent.com/karpathy/nanoGPT/master/README.md",
+    "tags": [
+      "nanogpt",
+      "gpt-training",
+      "deeplearning",
+      "pytorch",
+      "karpathy"
+    ],
+    "summary": "Dokumen ini adalah README dari repositori nanoGPT, implementasi GPT yang sederhana dan cepat untuk training/finetuning model GPT ukuran menengah. Materi menjelaskan cara instalasi, quick start training karakter Shakespeare, reproduksi GPT-2 di OpenWebText, finetuning, sampling, dan efisiensi komputasi. Nilai pentingnya terletak pada desain kode yang minimal, mudah di-hack, dan menjadi referensi praktis untuk memahami pipeline GPT end-to-end.",
+    "keyTakeaways": [
+      "nanoGPT adalah rewrite minGPT yang mengutamakan kesederhanaan: train.py dan model.py masing-masing ~300 baris; bisa memuat pretrained GPT-2 OpenAI.",
+      "Workflow inti: siapkan data tokenisasi menjadi `train.bin`/`val.bin`, atur hyperparameter via config, jalankan `train.py`, lalu `sample.py` untuk generate teks.",
+      "Reproduksi GPT-2 124M membutuhkan 8x A100 40GB dan DDP, sekitar 4 hari, mencapai loss ~2.85 pada OpenWebText.",
+      "Finetuning tinggal menginisialisasi dari pretrained GPT-2 dengan `init_from` dan learning rate kecil; PyTorch 2.0 `compile` memberi speedup signifikan, tapi bisa dimatikan dengan `--compile=False`."
+    ],
+    "noteFile": "knowledge/notes/url_readme_md_1790285365872.md",
+    "learnedAt": 1790285365892
+  }
+]
