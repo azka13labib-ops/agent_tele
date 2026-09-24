@@ -1,0 +1,21 @@
+# Environment & Secrets (CRITICAL: NEVER COMMIT)
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Private Chat Sessions
+sessions/
+
+# Temporary & Downloaded Files
+knowledge/repos/
+.snapshots/
+*.zip
+
+# System & OS
+.DS_Store
+Thumbs.db
+*.log
