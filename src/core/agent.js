@@ -216,6 +216,8 @@ async function runAgentLoop(chatId) {
               functionName === 'monitor_training' ? `📈 Memeriksa progress training model...` :
               functionName === 'atur_auto_accept' ? `⚙️ Mengatur Auto-Accept ke: *${functionArgs.aktif ? 'AKTIF' : 'NONAKTIF'}*...` :
               functionName === 'atur_workspace' ? `📁 Mengatur workspace ke: \`${functionArgs.pathDirektori}\`...` :
+              functionName === 'atur_auto_learn' ? `🧠 Mengatur Auto-Learn ke: *${functionArgs.aktif ? 'AKTIF' : 'NONAKTIF'}*...` :
+              functionName === 'tambah_watchlist' ? `📋 Menambahkan \`${functionArgs.url}\` ke watchlist...` :
               `🔍 Mencari \`${functionArgs.kataKunci}\`...`;
 
             await safeSendMessage(chatId, statusLabel);

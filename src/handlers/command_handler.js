@@ -6,6 +6,7 @@ const knowledgeManager = require('../services/knowledge_manager');
 const { executeTool } = require('../tools/dispatcher');
 const { renderSettingsPanel, renderSessionsList } = require('../ui/menus');
 const { pendingActions } = require('../core/agent');
+const autoLearnService = require('../services/auto_learn_service');
 
 async function handleCommand(chatId, text) {
 
@@ -26,6 +27,8 @@ async function handleCommand(chatId, text) {
       `• \`/session\` : Info detail sesi yang sedang aktif\n` +
       `• \`/settings\` : Pengaturan bot (Auto-Accept, Verbose, & Workspace)\n` +
       `• \`/workspace [path]\` : Cek atau ganti direktori kerja aktif\n` +
+      `• \`/autolearn [on/off/now]\` : Pengaturan belajar mandiri tiap 1 jam\n` +
+      `• \`/watchlist [add/list]\` : Kelola daftar prioritas belajar Hermes\n` +
       `• \`/autoaccept [on/off]\` : Shortcut aktifkan/matikan eksekusi instan\n` +
       `• \`/verbose [on/off]\` : Atur pesan progres (transparan / senyap)\n` +
       `• \`/reset\` : Bersihkan memory sesi saat ini\n\n` +
@@ -322,6 +325,105 @@ async function handleCommand(chatId, text) {
       `• Folder Aktif: \`${updated}\`\n\n` +
       `_Semua perintah PowerShell, pencarian berkas, dan operasi file sekarang menggunakan direktori ini sebagai basis._`
     );
+    return true;
+  }
+
+  if (lowerText.startsWith('/autolearn')) {
+    const arg = text.replace(/^\/autolearn/i, '').trim().toLowerCase();
+    if (arg === 'on' || arg === 'aktif' || arg === 'start') {
+      settingsManager.setAutoLearn(true);
+      await safeSendMessage(
+        chatId,
+        `🧠 *Autonomous Hourly Learning Diaktifkan!*\n\n` +
+        `• Status: 🟢 AKTIF\n` +
+        `• Interval: Setiap 1 Jam\n` +
+        `• Fokus: Trending Open Source & Developer Tools\n\n` +
+        `_Hermes akan mencari materi/repo baru tiap 1 jam dan mengirimkan laporan ke chat ini._`
+      );
+      return true;
+    }
+
+    if (arg === 'off' || arg === 'mati' || arg === 'stop') {
+      settingsManager.setAutoLearn(false);
+      await safeSendMessage(
+        chatId,
+        `⏸️ *Autonomous Hourly Learning Dinonaktifkan!*\n\n` +
+        `• Status: 🔴 NONAKTIF\n\n` +
+        `_Ketik \`/autolearn on\` untuk mengaktifkan kembali._`
+      );
+      return true;
+    }
+
+    if (arg === 'now' || arg === 'sekarang' || arg === 'trigger') {
+      await safeSendMessage(
+        chatId,
+        `⏳ *Memulai sesi belajar mandiri sekarang...*\n_Hermes sedang mencari materi/repo open source baru..._`
+      );
+      autoLearnService.executeAutoLearnSession(chatId).then(res => {
+        if (!res.success && res.reason !== 'in_progress') {
+          safeSendMessage(chatId, `⚠️ Belajar mandiri selesai tanpa materi baru: ${res.error || res.reason}`);
+        }
+      });
+      return true;
+    }
+
+    const status = autoLearnService.getAutoLearnStatus();
+    const badge = status.enabled ? "🟢 *AKTIF (Setiap 1 Jam)*" : "🔴 *NONAKTIF*";
+    const lastStr = status.lastLearnedAt ? new Date(status.lastLearnedAt).toLocaleString('id-ID') : "Belum pernah";
+    const nextStr = status.enabled
+      ? (status.nextDueMinutes <= 0 ? "Segera berjalan..." : `Sekitar ${status.nextDueMinutes} menit lagi`)
+      : "Dimatikan";
+
+    await safeSendMessage(
+      chatId,
+      `🧠 *Status Pembelajaran Mandiri (Auto-Learn)*\n\n` +
+      `• *Status:* ${badge}\n` +
+      `• *Interval:* ${status.intervalHours} Jam Sekali\n` +
+      `• *Fokus:* Trending Open Source & Developer Tools\n` +
+      `• *Terakhir Belajar:* ${lastStr}\n` +
+      `• *Jadwal Berikutnya:* ${nextStr}\n` +
+      `• *Sedang Berjalan:* ${status.isCurrentlyLearning ? "Ya ⏳" : "Tidak"}\n\n` +
+      `⚡ *Perintah Kontrol:*\n` +
+      `• \`/autolearn on\` : Aktifkan belajar tiap 1 jam\n` +
+      `• \`/autolearn off\` : Matikan belajar otomatis\n` +
+      `• \`/autolearn now\` : Paksa belajar 1 materi sekarang juga\n` +
+      `• \`/watchlist\` : Cek & kelola antrean materi prioritas`
+    );
+    return true;
+  }
+
+  if (lowerText.startsWith('/watchlist')) {
+    const subCmd = text.replace(/^\/watchlist/i, '').trim();
+    if (subCmd.toLowerCase().startsWith('add ')) {
+      const raw = subCmd.substring(4).trim();
+      const parts = raw.split(/\s+/);
+      const targetUrl = parts[0];
+      const topic = parts.slice(1).join(' ');
+
+      if (!targetUrl || (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://'))) {
+        await safeSendMessage(chatId, "⚠️ Masukkan URL valid! Contoh: `/watchlist add https://github.com/astral-sh/uv Python Tooling`");
+        return true;
+      }
+
+      const res = autoLearnService.addToWatchlist(targetUrl, topic);
+      await safeSendMessage(
+        chatId,
+        `✅ *Link Berhasil Dimasukkan ke Watchlist!*\n\n` +
+        `• URL: \`${targetUrl}\`\n` +
+        `• Topik: _${topic || 'General'}_\n\n` +
+        `_Link ini akan dipelajari Hermes pada jadwal sesi belajar berikutnya._`
+      );
+      return true;
+    }
+
+    if (subCmd.toLowerCase() === 'clear') {
+      autoLearnService.saveWatchlist([]);
+      await safeSendMessage(chatId, "🧹 *Watchlist berhasil dikosongkan!*");
+      return true;
+    }
+
+    const listText = autoLearnService.formatWatchlist();
+    await safeSendMessage(chatId, listText);
     return true;
   }
 

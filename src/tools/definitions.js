@@ -173,6 +173,46 @@ const coreToolDefinitions = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "atur_auto_learn",
+      description: "Mengatur mode pembelajaran mandiri otomatis berkala (Autonomous Hourly Learning)",
+      parameters: {
+        type: "object",
+        properties: {
+          aktif: {
+            type: "boolean",
+            description: "true untuk mengaktifkan belajar otomatis tiap 1 jam, false untuk mematikan"
+          }
+        },
+        required: ["aktif"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "tambah_watchlist",
+      description: "Menambahkan URL repositori GitHub atau link artikel ke antrean prioritas pembelajaran mandiri Hermes",
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "URL lengkap repositori atau artikel yang ingin dipelajari"
+          },
+          topik: {
+            type: "string",
+            description: "Topik atau fokus pembelajaran (opsional)"
+          }
+        },
+        required: ["url"],
+        additionalProperties: false
+      }
+    }
   }
 ];
 

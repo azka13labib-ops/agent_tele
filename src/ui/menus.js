@@ -17,6 +17,12 @@ async function renderSettingsPanel(chatId, messageId = null) {
     ? "_Bot mengirim pesan progres setiap langkah tool (baca web, cek file, dll)._"
     : "_Bot hanya menampilkan indikator mengetik dan langsung mengirim jawaban akhir._";
 
+  const autoLearn = settingsManager.isAutoLearn();
+  const autoLearnBadge = autoLearn ? "🟢 *AKTIF (1 Jam Sekali)*" : "🔴 *NONAKTIF*";
+  const autoLearnDesc = autoLearn
+    ? "_Hermes mempelajari repo open source & dev tools baru tiap 1 jam dan melapor ke chat._"
+    : "_Pembelajaran otomatis terjadwal sedang dimatikan._";
+
   const text =
     `⚙️ *PENGATURAN BOT HERMES*\n\n` +
     `⚡ *1. Mode Auto-Accept:*\n` +
@@ -28,15 +34,21 @@ async function renderSettingsPanel(chatId, messageId = null) {
     `📁 *3. Default Workspace Folder:*\n` +
     `• Direktori: \`${workspace}\`\n` +
     `• Info: _Basis folder kerja untuk terminal PowerShell, pencarian, dan pembuatan file._\n\n` +
+    `🧠 *4. Autonomous Hourly Learning:*\n` +
+    `• Status: ${autoLearnBadge}\n` +
+    `• Topik: _Trending Open Source & Developer Tools_\n` +
+    `• Info: ${autoLearnDesc}\n\n` +
     `_Klik tombol di bawah untuk mengubah setelan secara instan:_`;
 
   const autoBtnText = autoAccept ? "⚡ Auto-Accept: Matikan" : "⚡ Auto-Accept: Aktifkan";
   const verboseBtnText = verbose ? "🔕 Ubah ke Mode Silent (Senyap)" : "📢 Ubah ke Mode Verbose (Detail)";
+  const autoLearnBtnText = autoLearn ? "🧠 Auto-Learn: Matikan" : "🧠 Auto-Learn: Aktifkan (Tiap 1 Jam)";
 
   const keyboard = {
     inline_keyboard: [
       [{ text: autoBtnText, callback_data: "toggle_setting_auto_accept" }],
       [{ text: verboseBtnText, callback_data: "toggle_setting_verbose" }],
+      [{ text: autoLearnBtnText, callback_data: "toggle_setting_auto_learn" }],
       [{ text: "📁 Ganti Workspace Folder", callback_data: "menu_workspace" }],
       [{ text: "🔄 Refresh Pengaturan", callback_data: "refresh_settings" }]
     ]

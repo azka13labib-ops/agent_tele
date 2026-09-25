@@ -17,6 +17,22 @@ async function executeTool(name, args) {
     return `Direktori workspace berhasil diubah menjadi: "${newDir}". Semua operasi terminal dan file berikutnya akan menggunakan direktori ini.`;
   }
 
+  if (name === 'atur_auto_learn') {
+    const isEnable = Boolean(args.aktif);
+    settingsManager.setAutoLearn(isEnable);
+    return isEnable
+      ? "Mode Pembelajaran Mandiri (Auto-Learn) BERHASIL DIAKTIFKAN. Hermes akan mempelajari repositori open source/tools baru setiap 1 jam dan melaporkannya ke Telegram."
+      : "Mode Pembelajaran Mandiri (Auto-Learn) BERHASIL DINONAKTIFKAN.";
+  }
+
+  if (name === 'tambah_watchlist') {
+    const autoLearnService = require('../services/auto_learn_service');
+    const res = autoLearnService.addToWatchlist(args.url, args.topik);
+    return res.added
+      ? `URL "${args.url}" berhasil ditambahkan ke antrean watchlist prioritas Hermes.`
+      : `URL "${args.url}" sudah ada di antrean watchlist dan statusnya diaktifkan kembali.`;
+  }
+
   if (name === 'baca_web') {
     return executeLocalTool('baca_web', args);
   }

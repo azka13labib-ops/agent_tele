@@ -6,7 +6,10 @@ function loadSettings() {
   const defaultSettings = {
     autoAccept: process.env.AUTO_ACCEPT === 'false' ? false : true,
     verbose: true,
-    workspaceDir: process.env.DEFAULT_WORKSPACE || 'c:\\ngodink'
+    workspaceDir: process.env.DEFAULT_WORKSPACE || 'c:\\ngodink',
+    autoLearn: true,
+    autoLearnIntervalHours: 1,
+    lastAutoLearnAt: 0
   };
 
   if (fs.existsSync(SETTINGS_FILE)) {
@@ -80,6 +83,49 @@ function setWorkspaceDir(dir) {
   return current.workspaceDir;
 }
 
+function isAutoLearn() {
+  const settings = loadSettings();
+  return settings.autoLearn !== false;
+}
+
+function setAutoLearn(enabled) {
+  const current = loadSettings();
+  current.autoLearn = Boolean(enabled);
+  saveSettings(current);
+  return current.autoLearn;
+}
+
+function toggleAutoLearn() {
+  const current = loadSettings();
+  current.autoLearn = current.autoLearn === false ? true : false;
+  saveSettings(current);
+  return current.autoLearn;
+}
+
+function getAutoLearnIntervalHours() {
+  const settings = loadSettings();
+  return Number(settings.autoLearnIntervalHours) || 1;
+}
+
+function setAutoLearnIntervalHours(hours) {
+  const current = loadSettings();
+  current.autoLearnIntervalHours = Math.max(1, Number(hours) || 1);
+  saveSettings(current);
+  return current.autoLearnIntervalHours;
+}
+
+function getLastAutoLearnAt() {
+  const settings = loadSettings();
+  return Number(settings.lastAutoLearnAt) || 0;
+}
+
+function setLastAutoLearnAt(timestamp) {
+  const current = loadSettings();
+  current.lastAutoLearnAt = timestamp;
+  saveSettings(current);
+  return current.lastAutoLearnAt;
+}
+
 module.exports = {
   loadSettings,
   saveSettings,
@@ -90,6 +136,13 @@ module.exports = {
   setVerboseMode,
   toggleVerboseMode,
   getWorkspaceDir,
-  setWorkspaceDir
+  setWorkspaceDir,
+  isAutoLearn,
+  setAutoLearn,
+  toggleAutoLearn,
+  getAutoLearnIntervalHours,
+  setAutoLearnIntervalHours,
+  getLastAutoLearnAt,
+  setLastAutoLearnAt
 };
 

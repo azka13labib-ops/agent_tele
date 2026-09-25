@@ -1,0 +1,27 @@
+[
+  {
+    "url": "https://github.com/astral-sh/uv",
+    "topic": "Python package & project manager",
+    "status": "pending"
+  },
+  {
+    "url": "https://github.com/ggerganov/llama.cpp",
+    "topic": "LLM inference in C/C++",
+    "status": "pending"
+  },
+  {
+    "url": "https://github.com/vllm-project/vllm",
+    "topic": "High-throughput LLM serving engine",
+    "status": "pending"
+  },
+  {
+    "url": "https://github.com/fastapi/fastapi",
+    "topic": "High performance modern web framework",
+    "status": "pending"
+  },
+  {
+    "url": "https://github.com/shadcn-ui/ui",
+    "topic": "Accessible UI component architecture",
+    "status": "pending"
+  }
+]

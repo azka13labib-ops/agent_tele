@@ -133,6 +133,17 @@ async function handleCallbackQuery(query) {
     return renderSettingsPanel(chatId, query.message.message_id);
   }
 
+  if (data === 'toggle_setting_auto_learn') {
+    const newStatus = settingsManager.toggleAutoLearn();
+    try {
+      await bot.answerCallbackQuery(query.id, {
+        text: newStatus ? "🧠 Belajar otomatis tiap 1 jam diaktifkan!" : "⏸️ Belajar otomatis dimatikan",
+        show_alert: false
+      });
+    } catch {}
+    return renderSettingsPanel(chatId, query.message.message_id);
+  }
+
   if (data === 'menu_workspace') {
     return renderWorkspaceMenu(chatId, query.message.message_id);
   }
