@@ -217,6 +217,17 @@ async function executeTool(name, args) {
     }
   }
 
+  // Jika bot berjalan langsung di lingkungan server (Linux tanpa REMOTE_WORKER_URL)
+  if (!REMOTE_WORKER_URL && process.platform === 'linux') {
+    if (name === 'cek_gpu') {
+      try {
+        execSync('nvidia-smi --version', { stdio: 'pipe' });
+      } catch {
+        return `⚠️ *GPU NVIDIA tidak ditemukan di Server Linux!*\n\nBot saat ini berjalan di server cloud tanpa konfigurasi \`REMOTE_WORKER_URL\`.\n\n💡 *Solusi agar bisa membaca GPU RTX 4060 di laptopmu:*\n1. Tambahkan baris ini di file \`.env\` server:\n   \`REMOTE_WORKER_URL=http://<IP_TAILSCALE_LAPTOP>:20130\`\n2. Pastikan di laptop utama \`node laptop_worker.js\` sedang aktif dan terhubung Tailscale.`;
+      }
+    }
+  }
+
   // Jika bot berjalan langsung di laptop lokal
   return executeLocalTool(name, args);
 }
@@ -810,13 +821,13 @@ bot.on('message', async (msg) => {
 
   // ── /gpu: Cek Status GPU NVIDIA Instan ────────
   if (text === '/gpu') {
-    const res = handleDlTool('cek_gpu', {});
+    const res = await executeTool('cek_gpu', {});
     return safeSendMessage(chatId, res);
   }
 
   // ── /env: Cek Environment AI & PyTorch ───────
   if (text === '/env') {
-    const res = handleDlTool('cek_env_dl', {});
+    const res = await executeTool('cek_env_dl', {});
     return safeSendMessage(chatId, res);
   }
 
@@ -824,7 +835,7 @@ bot.on('message', async (msg) => {
   if (text === '/laptop' || text === '/status') {
     const isRemote = Boolean(REMOTE_WORKER_URL);
     if (!isRemote) {
-      const gpuInfo = handleDlTool('cek_gpu', {});
+      const gpuInfo = await executeTool('cek_gpu', {});
       return safeSendMessage(
         chatId,
         `💻 *Mode Hermes:* Berjalan Langsung di Laptop Lokal\n` +

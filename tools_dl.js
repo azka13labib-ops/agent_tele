@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -114,25 +114,56 @@ function handleDlTool(name, args) {
     let report = "🧪 Environment AI & Deep Learning Lokal:\n";
 
     try {
-      const pyVer = execSync(`${py} --version`, { encoding: 'utf-8', timeout: 5000 }).trim();
+      const pyVer = execSync(`${py} --version`, { encoding: 'utf-8', timeout: 5000, stdio: 'pipe' }).trim();
       report += `- Python: ${pyVer}\n`;
     } catch {
       report += `- Python: Tidak dapat dieksekusi (${py})\n`;
     }
 
     try {
-      const uvVer = execSync('uv --version', { encoding: 'utf-8', timeout: 5000 }).trim();
+      const uvVer = execSync('uv --version', { encoding: 'utf-8', timeout: 5000, stdio: 'pipe' }).trim();
       report += `- uv Package Manager: ${uvVer}\n`;
     } catch {
       report += `- uv: Belum terdeteksi di PATH\n`;
     }
 
-    try {
-      const torchScript = "import torch; print(f'PyTorch: {torch.__version__} | CUDA Available: {torch.cuda.is_available()} | Device: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}')";
-      const torchOut = execSync(`${py} -c "${torchScript}"`, { encoding: 'utf-8', timeout: 15000 }).trim();
-      report += `- PyTorch Status: ${torchOut}\n`;
-    } catch (e) {
-      report += `- PyTorch: Belum terinstall di environment Python default (bisa gunakan virtualenv / uv).\n`;
+    const testPyTorch = (pyExecutable) => {
+      try {
+        const code = "import torch; print(f'PyTorch: {torch.__version__} | CUDA Available: {torch.cuda.is_available()} | Device: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else None}')";
+        return execFileSync(pyExecutable, ['-c', code], { encoding: 'utf-8', timeout: 15000, stdio: 'pipe' }).trim();
+      } catch {
+        return null;
+      }
+    };
+
+    const defaultTorch = testPyTorch(py);
+    if (defaultTorch) {
+      report += `- PyTorch Status: ${defaultTorch}\n`;
+    } else {
+      // Periksa kandidat virtual environment (misal dl-workspace\.venv)
+      const candidateVenvs = [
+        path.join(process.env.USERPROFILE || '', 'dl-workspace', '.venv', 'Scripts', 'python.exe'),
+        path.resolve('./.venv/Scripts/python.exe'),
+        path.resolve('./.venv/bin/python'),
+        path.resolve('./venv/Scripts/python.exe'),
+        path.resolve('./venv/bin/python')
+      ];
+
+      let found = false;
+      for (const cand of candidateVenvs) {
+        if (cand && fs.existsSync(cand)) {
+          const res = testPyTorch(cand);
+          if (res) {
+            report += `- PyTorch Status: ${res}\n  (Terdeteksi di venv: ${cand})\n`;
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (!found) {
+        report += `- PyTorch: Belum terinstall di environment Python default (bisa gunakan virtualenv / uv).\n`;
+      }
     }
 
     return report;
