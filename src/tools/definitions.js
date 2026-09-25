@@ -213,6 +213,54 @@ const coreToolDefinitions = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "kirim_daily_digest",
+      description: "Mengambil dan mengirimkan briefing harian berupa 10 repositori AI open source dan 5 berita teknologi AI terkini ke chat Telegram user, serta otomatis mempelajarinya ke memori pengetahuan",
+      parameters: {
+        type: "object",
+        properties: {},
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "review_kode",
+      description: "Melakukan Senior Code Review dan audit keamanan mendalam terhadap file di workspace atau cuplikan kode",
+      parameters: {
+        type: "object",
+        properties: {
+          pathFileAtauKode: {
+            type: "string",
+            description: "Nama/path file di workspace atau cuplikan kode yang ingin diaudit"
+          }
+        },
+        required: ["pathFileAtauKode"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "diagnosa_error",
+      description: "Mendiagnosis pesan error atau stack trace crash log dan memberikan rekomendasi perbaikan kode",
+      parameters: {
+        type: "object",
+        properties: {
+          pesanError: {
+            type: "string",
+            description: "Pesan error atau stack trace lengkap yang ingin diperbaiki"
+          }
+        },
+        required: ["pesanError"],
+        additionalProperties: false
+      }
+    }
   }
 ];
 

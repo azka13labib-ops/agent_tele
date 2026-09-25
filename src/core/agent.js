@@ -114,7 +114,7 @@ function isSafeCommand(command) {
 
 async function runAgentLoop(chatId) {
   let step = 0;
-  const MAX_STEPS = 8;
+  const MAX_STEPS = 12;
 
   while (step < MAX_STEPS) {
     step++;
@@ -208,6 +208,9 @@ async function runAgentLoop(chatId) {
               functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
               functionName === 'pelajari_url' ? `🌐 Membaca & merangkum dokumen \`${functionArgs.url}\`...` :
               functionName === 'cari_pengetahuan' ? `🧠 Mencari catatan tentang \`${functionArgs.query}\`...` :
+              functionName === 'kirim_daily_digest' ? `🌅 Mengambil & menyiapkan Daily AI Digest...` :
+              functionName === 'review_kode' ? `🔍 Melakukan Code Review & Security Audit...` :
+              functionName === 'diagnosa_error' ? `🩺 Mendiagnosis error log & stack trace...` :
               functionName === 'baca_file' ? `📖 Membaca \`${functionArgs.namaFile}\`...` :
               functionName === 'lihat_folder' ? `📂 Melihat isi \`${functionArgs.pathFolder || './'}\`...` :
               functionName === 'cek_gpu' ? `🖥️ Memeriksa status GPU NVIDIA...` :
@@ -224,7 +227,7 @@ async function runAgentLoop(chatId) {
           }
         }
 
-        const result = await executeTool(functionName, functionArgs);
+        const result = await executeTool(functionName, { ...functionArgs, _chatId: chatId });
 
         messages.push({
           role: "tool",
@@ -249,7 +252,29 @@ async function runAgentLoop(chatId) {
     }
   }
 
-  await safeSendMessage(chatId, "⚠️ Agent telah mencapai batas langkah maksimum (6 langkah) untuk permintaan ini.");
+  try {
+    const session = sessionManager.getActiveSession(chatId);
+    const apiMessages = sanitizeMessagesForAPI(pruneMessages(session.messages));
+    apiMessages.push({
+      role: "user",
+      content: "Berdasarkan langkah investigasi dan data tool di atas, tolong berikan kesimpulan jawaban akhirmu secara langsung kepada user sekarang tanpa memanggil tool lagi."
+    });
+    const finalCompletion = await openai.chat.completions.create({
+      model: process.env.AI_MODEL || AI_MODEL,
+      messages: apiMessages,
+      temperature: 0.3,
+      max_tokens: 1200
+    });
+    const finalAns = finalCompletion.choices[0]?.message?.content;
+    if (finalAns) {
+      await safeSendMessage(chatId, finalAns);
+      session.messages.push({ role: "assistant", content: finalAns });
+      sessionManager.saveSessionMessages(chatId, session.id, pruneMessages(session.messages));
+      return;
+    }
+  } catch {}
+
+  await safeSendMessage(chatId, "⚠️ Mohon maaf, proses memerlukan langkah terlalu banyak. Silakan ulangi dengan instruksi lebih spesifik, atau gunakan perintah langsung seperti /digest, /review, atau /quiz.");
 }
 
 async function handleUserConfirmation(chatId, isApproved, passedPending = null) {

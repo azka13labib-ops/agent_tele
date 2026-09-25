@@ -437,8 +437,23 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  if (lowerText.startsWith('/digest') || lowerText.startsWith('/daily')) {
-    const subCmd = text.replace(/^\/(digest|daily)/i, '').trim().toLowerCase();
+  const isDigestTrigger =
+    lowerText.startsWith('/digest') ||
+    lowerText.startsWith('/diggest') ||
+    lowerText.startsWith('/daily') ||
+    lowerText.startsWith('/dailydigest') ||
+    lowerText === 'digest' ||
+    lowerText === 'diggest' ||
+    lowerText.includes('mana berita') ||
+    lowerText.includes('mana repo') ||
+    lowerText.includes('maksud saya digest') ||
+    lowerText.includes('maksud says diggest') ||
+    lowerText.includes('kirim digest') ||
+    lowerText.includes('minta digest') ||
+    lowerText.includes('berita dan repo');
+
+  if (isDigestTrigger) {
+    const subCmd = text.replace(/^\/(digest|diggest|daily|dailydigest)/i, '').trim().toLowerCase();
     if (subCmd === 'on' || subCmd === 'aktif') {
       settingsManager.setDailyDigest(true);
       await safeSendMessage(
@@ -464,18 +479,16 @@ async function handleCommand(chatId, text) {
       return true;
     }
 
-    if (subCmd === 'now' || subCmd === 'sekarang' || subCmd === '' || lowerText === '/digest') {
-      await safeSendMessage(
-        chatId,
-        `⏳ *Menyiapkan Daily AI Digest hari ini...*\n_Hermes sedang mengkurasi 10 open-source AI repositories & 5 berita AI terkini, menerjemahkan fungsi ke Bahasa Indonesia, dan menyimpannya ke memori (/brain)..._`
-      );
-      dailyDigestService.sendDailyDigest(chatId).then(res => {
-        if (!res.success && res.reason !== 'in_progress') {
-          safeSendMessage(chatId, `⚠️ Gagal mengirim digest: ${res.error || res.reason}`);
-        }
-      });
-      return true;
-    }
+    await safeSendMessage(
+      chatId,
+      `⏳ *Menyiapkan Daily AI Digest hari ini...*\n_Hermes sedang mengkurasi 10 open-source AI repositories & 5 berita AI terkini, menerjemahkan fungsi ke Bahasa Indonesia, dan menyimpannya ke memori (/brain)..._`
+    );
+    dailyDigestService.sendDailyDigest(chatId).then(res => {
+      if (!res.success && res.reason !== 'in_progress') {
+        safeSendMessage(chatId, `⚠️ Gagal mengirim digest: ${res.error || res.reason}`);
+      }
+    });
+    return true;
 
     const isDaily = settingsManager.isDailyDigest();
     const lastAt = settingsManager.getLastDailyDigestAt();

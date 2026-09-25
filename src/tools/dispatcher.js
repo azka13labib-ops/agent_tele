@@ -33,6 +33,32 @@ async function executeTool(name, args) {
       : `URL "${args.url}" sudah ada di antrean watchlist dan statusnya diaktifkan kembali.`;
   }
 
+  if (name === 'kirim_daily_digest') {
+    const dailyDigestService = require('../services/daily_digest_service');
+    const targetChatId = args._chatId || null;
+    const res = await dailyDigestService.sendDailyDigest(targetChatId);
+    return res.success
+      ? "Daily AI Digest (10 repositori AI open source dan 5 berita AI terkini) berhasil dikirimkan ke Telegram user dan otomatis disimpan ke memori pengetahuan."
+      : `Gagal mengirim digest: ${res.error || res.reason}`;
+  }
+
+  if (name === 'review_kode') {
+    const codeReviewerService = require('../services/code_reviewer_service');
+    const input = args.pathFileAtauKode || '';
+    if (input.includes('\n') || input.includes('{') || input.includes('const ') || input.includes('function ')) {
+      const res = await codeReviewerService.reviewCodeSnippet(input);
+      return res.success ? res.reviewText : `Error review: ${res.error}`;
+    }
+    const res = await codeReviewerService.reviewWorkspaceFile(input);
+    return res.success ? res.reviewText : `Error review: ${res.error}`;
+  }
+
+  if (name === 'diagnosa_error') {
+    const doctorService = require('../services/doctor_service');
+    const res = await doctorService.diagnoseError(args.pesanError);
+    return res.success ? res.diagnosisText : `Error diagnosa: ${res.error}`;
+  }
+
   if (name === 'baca_web') {
     return executeLocalTool('baca_web', args);
   }
