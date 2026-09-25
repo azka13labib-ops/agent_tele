@@ -9,19 +9,14 @@ const { allTools } = require('../tools/definitions');
 const { executeTool } = require('../tools/dispatcher');
 const { sendConfirmationMessage } = require('../ui/confirmation');
 
-// Penyimpanan aksi yang menunggu konfirmasi (Human-in-the-loop)
 const pendingActions = {};
 
-/**
- * Pruning Memory Obrolan agar tidak membengkak melebihi context window
- */
 function pruneMessages(messages) {
   if (!messages || messages.length <= 25) return messages;
 
   const systemMessage = messages[0];
   const recent = messages.slice(-20);
 
-  // Jangan biarkan pesan 'tool' berada paling depan tanpa pasangannya
   while (recent.length > 0 && recent[0].role === 'tool') {
     recent.shift();
   }
@@ -29,10 +24,6 @@ function pruneMessages(messages) {
   return [systemMessage, ...recent];
 }
 
-/**
- * Sanitasi Struktur Pesan agar 100% Valid bagi OpenAI & Anthropic API
- * Mencegah error "400 The last message must have role=user" atau tool_calls yang tidak berpasangan
- */
 function sanitizeMessagesForAPI(rawMessages) {
   if (!Array.isArray(rawMessages) || rawMessages.length === 0) return [];
 
@@ -76,7 +67,6 @@ function sanitizeMessagesForAPI(rawMessages) {
     }
   }
 
-  // Validasi agar setiap tool_call di assistant message memiliki pasangan pesan 'tool'
   const finalMessages = [];
   for (let i = 0; i < sanitized.length; i++) {
     const msg = sanitized[i];
@@ -102,7 +92,6 @@ function sanitizeMessagesForAPI(rawMessages) {
     }
   }
 
-  // Guard: Jika pesan terakhir adalah assistant tanpa tool (misal sisa respons), hapus agar tidak memicu 400
   while (finalMessages.length > 1 && finalMessages[finalMessages.length - 1].role === 'assistant') {
     finalMessages.pop();
   }
@@ -110,10 +99,6 @@ function sanitizeMessagesForAPI(rawMessages) {
   return finalMessages;
 }
 
-/**
- * Deteksi Perintah Read-Only / Safe Pengecekan Sistem
- * Tidak perlu memicu konfirmasi Telegram karena tidak merusak sistem
- */
 function isSafeCommand(command) {
   if (!command) return true;
   const cmd = command.toLowerCase().trim();
@@ -127,9 +112,6 @@ function isSafeCommand(command) {
   return safePrefixes.some(p => cmd.startsWith(p));
 }
 
-/**
- * Agent ReAct Loop (Multi-Step Engine)
- */
 async function runAgentLoop(chatId) {
   let step = 0;
   const MAX_STEPS = 8;
@@ -146,13 +128,10 @@ async function runAgentLoop(chatId) {
 
     if (!messages || messages.length === 0) return;
 
-    // Pastikan System Prompt selalu terinjeksi konteks pengetahuan permanen Hermes
-    const knowledgeContext = knowledgeManager.getKnowledgeContext();
     if (messages.length > 0 && messages[0].role === 'system') {
-      messages[0].content = SYSTEM_PROMPT + (knowledgeContext ? `\n\n${knowledgeContext}` : '');
+      messages[0].content = sessionManager.getFullSystemPrompt();
     }
 
-    // Sanitasi pesan sebelum dikirim ke API
     const apiMessages = sanitizeMessagesForAPI(messages);
     if (!apiMessages || apiMessages.length === 0) return;
 
@@ -182,7 +161,6 @@ async function runAgentLoop(chatId) {
     messages.push(responseMsg);
     sessionManager.saveSessionMessages(chatId, session.id, messages);
 
-    // Cek apakah AI memanggil tool
     if (responseMsg.tool_calls && responseMsg.tool_calls.length > 0) {
       let pauseForConfirmation = false;
 
@@ -210,31 +188,38 @@ async function runAgentLoop(chatId) {
 
           await sendConfirmationMessage(chatId, actionId, functionName, functionArgs);
           pauseForConfirmation = true;
-          break; // Jeda loop sampai user konfirmasi aksi ini
+          break;
         }
 
+        const isVerbose = settingsManager.isVerboseMode();
+
         if (isSensitive) {
-          const actionLabel = functionName === 'jalankan_cmd'
-            ? `⚡ *[Auto-Accept]* Menjalankan PowerShell:\n\`${functionArgs.perintah}\``
-            : `✍️ *[Auto-Accept]* Menulis file:\n\`${functionArgs.namaFile}\``;
+          if (isVerbose) {
+            const actionLabel = functionName === 'jalankan_cmd'
+              ? `⚡ *[Auto-Accept]* Menjalankan PowerShell:\n\`${functionArgs.perintah}\``
+              : `✍️ *[Auto-Accept]* Menulis file:\n\`${functionArgs.namaFile}\``;
 
-          await safeSendMessage(chatId, actionLabel);
+            await safeSendMessage(chatId, actionLabel);
+          }
         } else {
-          const statusLabel =
-            functionName === 'baca_web' ? `🌐 Membaca web \`${functionArgs.url}\`...` :
-            functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
-            functionName === 'pelajari_url' ? `🌐 Membaca & merangkum dokumen \`${functionArgs.url}\`...` :
-            functionName === 'cari_pengetahuan' ? `🧠 Mencari catatan tentang \`${functionArgs.query}\`...` :
-            functionName === 'baca_file' ? `📖 Membaca \`${functionArgs.namaFile}\`...` :
-            functionName === 'lihat_folder' ? `📂 Melihat isi \`${functionArgs.pathFolder || './'}\`...` :
-            functionName === 'cek_gpu' ? `🖥️ Memeriksa status GPU NVIDIA...` :
-            functionName === 'cek_env_dl' ? `🧪 Memeriksa environment Deep Learning...` :
-            functionName === 'inspeksi_dataset' ? `📊 Menganalisis dataset \`${functionArgs.pathFolder}\`...` :
-            functionName === 'monitor_training' ? `📈 Memeriksa progress training model...` :
-            functionName === 'atur_auto_accept' ? `⚙️ Mengatur Auto-Accept ke: *${functionArgs.aktif ? 'AKTIF' : 'NONAKTIF'}*...` :
-            `🔍 Mencari \`${functionArgs.kataKunci}\`...`;
+          if (isVerbose) {
+            const statusLabel =
+              functionName === 'baca_web' ? `🌐 Membaca web \`${functionArgs.url}\`...` :
+              functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
+              functionName === 'pelajari_url' ? `🌐 Membaca & merangkum dokumen \`${functionArgs.url}\`...` :
+              functionName === 'cari_pengetahuan' ? `🧠 Mencari catatan tentang \`${functionArgs.query}\`...` :
+              functionName === 'baca_file' ? `📖 Membaca \`${functionArgs.namaFile}\`...` :
+              functionName === 'lihat_folder' ? `📂 Melihat isi \`${functionArgs.pathFolder || './'}\`...` :
+              functionName === 'cek_gpu' ? `🖥️ Memeriksa status GPU NVIDIA...` :
+              functionName === 'cek_env_dl' ? `🧪 Memeriksa environment Deep Learning...` :
+              functionName === 'inspeksi_dataset' ? `📊 Menganalisis dataset \`${functionArgs.pathFolder}\`...` :
+              functionName === 'monitor_training' ? `📈 Memeriksa progress training model...` :
+              functionName === 'atur_auto_accept' ? `⚙️ Mengatur Auto-Accept ke: *${functionArgs.aktif ? 'AKTIF' : 'NONAKTIF'}*...` :
+              functionName === 'atur_workspace' ? `📁 Mengatur workspace ke: \`${functionArgs.pathDirektori}\`...` :
+              `🔍 Mencari \`${functionArgs.kataKunci}\`...`;
 
-          await safeSendMessage(chatId, statusLabel);
+            await safeSendMessage(chatId, statusLabel);
+          }
         }
 
         const result = await executeTool(functionName, functionArgs);
@@ -249,10 +234,10 @@ async function runAgentLoop(chatId) {
       }
 
       if (pauseForConfirmation) {
-        return; // Jeda sampai user konfirmasi
+        return;
       }
     } else {
-      // Jawaban final assistant
+
       if (responseMsg.content) {
         await safeSendMessage(chatId, responseMsg.content);
       }
@@ -265,9 +250,6 @@ async function runAgentLoop(chatId) {
   await safeSendMessage(chatId, "⚠️ Agent telah mencapai batas langkah maksimum (6 langkah) untuk permintaan ini.");
 }
 
-/**
- * Handler Konfirmasi User (Setuju / Tolak)
- */
 async function handleUserConfirmation(chatId, isApproved, passedPending = null) {
   const pending = passedPending || pendingActions[chatId];
   if (!pending) return;
@@ -276,7 +258,6 @@ async function handleUserConfirmation(chatId, isApproved, passedPending = null) 
   const session = sessionManager.getActiveSession(chatId);
   const messages = session.messages;
 
-  // Cek apakah aksi toolCallId ini sudah pernah dicatat di session messages
   const alreadyHandled = messages.some(m => m.role === 'tool' && m.tool_call_id === pending.toolCallId);
   if (alreadyHandled) {
     return;
@@ -314,3 +295,4 @@ module.exports = {
   runAgentLoop,
   handleUserConfirmation
 };
+

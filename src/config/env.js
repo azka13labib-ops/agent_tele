@@ -14,15 +14,11 @@ const AI_MODEL = process.env.AI_MODEL || 'deepseek-v4-flash:free';
 const REMOTE_WORKER_URL = process.env.REMOTE_WORKER_URL;
 const WORKER_SECRET = process.env.WORKER_SECRET || 'hermes-tailscale-secret';
 
-// Whitelist Telegram ID
 const OWNER_IDS = (process.env.OWNER_ID || '')
   .split(',')
   .map((id) => id.trim())
   .filter(Boolean);
 
-/**
- * Cek apakah sender Telegram berhak mengakses bot
- */
 function isAuthorized(senderId) {
   if (OWNER_IDS.length === 0) return true;
   return OWNER_IDS.includes(String(senderId));
@@ -51,3 +47,4 @@ module.exports = {
   isAuthorized,
   validateEnv
 };
+

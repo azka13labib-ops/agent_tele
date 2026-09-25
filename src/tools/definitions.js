@@ -155,6 +155,24 @@ const coreToolDefinitions = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "atur_workspace",
+      description: "Mengatur direktori kerja aktif default (workspace) untuk eksekusi terminal PowerShell dan operasi berkas",
+      parameters: {
+        type: "object",
+        properties: {
+          pathDirektori: {
+            type: "string",
+            description: "Path direktori workspace baru. Contoh: 'c:\\ngodink', 'c:\\ngodink\\tele-hermes-bot', 'C:\\Users\\azka\\dl-workspace'"
+          }
+        },
+        required: ["pathDirektori"],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -168,3 +186,4 @@ module.exports = {
   coreToolDefinitions,
   allTools
 };
+

@@ -2,27 +2,42 @@ const { bot, safeSendMessage } = require('../core/bot');
 const settingsManager = require('../services/settings_manager');
 const sessionManager = require('../services/session_manager');
 
-/**
- * Helper Tampilkan Menu Pengaturan (UI)
- */
 async function renderSettingsPanel(chatId, messageId = null) {
   const autoAccept = settingsManager.isAutoAccept();
-  const statusBadge = autoAccept ? "🟢 *AKTIF (Auto-Accept ON)*" : "🔴 *NONAKTIF (Human-in-the-Loop)*";
-  const desc = autoAccept
-    ? "_Semua perintah terminal (PowerShell) & penulisan berkas akan otomatis dieksekusi tanpa jeda konfirmasi manual._"
-    : "_Setiap perintah terminal & penulisan berkas akan menanyakan persetujuan (Izinkan/Tolak) sebelum dieksekusi._";
+  const verbose = settingsManager.isVerboseMode();
+  const workspace = settingsManager.getWorkspaceDir();
+
+  const autoBadge = autoAccept ? "🟢 *AKTIF (Eksekusi Instan)*" : "🔴 *NONAKTIF (Perlu Konfirmasi)*";
+  const autoDesc = autoAccept
+    ? "_Perintah terminal & pembuatan file dieksekusi langsung tanpa jeda._"
+    : "_Setiap perintah terminal & perubahan file menanyakan izin terlebih dahulu._";
+
+  const verboseBadge = verbose ? "📢 *VERBOSE (Transparan)*" : "🔕 *SILENT / STEALTH (Senyap)*";
+  const verboseDesc = verbose
+    ? "_Bot mengirim pesan progres setiap langkah tool (baca web, cek file, dll)._"
+    : "_Bot hanya menampilkan indikator mengetik dan langsung mengirim jawaban akhir._";
 
   const text =
     `⚙️ *PENGATURAN BOT HERMES*\n\n` +
-    `⚡ *Mode Auto-Accept (Eksekusi Otomatis):*\n` +
-    `• Status: ${statusBadge}\n` +
-    `• Penjelasan: ${desc}\n\n` +
-    `_Gunakan tombol di bawah untuk beralih mode secara instan._`;
+    `⚡ *1. Mode Auto-Accept:*\n` +
+    `• Status: ${autoBadge}\n` +
+    `• Info: ${autoDesc}\n\n` +
+    `📢 *2. Notifikasi Progres (Verbose Mode):*\n` +
+    `• Status: ${verboseBadge}\n` +
+    `• Info: ${verboseDesc}\n\n` +
+    `📁 *3. Default Workspace Folder:*\n` +
+    `• Direktori: \`${workspace}\`\n` +
+    `• Info: _Basis folder kerja untuk terminal PowerShell, pencarian, dan pembuatan file._\n\n` +
+    `_Klik tombol di bawah untuk mengubah setelan secara instan:_`;
 
-  const buttonText = autoAccept ? "🔴 Matikan Auto-Accept (Perlu Izin)" : "🟢 Aktifkan Auto-Accept (Eksekusi Instan)";
+  const autoBtnText = autoAccept ? "⚡ Auto-Accept: Matikan" : "⚡ Auto-Accept: Aktifkan";
+  const verboseBtnText = verbose ? "🔕 Ubah ke Mode Silent (Senyap)" : "📢 Ubah ke Mode Verbose (Detail)";
+
   const keyboard = {
     inline_keyboard: [
-      [{ text: buttonText, callback_data: "toggle_setting_auto_accept" }],
+      [{ text: autoBtnText, callback_data: "toggle_setting_auto_accept" }],
+      [{ text: verboseBtnText, callback_data: "toggle_setting_verbose" }],
+      [{ text: "📁 Ganti Workspace Folder", callback_data: "menu_workspace" }],
       [{ text: "🔄 Refresh Pengaturan", callback_data: "refresh_settings" }]
     ]
   };
@@ -36,17 +51,43 @@ async function renderSettingsPanel(chatId, messageId = null) {
         reply_markup: keyboard
       });
       return;
-    } catch {
-      // Abaikan jika pesan sama atau gagal diedit
-    }
+    } catch {}
   }
 
   await safeSendMessage(chatId, text, { reply_markup: keyboard });
 }
 
-/**
- * Helper Tampilkan Daftar Sesi (UI)
- */
+async function renderWorkspaceMenu(chatId, messageId = null) {
+  const current = settingsManager.getWorkspaceDir();
+  const text =
+    `📁 *PILIH WORKSPACE DIRECTORY*\n\n` +
+    `Folder kerja saat ini:\n\`${current}\`\n\n` +
+    `Pilih folder cepat di bawah, atau ketik perintah:\n\`/workspace <path>\`\n_Contoh:_\n\`/workspace c:\\ngodink\\tele-hermes-bot\`\n\`/workspace C:\\Users\\azka\\dl-workspace\``;
+
+  const keyboard = {
+    inline_keyboard: [
+      [{ text: current.toLowerCase() === 'c:\\ngodink' ? "✅ c:\\ngodink" : "📁 c:\\ngodink", callback_data: "set_ws_ngodink" }],
+      [{ text: current.toLowerCase().includes('tele-hermes-bot') ? "✅ tele-hermes-bot" : "📁 tele-hermes-bot", callback_data: "set_ws_hermes" }],
+      [{ text: current.toLowerCase().includes('dl-workspace') ? "✅ dl-workspace" : "📁 dl-workspace", callback_data: "set_ws_dl" }],
+      [{ text: "🔙 Kembali ke Pengaturan", callback_data: "refresh_settings" }]
+    ]
+  };
+
+  if (messageId) {
+    try {
+      await bot.editMessageText(text, {
+        chat_id: chatId,
+        message_id: messageId,
+        parse_mode: 'Markdown',
+        reply_markup: keyboard
+      });
+      return;
+    } catch {}
+  }
+
+  await safeSendMessage(chatId, text, { reply_markup: keyboard });
+}
+
 async function renderSessionsList(chatId) {
   const sessions = sessionManager.listSessions(chatId);
   let text = `🗂️ *Daftar Sesi Obrolan Kamu:*\n\n`;
@@ -76,5 +117,7 @@ async function renderSessionsList(chatId) {
 
 module.exports = {
   renderSettingsPanel,
+  renderWorkspaceMenu,
   renderSessionsList
 };
+

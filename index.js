@@ -4,14 +4,11 @@ const { handleMessage } = require('./src/handlers/message_handler');
 const { handleCallbackQuery } = require('./src/handlers/callback_handler');
 const settingsManager = require('./src/services/settings_manager');
 
-// 1. Validasi variabel environment sebelum bot mulai
 validateEnv();
 
-// 2. Daftarkan router event Telegram
 bot.on('message', handleMessage);
 bot.on('callback_query', handleCallbackQuery);
 
-// 3. Banner status bot
 console.log("==================================================");
 console.log("🤖 Bot Hermes AI Agent (v3.0 - Hybrid Server/Laptop) Aktif!");
 console.log(`🌐 Provider: ${AI_BASE_URL} | Model: ${AI_MODEL}`);

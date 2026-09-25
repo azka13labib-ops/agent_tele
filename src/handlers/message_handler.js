@@ -12,7 +12,6 @@ async function handleMessage(msg) {
 
   if (!text) return;
 
-  // ── Keamanan Whitelist / Access Control ───────
   if (!isAuthorized(senderId)) {
     console.warn(`[Security Alert] Akses ditolak dari Telegram ID: ${senderId} (@${msg.from?.username || 'unknown'}) | Pesan: "${text}"`);
     return safeSendMessage(
@@ -24,11 +23,9 @@ async function handleMessage(msg) {
     );
   }
 
-  // ── Tangani Perintah & Shortcut Cepat ────────
   const isCommandHandled = await handleCommand(chatId, text);
   if (isCommandHandled) return;
 
-  // ── Konfirmasi Pending Action via Teks ────────
   if (pendingActions[chatId]) {
     const pending = pendingActions[chatId];
     const jawaban = text.toLowerCase().trim();
@@ -73,19 +70,17 @@ async function handleMessage(msg) {
     }
   }
 
-  // ── Obrolan Normal ───────────────────────────
   const activeSession = sessionManager.getActiveSession(chatId);
 
-  // Jika nama sesi masih generic, beri nama otomatis berdasarkan pesan pertama
   sessionManager.autoSetTitleIfDefault(chatId, activeSession.id, text);
 
   activeSession.messages.push({ role: "user", content: text });
   sessionManager.saveSessionMessages(chatId, activeSession.id, activeSession.messages);
 
-  // Jalankan ReAct Agent Loop
   await runAgentLoop(chatId);
 }
 
 module.exports = {
   handleMessage
 };
+

@@ -2,14 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const SYSTEM_PROMPT = require('../config/system_prompt');
 const knowledgeManager = require('./knowledge_manager');
+const settingsManager = require('./settings_manager');
 const { SESSIONS_DIR, ensureDirectories } = require('../config/paths');
 
 function getFullSystemPrompt() {
   const knowledgeContext = knowledgeManager.getKnowledgeContext();
+  const workspace = settingsManager.getWorkspaceDir();
+  const wsContext = `\n\n[Active Workspace Directory: ${workspace}]`;
   if (knowledgeContext && knowledgeContext.trim()) {
-    return `${SYSTEM_PROMPT}\n\n${knowledgeContext.trim()}`;
+    return `${SYSTEM_PROMPT}${wsContext}\n\n${knowledgeContext.trim()}`;
   }
-  return SYSTEM_PROMPT;
+  return `${SYSTEM_PROMPT}${wsContext}`;
 }
 
 function ensureDir() {
@@ -32,11 +35,10 @@ function loadUserMeta(chatId) {
     try {
       return JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
     } catch {
-      // If corrupted, fallback to default
+
     }
   }
 
-  // Default meta for new user
   const initialSessionId = `sess_${Date.now()}`;
   const defaultMeta = {
     activeSessionId: initialSessionId,
@@ -69,7 +71,7 @@ function getSessionMessages(chatId, sessionId) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
       if (Array.isArray(data) && data.length > 0) {
-        // Selalu sinkronkan role system dengan prompt lengkap + knowledge terkini
+
         if (data[0] && data[0].role === 'system') {
           data[0].content = getFullSystemPrompt();
         } else {
@@ -82,7 +84,6 @@ function getSessionMessages(chatId, sessionId) {
     }
   }
 
-  // New session default with full system prompt
   const initialMessages = [{ role: "system", content: getFullSystemPrompt() }];
   saveSessionMessages(chatId, sessionId, initialMessages);
   return initialMessages;
@@ -94,7 +95,6 @@ function saveSessionMessages(chatId, sessionId, messages) {
     const filePath = getSessionFilePath(chatId, sessionId);
     fs.writeFileSync(filePath, JSON.stringify(messages, null, 2), 'utf-8');
 
-    // Update timestamp in meta
     const meta = loadUserMeta(chatId);
     const sess = meta.sessions.find(s => s.id === sessionId);
     if (sess) {
@@ -183,7 +183,6 @@ function deleteSession(chatId, sessionId) {
 
   const deletedSession = meta.sessions.splice(targetIndex, 1)[0];
 
-  // Remove file from disk
   const filePath = getSessionFilePath(chatId, sessionId);
   if (fs.existsSync(filePath)) {
     try {
@@ -191,12 +190,11 @@ function deleteSession(chatId, sessionId) {
     } catch {}
   }
 
-  // If deleted session was active, switch to another session
   if (meta.activeSessionId === sessionId) {
     if (meta.sessions.length > 0) {
       meta.activeSessionId = meta.sessions[0].id;
     } else {
-      // Re-create default if empty
+
       const fresh = createSession(chatId, "Session Utama");
       return { deletedTitle: deletedSession.title, newActive: fresh };
     }
@@ -222,7 +220,7 @@ function listSessions(chatId) {
   const meta = loadUserMeta(chatId);
   return meta.sessions.map(s => {
     const msgs = getSessionMessages(chatId, s.id);
-    // User message count (excluding system and tool)
+
     const userMsgCount = msgs.filter(m => m.role === 'user').length;
     return {
       id: s.id,
@@ -247,7 +245,6 @@ function autoSetTitleIfDefault(chatId, sessionId, text) {
   const sess = meta.sessions.find(s => s.id === sessionId);
   if (!sess) return;
 
-  // If title is generic, derive title from user's first prompt
   if (sess.title.startsWith("Session ") || sess.title === "Session Utama") {
     const cleanText = text.replace(/[\r\n]+/g, ' ').trim();
     if (cleanText.length > 0) {
@@ -270,3 +267,4 @@ module.exports = {
   autoSetTitleIfDefault,
   getFullSystemPrompt
 };
+

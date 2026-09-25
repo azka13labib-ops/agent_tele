@@ -4,12 +4,10 @@ const { execSync } = require('child_process');
 const { openai } = require('../core/ai');
 const { KNOWLEDGE_DIR, NOTES_DIR, REPOS_DIR, INDEX_FILE, ensureDirectories } = require('../config/paths');
 
-// Inisialisasi folder knowledge
 function ensureDirs() {
   ensureDirectories();
 }
 
-// Baca index knowledge
 function loadIndex() {
   ensureDirs();
   try {
@@ -21,7 +19,6 @@ function loadIndex() {
   }
 }
 
-// Simpan index knowledge
 function saveIndex(indexData) {
   ensureDirs();
   try {
@@ -31,14 +28,10 @@ function saveIndex(indexData) {
   }
 }
 
-// Inisialisasi OpenAI client untuk analisis mendalam
 function getOpenAIClient() {
   return openai;
 }
 
-/**
- * Format prompt knowledge context untuk diinjeksi ke System Prompt
- */
 function getKnowledgeContext() {
   const index = loadIndex();
   if (!index || index.length === 0) {
@@ -63,9 +56,6 @@ function getKnowledgeContext() {
   return text;
 }
 
-/**
- * Parser hasil analisis AI yang tangguh terhadap truncation atau variasi format model
- */
 function parseAiKnowledgeOutput(rawText, defaultTitle, defaultTags, defaultSummary) {
   let title = defaultTitle;
   let tags = defaultTags || [];
@@ -73,7 +63,6 @@ function parseAiKnowledgeOutput(rawText, defaultTitle, defaultTags, defaultSumma
   let keyTakeaways = [];
   let detailedNotes = "";
 
-  // 1. Cek format delimiter: ---METADATA--- dan ---DETAILED_NOTES---
   if (rawText.includes('---METADATA---') || rawText.includes('---DETAILED_NOTES---')) {
     const metaMatch = rawText.match(/---METADATA---([\s\S]*?)(?:---DETAILED_NOTES---|$)/i);
     const notesMatch = rawText.match(/---DETAILED_NOTES---([\s\S]*)$/i);
@@ -114,7 +103,6 @@ function parseAiKnowledgeOutput(rawText, defaultTitle, defaultTags, defaultSumma
     }
   }
 
-  // 2. Cek format JSON jika model merespon dalam JSON
   const jsonMatch = rawText.match(/\{[\s\S]*\}/);
   if (jsonMatch) {
     try {
@@ -129,7 +117,6 @@ function parseAiKnowledgeOutput(rawText, defaultTitle, defaultTags, defaultSumma
     } catch {}
   }
 
-  // 3. Fallback jika output polos
   return {
     title: defaultTitle,
     tags: defaultTags,
@@ -139,13 +126,9 @@ function parseAiKnowledgeOutput(rawText, defaultTitle, defaultTags, defaultSumma
   };
 }
 
-/**
- * Pelajari Repositori GitHub
- */
 async function studyGithubRepo(repoUrl, focusTopic = "") {
   ensureDirs();
 
-  // Validasi URL
   const match = repoUrl.match(/github\.com\/([a-zA-Z0-9_\-.]+)\/([a-zA-Z0-9_\-.]+)/i);
   if (!match) {
     return {
@@ -160,7 +143,7 @@ async function studyGithubRepo(repoUrl, focusTopic = "") {
   const targetDir = path.join(REPOS_DIR, `temp_${slug}_${Date.now()}`);
 
   try {
-    // 1. Clone shallow (--depth 1)
+
     const cleanRepoUrl = `https://github.com/${owner}/${repoName}.git`;
     console.log(`Cloning ${cleanRepoUrl} into ${targetDir}...`);
     execSync(`git clone --depth 1 "${cleanRepoUrl}" "${targetDir}"`, {
@@ -173,23 +156,20 @@ async function studyGithubRepo(repoUrl, focusTopic = "") {
       return { success: false, error: "Gagal mengklon repositori ke folder lokal." };
     }
 
-    // 2. Scan file dan struktur direktori
     const dirEntries = fs.readdirSync(targetDir, { withFileTypes: true });
     const structureSummary = [];
     let readmeContent = "";
     let packageInfo = "";
     const sourceSnippets = [];
 
-    // Baca README
     const readmeFile = dirEntries.find(e => /^readme(\.(md|markdown|rst|txt))?$/i.test(e.name));
     if (readmeFile) {
       try {
         const rawReadme = fs.readFileSync(path.join(targetDir, readmeFile.name), 'utf-8');
-        readmeContent = rawReadme.substring(0, 10000); // Ambil sampai 10k karakter
+        readmeContent = rawReadme.substring(0, 10000);
       } catch {}
     }
 
-    // Baca package.json atau requirements.txt atau Cargo.toml
     const depFiles = ['package.json', 'requirements.txt', 'pyproject.toml', 'Cargo.toml', 'go.mod'];
     for (const df of depFiles) {
       const depPath = path.join(targetDir, df);
@@ -201,7 +181,6 @@ async function studyGithubRepo(repoUrl, focusTopic = "") {
       }
     }
 
-    // Scan file struktur tingkat 1 & 2
     for (const e of dirEntries) {
       if (['.git', 'node_modules', 'dist', 'build', '.github'].includes(e.name)) continue;
       if (e.isDirectory()) {
@@ -217,7 +196,6 @@ async function studyGithubRepo(repoUrl, focusTopic = "") {
       }
     }
 
-    // Ambil sampel file kode penting (maksimal 3 file)
     function findCodeFiles(dir, max = 3) {
       const results = [];
       const items = fs.readdirSync(dir, { withFileTypes: true });
@@ -247,7 +225,6 @@ async function studyGithubRepo(repoUrl, focusTopic = "") {
       } catch {}
     }
 
-    // 3. Analisis dengan AI (LLM) untuk menghasilkan catatan pengetahuan terstruktur
     const openai = getOpenAIClient();
     let noteMarkdown = "";
     let aiSummary = "";
@@ -327,7 +304,6 @@ KEY_TAKEAWAYS:
       tags = [owner, repoName];
     }
 
-    // 4. Simpan catatan ke knowledge/notes/
     const noteFileName = `repo_${slug}.md`;
     const noteFilePath = path.join(NOTES_DIR, noteFileName);
     const fullNoteContent =
@@ -343,7 +319,6 @@ KEY_TAKEAWAYS:
 
     fs.writeFileSync(noteFilePath, fullNoteContent, 'utf-8');
 
-    // 5. Update index.json
     const index = loadIndex();
     const existingIdx = index.findIndex(item => item.id === `repo_${slug}`);
 
@@ -366,7 +341,6 @@ KEY_TAKEAWAYS:
     }
     saveIndex(index);
 
-    // 6. Cleanup clone directory untuk menghemat disk
     try {
       fs.rmSync(targetDir, { recursive: true, force: true });
     } catch {}
@@ -377,7 +351,7 @@ KEY_TAKEAWAYS:
       notePath: noteFilePath
     };
   } catch (err) {
-    // Pastikan folder temp dihapus jika error
+
     try {
       if (fs.existsSync(targetDir)) {
         fs.rmSync(targetDir, { recursive: true, force: true });
@@ -391,9 +365,6 @@ KEY_TAKEAWAYS:
   }
 }
 
-/**
- * Konversi HTML menjadi Markdown terstruktur dan bersih
- */
 function cleanHtmlToMarkdown(html) {
   if (!html) return "";
 
@@ -407,35 +378,28 @@ function cleanHtmlToMarkdown(html) {
     .replace(/<header\b[^<]*(?:(?!<\/header>)<[^<]*)*<\/header>/gi, '')
     .replace(/<aside\b[^<]*(?:(?!<\/aside>)<[^<]*)*<\/aside>/gi, '');
 
-  // Coba ambil konten di dalam elemen artikel / main utama jika ada
   const articleMatch = cleaned.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i) ||
                        cleaned.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
   if (articleMatch && articleMatch[1].length > 500) {
     cleaned = articleMatch[1];
   }
 
-  // Konversi heading HTML ke Markdown
   cleaned = cleaned.replace(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi, '\n\n# $1\n')
                    .replace(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi, '\n\n## $1\n')
                    .replace(/<h3\b[^>]*>([\s\S]*?)<\/h3>/gi, '\n\n### $1\n')
                    .replace(/<h4\b[^>]*>([\s\S]*?)<\/h4>/gi, '\n\n#### $1\n');
 
-  // Konversi blok kode
   cleaned = cleaned.replace(/<pre\b[^>]*><code\b[^>]*>([\s\S]*?)<\/code><\/pre>/gi, '\n```\n$1\n```\n')
                    .replace(/<pre\b[^>]*>([\s\S]*?)<\/pre>/gi, '\n```\n$1\n```\n')
                    .replace(/<code\b[^>]*>([\s\S]*?)<\/code>/gi, ' `$1` ');
 
-  // Konversi list
   cleaned = cleaned.replace(/<li\b[^>]*>([\s\S]*?)<\/li>/gi, '\n• $1');
 
-  // Konversi paragraf & baris baru
   cleaned = cleaned.replace(/<p\b[^>]*>([\s\S]*?)<\/p>/gi, '\n$1\n')
                    .replace(/<br\s*[\/]?>/gi, '\n');
 
-  // Buang sisa tag HTML
   cleaned = cleaned.replace(/<[^>]+>/g, ' ');
 
-  // Decode karakter HTML entities
   cleaned = cleaned
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
@@ -448,9 +412,6 @@ function cleanHtmlToMarkdown(html) {
   return cleaned.replace(/[ \t]+/g, ' ').replace(/\n\s*\n\s*\n+/g, '\n\n').trim();
 }
 
-/**
- * Pelajari Materi dari Segala Jenis URL (Dokumentasi, Blog, ArXiv Paper, HuggingFace, Raw Code)
- */
 async function studyUrl(url, focusTopic = "") {
   ensureDirs();
 
@@ -460,7 +421,6 @@ async function studyUrl(url, focusTopic = "") {
     let detectedType = "web_document";
     let defaultTags = ["web-knowledge"];
 
-    // ── 1. Spesialisasi URL ArXiv (Paper Ilmiah AI/ML) ──
     const arxivMatch = url.match(/arxiv\.org\/(abs|pdf)\/([0-9]+\.[0-9]+(?:v[0-9]+)?)/i);
     if (arxivMatch) {
       const arxivId = arxivMatch[2];
@@ -493,7 +453,6 @@ async function studyUrl(url, focusTopic = "") {
         `ABSTRACT:\n${abstract}\n`;
     }
 
-    // ── 2. Spesialisasi Hugging Face (Model Card / Dataset) ──
     else if (url.includes('huggingface.co') && !url.includes('/raw/')) {
       detectedType = "huggingface_model";
       defaultTags = ["huggingface", "ai-model", "deeplearning"];
@@ -504,7 +463,6 @@ async function studyUrl(url, focusTopic = "") {
         const modelName = hfMatch[2];
         pageTitle = `${owner}/${modelName} (Hugging Face)`;
 
-        // Coba fetch README / Model Card langsung dari raw repo HF
         try {
           const rawReadmeRes = await fetch(`https://huggingface.co/${owner}/${modelName}/raw/main/README.md`, {
             headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) HermesBot/2.4' }
@@ -516,7 +474,6 @@ async function studyUrl(url, focusTopic = "") {
         } catch {}
       }
 
-      // Fallback jika raw README tidak ada
       if (!contentSample) {
         const res = await fetch(url, {
           headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) HermesBot/2.4' }
@@ -526,7 +483,6 @@ async function studyUrl(url, focusTopic = "") {
       }
     }
 
-    // ── 3. Spesialisasi File Kode / Raw / Markdown ──
     else if (
       url.includes('raw.githubusercontent.com') ||
       url.includes('gist.github.com') ||
@@ -543,7 +499,6 @@ async function studyUrl(url, focusTopic = "") {
       contentSample = `\`\`\`\n${rawText.substring(0, 15000)}\n\`\`\``;
     }
 
-    // ── 4. URL Umum: Dokumentasi, Artikel Blog, Tutorial, Web Page ──
     else {
       const res = await fetch(url, {
         headers: {
@@ -566,13 +521,11 @@ async function studyUrl(url, focusTopic = "") {
 
       const html = await res.text();
 
-      // Ekstrak Title
       const titleMatch = html.match(/<title\b[^>]*>([^<]*)<\/title>/i) ||
                          html.match(/<meta\s+property=["']og:title["']\s+content=["']([^"']*)["']/i) ||
                          html.match(/<h1\b[^>]*>([^<]*)<\/h1>/i);
       pageTitle = titleMatch ? titleMatch[1].replace(/\s+/g, ' ').trim() : url;
 
-      // Konversi HTML ke Markdown terstruktur
       contentSample = cleanHtmlToMarkdown(html).substring(0, 14000);
       if (url.includes('medium.com') || url.includes('dev.to') || url.includes('substack.com')) {
         detectedType = "blog_article";
@@ -590,7 +543,6 @@ async function studyUrl(url, focusTopic = "") {
       };
     }
 
-    // ── 5. Analisis Cerdas Menggunakan Model AI ──
     const openai = getOpenAIClient();
     let summary = `Materi dari ${pageTitle}`;
     let keyTakeaways = [];
@@ -662,7 +614,6 @@ KEY_TAKEAWAYS:
       detailedNotes = `## ${pageTitle}\n\n**Sumber:** ${url}\n\n${contentSample.substring(0, 4000)}`;
     }
 
-    // ── 6. Simpan Catatan ke knowledge/notes/ ──
     const slug = pageTitle.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 35) || 'doc';
     const noteFileName = `url_${slug}_${Date.now()}.md`;
     const noteFilePath = path.join(NOTES_DIR, noteFileName);
@@ -679,7 +630,6 @@ KEY_TAKEAWAYS:
 
     fs.writeFileSync(noteFilePath, fullNoteContent, 'utf-8');
 
-    // ── 7. Daftarkan ke knowledge/index.json ──
     const index = loadIndex();
     const entryId = `url_${slug}_${Date.now()}`;
     const knowledgeEntry = {
@@ -710,9 +660,6 @@ KEY_TAKEAWAYS:
   }
 }
 
-/**
- * Cari Pengetahuan di Memory
- */
 function searchKnowledge(query) {
   const index = loadIndex();
   const q = (query || '').toLowerCase();
@@ -742,9 +689,6 @@ function searchKnowledge(query) {
   return res;
 }
 
-/**
- * Daftar Semua Pengetahuan yang Sudah Dipelajari
- */
 function listKnowledge() {
   const index = loadIndex();
   if (index.length === 0) {
@@ -770,9 +714,6 @@ function listKnowledge() {
   return text;
 }
 
-// ─────────────────────────────────────────────
-// Tool Definitions untuk OpenAI Function Calling
-// ─────────────────────────────────────────────
 const knowledgeToolDefinitions = [
   {
     type: "function",
@@ -846,3 +787,4 @@ module.exports = {
   listKnowledge,
   knowledgeToolDefinitions
 };
+

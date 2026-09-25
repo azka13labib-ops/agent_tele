@@ -1,8 +1,5 @@
 const { bot } = require('../core/bot');
 
-/**
- * Tampilkan Permintaan Konfirmasi (Inline Keyboard)
- */
 async function sendConfirmationMessage(chatId, actionId, functionName, functionArgs) {
   let detail = '';
 
@@ -59,3 +56,4 @@ async function sendConfirmationMessage(chatId, actionId, functionName, functionA
 module.exports = {
   sendConfirmationMessage
 };
+

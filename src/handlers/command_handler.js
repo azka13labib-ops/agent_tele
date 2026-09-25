@@ -7,12 +7,8 @@ const { executeTool } = require('../tools/dispatcher');
 const { renderSettingsPanel, renderSessionsList } = require('../ui/menus');
 const { pendingActions } = require('../core/agent');
 
-/**
- * Cek apakah pesan merupakan perintah (command) dan proses jika ya
- * Mengembalikan true jika pesan ditangani sebagai command, false jika obrolan biasa
- */
 async function handleCommand(chatId, text) {
-  // ── /start: Bantuan Awal ──────────────────────
+
   if (text.startsWith('/start')) {
     const active = sessionManager.getActiveSession(chatId);
     await safeSendMessage(
@@ -28,8 +24,10 @@ async function handleCommand(chatId, text) {
       `• \`/sessions\` : Lihat & ganti sesi obrolan yang tersimpan\n` +
       `• \`/new [nama]\` : Buat sesi baru (contoh: \`/new Training Model\`)\n` +
       `• \`/session\` : Info detail sesi yang sedang aktif\n` +
-      `• \`/settings\` : Pengaturan bot (Toggle Auto-Accept tanpa konfirmasi manual)\n` +
-      `• \`/autoaccept [on/off]\` : Shortcut cepat aktifkan/matikan eksekusi instan\n` +
+      `• \`/settings\` : Pengaturan bot (Auto-Accept, Verbose, & Workspace)\n` +
+      `• \`/workspace [path]\` : Cek atau ganti direktori kerja aktif\n` +
+      `• \`/autoaccept [on/off]\` : Shortcut aktifkan/matikan eksekusi instan\n` +
+      `• \`/verbose [on/off]\` : Atur pesan progres (transparan / senyap)\n` +
       `• \`/reset\` : Bersihkan memory sesi saat ini\n\n` +
       `🧠 *Self-Learning & Continuous Intelligence:*\n` +
       `Cukup ketik: _"Hermes tolong pelajarin link https://..."_ atau gunakan \`/learn <link>\`. Hermes bisa mempelajari repo GitHub, paper arXiv, model HuggingFace, dokumentasi teknis, atau artikel tutorial, lalu mengingat intisarinya selamanya!\n\n` +
@@ -38,7 +36,6 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  // ── /learn: Pelajari Repo GitHub, URL Web, Paper ArXiv, HF, dll. ──
   if (text.startsWith('/learn')) {
     const targetUrl = text.replace(/^\/learn/, '').trim();
     if (!targetUrl) {
@@ -109,28 +106,24 @@ async function handleCommand(chatId, text) {
     }
   }
 
-  // ── /brain atau /knowledge: Cek Isi Memori ────
   if (text.startsWith('/knowledge') || text === '/brain') {
     const list = knowledgeManager.listKnowledge();
     await safeSendMessage(chatId, list);
     return true;
   }
 
-  // ── /gpu: Cek Status GPU NVIDIA Instan ────────
   if (text === '/gpu') {
     const res = await executeTool('cek_gpu', {});
     await safeSendMessage(chatId, res);
     return true;
   }
 
-  // ── /env: Cek Environment AI & PyTorch ───────
   if (text === '/env') {
     const res = await executeTool('cek_env_dl', {});
     await safeSendMessage(chatId, res);
     return true;
   }
 
-  // ── /laptop atau /status: Cek Status Koneksi Laptop & Worker ──
   if (text === '/laptop' || text === '/status') {
     const isRemote = Boolean(REMOTE_WORKER_URL);
     if (!isRemote) {
@@ -172,13 +165,11 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  // ── /sessions: Daftar & Switch Sesi ───────────
   if (text.startsWith('/sessions') || text === '/list') {
     await renderSessionsList(chatId);
     return true;
   }
 
-  // ── /new: Buat Sesi Baru ──────────────────────
   if (text.startsWith('/new')) {
     const customTitle = text.replace(/^\/new/, '').trim();
     const newSession = sessionManager.createSession(chatId, customTitle);
@@ -192,7 +183,6 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  // ── /session: Info Sesi Aktif ─────────────────
   if (text === '/session') {
     const active = sessionManager.getActiveSession(chatId);
     const userMsgCount = active.messages.filter(m => m.role === 'user').length;
@@ -209,7 +199,6 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  // ── /rename: Ubah Judul Sesi ──────────────────
   if (text.startsWith('/rename')) {
     const newTitle = text.replace(/^\/rename/, '').trim();
     if (!newTitle) {
@@ -222,7 +211,6 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  // ── /reset: Bersihkan Sesi Aktif ──────────────
   if (text.startsWith('/reset')) {
     const active = sessionManager.resetActiveSession(chatId);
     delete pendingActions[chatId];
@@ -230,13 +218,11 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
-  // ── /settings atau /setting: Panel Pengaturan Bot ──
   if (text === '/settings' || text === '/setting') {
     await renderSettingsPanel(chatId);
     return true;
   }
 
-  // ── /autoaccept & Variasi Teks Pengaturan Auto-Accept ──
   const lowerText = text.toLowerCase().trim();
   if (
     lowerText.startsWith('/autoaccept') ||
@@ -276,9 +262,73 @@ async function handleCommand(chatId, text) {
     return true;
   }
 
+  if (
+    lowerText.startsWith('/verbose') ||
+    lowerText.startsWith('/silent') ||
+    lowerText.startsWith('/stealth') ||
+    lowerText.startsWith('verbose') ||
+    lowerText === 'mode silent' ||
+    lowerText === 'mode verbose' ||
+    lowerText === 'aktifkan silent' ||
+    lowerText === 'matikan verbose'
+  ) {
+    let newStatus;
+    if (
+      lowerText.startsWith('/silent') || lowerText.startsWith('/stealth') ||
+      lowerText.includes('silent') || lowerText.includes('off') ||
+      lowerText.includes('mati') || lowerText.includes('senyap') || lowerText.includes('false')
+    ) {
+      newStatus = settingsManager.setVerboseMode(false);
+    } else if (
+      lowerText.includes('on') || lowerText.includes('aktif') ||
+      lowerText.includes('transparan') || lowerText.includes('true') || lowerText.includes('detail')
+    ) {
+      newStatus = settingsManager.setVerboseMode(true);
+    } else {
+      newStatus = settingsManager.toggleVerboseMode();
+    }
+
+    const statusText = newStatus
+      ? "📢 *Mode Verbose AKTIF!*\n_Bot akan mengirim pesan status perantara setiap kali menjalankan tool (transparan)._"
+      : "🔕 *Mode Silent / Stealth AKTIF!*\n_Bot akan menjalankan tool secara senyap dan langsung mengirimkan jawaban akhir._";
+
+    await safeSendMessage(
+      chatId,
+      `⚙️ *Notifikasi Progres Berhasil Diubah!*\n\n` +
+      `• Status: ${statusText}\n\n` +
+      `_Gunakan \`/settings\` untuk membuka menu pengaturan interaktif._`
+    );
+    return true;
+  }
+
+  if (lowerText.startsWith('/workspace') || lowerText.startsWith('/ws')) {
+    const rawArg = text.replace(/^\/(workspace|ws)/i, '').trim();
+    if (!rawArg) {
+      const current = settingsManager.getWorkspaceDir();
+      await safeSendMessage(
+        chatId,
+        `📁 *Workspace Hermes Saat Ini:*\n\n` +
+        `• Direktori: \`${current}\`\n\n` +
+        `_Untuk mengganti direktori kerja, ketik:_\n\`/workspace <path>\`\n_Contoh:_\n\`/workspace c:\\ngodink\\tele-hermes-bot\`\n\`/workspace C:\\Users\\azka\\dl-workspace\`\n\n` +
+        `_Atau gunakan menu tombol di \`/settings\`._`
+      );
+      return true;
+    }
+
+    const updated = settingsManager.setWorkspaceDir(rawArg);
+    await safeSendMessage(
+      chatId,
+      `📁 *Direktori Workspace Berhasil Diubah!*\n\n` +
+      `• Folder Aktif: \`${updated}\`\n\n` +
+      `_Semua perintah PowerShell, pencarian berkas, dan operasi file sekarang menggunakan direktori ini sebagai basis._`
+    );
+    return true;
+  }
+
   return false;
 }
 
 module.exports = {
   handleCommand
 };
+

@@ -140,7 +140,7 @@ function handleDlTool(name, args) {
     if (defaultTorch) {
       report += `- PyTorch Status: ${defaultTorch}\n`;
     } else {
-      // Periksa kandidat virtual environment (misal dl-workspace\.venv)
+
       const candidateVenvs = [
         path.join(process.env.USERPROFILE || '', 'dl-workspace', '.venv', 'Scripts', 'python.exe'),
         path.resolve('./.venv/Scripts/python.exe'),
@@ -267,3 +267,4 @@ module.exports = {
   dlToolDefinitions,
   handleDlTool
 };
+

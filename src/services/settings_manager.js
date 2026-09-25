@@ -1,13 +1,12 @@
 const fs = require('fs');
 const { SESSIONS_DIR, SETTINGS_FILE, ensureDirectories } = require('../config/paths');
 
-/**
- * Muat konfigurasi pengaturan global bot
- */
 function loadSettings() {
   ensureDirectories();
   const defaultSettings = {
-    autoAccept: process.env.AUTO_ACCEPT === 'false' ? false : true // Default: true (eksekusi otomatis aktif)
+    autoAccept: process.env.AUTO_ACCEPT === 'false' ? false : true,
+    verbose: true,
+    workspaceDir: process.env.DEFAULT_WORKSPACE || 'c:\\ngodink'
   };
 
   if (fs.existsSync(SETTINGS_FILE)) {
@@ -23,9 +22,6 @@ function loadSettings() {
   return defaultSettings;
 }
 
-/**
- * Simpan konfigurasi ke disk
- */
 function saveSettings(settings) {
   try {
     ensureDirectories();
@@ -35,16 +31,10 @@ function saveSettings(settings) {
   }
 }
 
-/**
- * Cek apakah auto-accept aktif
- */
 function isAutoAccept() {
   return loadSettings().autoAccept === true;
 }
 
-/**
- * Ubah status auto-accept (true / false)
- */
 function setAutoAccept(enabled) {
   const current = loadSettings();
   current.autoAccept = Boolean(enabled);
@@ -52,9 +42,6 @@ function setAutoAccept(enabled) {
   return current.autoAccept;
 }
 
-/**
- * Toggle status auto-accept (on -> off / off -> on)
- */
 function toggleAutoAccept() {
   const current = loadSettings();
   current.autoAccept = !current.autoAccept;
@@ -62,10 +49,47 @@ function toggleAutoAccept() {
   return current.autoAccept;
 }
 
+function isVerboseMode() {
+  const settings = loadSettings();
+  return settings.verbose !== false;
+}
+
+function setVerboseMode(enabled) {
+  const current = loadSettings();
+  current.verbose = Boolean(enabled);
+  saveSettings(current);
+  return current.verbose;
+}
+
+function toggleVerboseMode() {
+  const current = loadSettings();
+  current.verbose = current.verbose === false ? true : false;
+  saveSettings(current);
+  return current.verbose;
+}
+
+function getWorkspaceDir() {
+  const settings = loadSettings();
+  return settings.workspaceDir || 'c:\\ngodink';
+}
+
+function setWorkspaceDir(dir) {
+  const current = loadSettings();
+  current.workspaceDir = dir.trim();
+  saveSettings(current);
+  return current.workspaceDir;
+}
+
 module.exports = {
   loadSettings,
   saveSettings,
   isAutoAccept,
   setAutoAccept,
-  toggleAutoAccept
+  toggleAutoAccept,
+  isVerboseMode,
+  setVerboseMode,
+  toggleVerboseMode,
+  getWorkspaceDir,
+  setWorkspaceDir
 };
+

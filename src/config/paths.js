@@ -1,10 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 
-// Root direktori proyek
 const ROOT_DIR = path.resolve(__dirname, '../../');
 
-// Direktori data persisten
 const SESSIONS_DIR = path.join(ROOT_DIR, 'sessions');
 const KNOWLEDGE_DIR = path.join(ROOT_DIR, 'knowledge');
 const NOTES_DIR = path.join(KNOWLEDGE_DIR, 'notes');
@@ -12,9 +10,6 @@ const REPOS_DIR = path.join(KNOWLEDGE_DIR, 'repos');
 const INDEX_FILE = path.join(KNOWLEDGE_DIR, 'index.json');
 const SETTINGS_FILE = path.join(SESSIONS_DIR, 'settings.json');
 
-/**
- * Pastikan semua folder esensial tersedia di disk
- */
 function ensureDirectories() {
   [SESSIONS_DIR, KNOWLEDGE_DIR, NOTES_DIR, REPOS_DIR].forEach((dir) => {
     if (!fs.existsSync(dir)) {
@@ -37,3 +32,4 @@ module.exports = {
   SETTINGS_FILE,
   ensureDirectories
 };
+

@@ -3,11 +3,7 @@ const { REMOTE_WORKER_URL, WORKER_SECRET } = require('../config/env');
 const settingsManager = require('../services/settings_manager');
 const { executeLocalTool } = require('./local_executor');
 
-/**
- * Dispatcher Eksekusi Tools (Lokal atau Remote via Laptop Worker di Tailscale)
- */
 async function executeTool(name, args) {
-  // 1. Tool pengaturan Auto-Accept & Baca Web langsung
   if (name === 'atur_auto_accept') {
     const isEnable = Boolean(args.aktif);
     settingsManager.setAutoAccept(isEnable);
@@ -16,15 +12,22 @@ async function executeTool(name, args) {
       : "Mode Auto-Accept BERHASIL DINONAKTIFKAN. Perintah berpotensi sensitif akan kembali meminta konfirmasi manual.";
   }
 
+  if (name === 'atur_workspace') {
+    const newDir = settingsManager.setWorkspaceDir(args.pathDirektori);
+    return `Direktori workspace berhasil diubah menjadi: "${newDir}". Semua operasi terminal dan file berikutnya akan menggunakan direktori ini.`;
+  }
+
   if (name === 'baca_web') {
     return executeLocalTool('baca_web', args);
   }
 
-  // 2. Jika bot berjalan di Server dan dihubungkan ke Worker Laptop via Tailscale
+  const activeWorkspace = settingsManager.getWorkspaceDir();
+  const dispatchedArgs = { ...args, _workspaceDir: activeWorkspace };
+
   if (REMOTE_WORKER_URL) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 65000); // 65 detik timeout
+      const timeoutId = setTimeout(() => controller.abort(), 65000);
 
       const resp = await fetch(`${REMOTE_WORKER_URL}/api/execute-tool`, {
         method: 'POST',
@@ -32,7 +35,7 @@ async function executeTool(name, args) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${WORKER_SECRET}`
         },
-        body: JSON.stringify({ name, args }),
+        body: JSON.stringify({ name, args: dispatchedArgs }),
         signal: controller.signal
       });
       clearTimeout(timeoutId);
@@ -52,7 +55,6 @@ async function executeTool(name, args) {
     }
   }
 
-  // 3. Fallback jika bot berjalan di Server Linux tanpa REMOTE_WORKER_URL
   if (!REMOTE_WORKER_URL && process.platform === 'linux') {
     if (name === 'cek_gpu') {
       try {
@@ -63,10 +65,10 @@ async function executeTool(name, args) {
     }
   }
 
-  // 4. Eksekusi lokal di komputer laptop
-  return executeLocalTool(name, args);
+  return executeLocalTool(name, dispatchedArgs);
 }
 
 module.exports = {
   executeTool
 };
+

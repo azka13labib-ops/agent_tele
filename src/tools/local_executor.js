@@ -3,14 +3,18 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { handleDlTool } = require('./dl_tools');
 const knowledgeManager = require('../services/knowledge_manager');
+const settingsManager = require('../services/settings_manager');
 
-/**
- * Eksekusi tools lokal di komputer / laptop Windows
- */
 async function executeLocalTool(name, args) {
   try {
     const dlResult = handleDlTool(name, args);
     if (dlResult !== null) return dlResult;
+
+    if (name === "atur_workspace") {
+      const targetDir = args.pathDirektori;
+      const res = settingsManager.setWorkspaceDir(targetDir);
+      return `Direktori workspace berhasil diatur ke: "${res}"`;
+    }
 
     if (name === "pelajari_repo") {
       const res = await knowledgeManager.studyGithubRepo(args.repoUrl, args.focusTopic);
@@ -40,12 +44,14 @@ async function executeLocalTool(name, args) {
     }
 
     if (name === "lihat_folder") {
-      const folderPath = path.resolve(args.pathFolder || "./");
+      const base = args._workspaceDir || settingsManager.getWorkspaceDir();
+      const target = args.pathFolder || "./";
+      const folderPath = path.isAbsolute(target) ? target : path.resolve(base, target);
       if (!fs.existsSync(folderPath)) {
-        return `Error: Folder "${args.pathFolder}" tidak ditemukan.`;
+        return `Error: Folder "${target}" tidak ditemukan di ${folderPath}.`;
       }
       const entries = fs.readdirSync(folderPath, { withFileTypes: true });
-      if (entries.length === 0) return `Folder "${args.pathFolder}" kosong.`;
+      if (entries.length === 0) return `Folder "${target}" kosong.`;
 
       const list = entries.map(e => {
         if (e.isDirectory()) return `📁 [DIR]  ${e.name}`;
@@ -58,17 +64,18 @@ async function executeLocalTool(name, args) {
         }
       }).join('\n');
 
-      return `Isi folder "${args.pathFolder}":\n${list}`;
+      return `Isi folder "${target}" (${folderPath}):\n${list}`;
     }
 
     if (name === "baca_file") {
-      const filePath = path.resolve(args.namaFile);
+      const base = args._workspaceDir || settingsManager.getWorkspaceDir();
+      const filePath = path.isAbsolute(args.namaFile) ? args.namaFile : path.resolve(base, args.namaFile);
       const baseName = path.basename(filePath).toLowerCase();
       if (baseName === '.env' || baseName.startsWith('.env.')) {
         return `Error Keamanan: Akses ke file konfigurasi rahasia "${args.namaFile}" diblokir demi keamanan!`;
       }
       if (!fs.existsSync(filePath)) {
-        return `Error: File "${args.namaFile}" tidak ditemukan.`;
+        return `Error: File "${args.namaFile}" tidak ditemukan di ${filePath}.`;
       }
       const raw = fs.readFileSync(filePath, 'utf-8');
       const lines = raw.split(/\r?\n/);
@@ -85,7 +92,8 @@ async function executeLocalTool(name, args) {
     }
 
     if (name === "tulis_file") {
-      const filePath = path.resolve(args.namaFile);
+      const base = args._workspaceDir || settingsManager.getWorkspaceDir();
+      const filePath = path.isAbsolute(args.namaFile) ? args.namaFile : path.resolve(base, args.namaFile);
       const baseName = path.basename(filePath).toLowerCase();
       if (baseName === '.env' || baseName.startsWith('.env.')) {
         return `Error Keamanan: Mengubah file konfigurasi rahasia "${args.namaFile}" diblokir demi keamanan!`;
@@ -100,7 +108,9 @@ async function executeLocalTool(name, args) {
     }
 
     if (name === "jalankan_cmd") {
+      const cwd = args._workspaceDir || settingsManager.getWorkspaceDir();
       const stdout = execSync(args.perintah, {
+        cwd: fs.existsSync(cwd) ? cwd : undefined,
         shell: 'powershell.exe',
         encoding: 'utf-8',
         timeout: 45000,
@@ -111,7 +121,9 @@ async function executeLocalTool(name, args) {
 
     if (name === "cari_file") {
       const keyword = (args.kataKunci || '').toLowerCase();
-      const root = path.resolve(args.rootFolder || './');
+      const base = args._workspaceDir || settingsManager.getWorkspaceDir();
+      const target = args.rootFolder || './';
+      const root = path.isAbsolute(target) ? target : path.resolve(base, target);
       const found = [];
 
       function searchRec(dir) {
@@ -151,7 +163,6 @@ async function executeLocalTool(name, args) {
 
         const html = await response.text();
 
-        // Bersihkan HTML tag dan script/style
         let cleaned = html
           .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
           .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
@@ -175,7 +186,7 @@ async function executeLocalTool(name, args) {
               const start = Math.max(0, i - 25);
               const end = Math.min(words.length, i + 35);
               matchingSnippets.push(words.slice(start, end).join(' '));
-              i += 30; // loncat agar tidak duplicate
+              i += 30;
               if (matchingSnippets.length >= 5) break;
             }
           }
@@ -207,5 +218,6 @@ async function executeLocalTool(name, args) {
 
 module.exports = {
   executeLocalTool,
-  executeTool: executeLocalTool // Alias for backwards compatibility
+  executeTool: executeLocalTool
 };
+

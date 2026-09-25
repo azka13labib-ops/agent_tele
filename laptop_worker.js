@@ -8,7 +8,7 @@ const PORT = parseInt(process.env.WORKER_PORT || '20130', 10);
 const SECRET = process.env.WORKER_SECRET || 'hermes-tailscale-secret';
 
 const server = http.createServer(async (req, res) => {
-  // CORS & JSON Header
+
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -21,7 +21,6 @@ const server = http.createServer(async (req, res) => {
 
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  // Health check endpoint
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/health')) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({
@@ -34,14 +33,12 @@ const server = http.createServer(async (req, res) => {
     }));
   }
 
-  // Quick GPU check endpoint
   if (req.method === 'GET' && url.pathname === '/api/gpu') {
     const gpuInfo = handleDlTool('cek_gpu', {});
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({ gpu: gpuInfo }));
   }
 
-  // Execute tool endpoint
   if (req.method === 'POST' && url.pathname === '/api/execute-tool') {
     let body = '';
     req.on('data', chunk => { body += chunk; });
@@ -49,7 +46,6 @@ const server = http.createServer(async (req, res) => {
       try {
         const payload = JSON.parse(body || '{}');
 
-        // Validasi secret
         const reqSecret = req.headers['authorization']?.replace(/^Bearer\s+/i, '') || payload.secret;
         if (SECRET && reqSecret !== SECRET) {
           res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -75,7 +71,6 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // 404 fallback
   res.writeHead(404, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ error: 'Not found' }));
 });
@@ -89,3 +84,4 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`🌐 Siap menerima perintah dari Server via Tailscale!`);
   console.log('==================================================');
 });
+

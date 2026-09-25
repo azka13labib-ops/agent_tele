@@ -3,14 +3,13 @@ const { isAuthorized } = require('../config/env');
 const settingsManager = require('../services/settings_manager');
 const sessionManager = require('../services/session_manager');
 const { pendingActions, handleUserConfirmation } = require('../core/agent');
-const { renderSettingsPanel } = require('../ui/menus');
+const { renderSettingsPanel, renderWorkspaceMenu } = require('../ui/menus');
 
 async function handleCallbackQuery(query) {
   const senderId = String(query.from ? query.from.id : query.message?.chat?.id);
   const chatId = query.message.chat.id;
   const data = query.data;
 
-  // ── Keamanan Whitelist / Access Control ───────
   if (!isAuthorized(senderId)) {
     console.warn(`[Security Alert] Callback ditolak dari Telegram ID: ${senderId} (@${query.from?.username || 'unknown'})`);
     try {
@@ -26,10 +25,9 @@ async function handleCallbackQuery(query) {
     await bot.answerCallbackQuery(query.id);
   } catch {}
 
-  // 1. Konfirmasi Aksi Sensitif
   const pending = pendingActions[chatId];
   if (pending && (data === `approve_${pending.actionId}` || data === `approve_all_${pending.actionId}` || data === `reject_${pending.actionId}`)) {
-    delete pendingActions[chatId]; // Langsung hapus agar tidak dieksekusi ganda jika diklik cepat
+    delete pendingActions[chatId];
     try {
       await bot.editMessageReplyMarkup({ inline_keyboard: [] }, {
         chat_id: chatId,
@@ -58,7 +56,6 @@ async function handleCallbackQuery(query) {
     return;
   }
 
-  // 2. Switch Sesi
   if (data.startsWith('switch_sess_')) {
     const targetSessionId = data.replace('switch_sess_', '');
     const switched = sessionManager.switchSession(chatId, targetSessionId);
@@ -74,7 +71,6 @@ async function handleCallbackQuery(query) {
     return;
   }
 
-  // 3. Buat Sesi Baru
   if (data === 'new_sess') {
     const newSession = sessionManager.createSession(chatId);
     try {
@@ -87,7 +83,6 @@ async function handleCallbackQuery(query) {
     return;
   }
 
-  // 4. Buka Menu Hapus Sesi
   if (data === 'manage_delete_sess') {
     const sessions = sessionManager.listSessions(chatId);
     if (sessions.length <= 1) {
@@ -101,7 +96,6 @@ async function handleCallbackQuery(query) {
     });
   }
 
-  // 5. Eksekusi Hapus Sesi
   if (data.startsWith('del_sess_')) {
     const targetId = data.replace('del_sess_', '');
     const result = sessionManager.deleteSession(chatId, targetId);
@@ -117,7 +111,6 @@ async function handleCallbackQuery(query) {
     return;
   }
 
-  // 6. Toggle Auto-Accept Setting
   if (data === 'toggle_setting_auto_accept') {
     const newStatus = settingsManager.toggleAutoAccept();
     try {
@@ -129,7 +122,45 @@ async function handleCallbackQuery(query) {
     return renderSettingsPanel(chatId, query.message.message_id);
   }
 
-  // 7. Refresh Settings Panel
+  if (data === 'toggle_setting_verbose') {
+    const newStatus = settingsManager.toggleVerboseMode();
+    try {
+      await bot.answerCallbackQuery(query.id, {
+        text: newStatus ? "📢 Mode Verbose aktif (pesan progres dikirim)" : "🔕 Mode Silent aktif (hanya hasil akhir)",
+        show_alert: false
+      });
+    } catch {}
+    return renderSettingsPanel(chatId, query.message.message_id);
+  }
+
+  if (data === 'menu_workspace') {
+    return renderWorkspaceMenu(chatId, query.message.message_id);
+  }
+
+  if (data === 'set_ws_ngodink') {
+    settingsManager.setWorkspaceDir('c:\\ngodink');
+    try {
+      await bot.answerCallbackQuery(query.id, { text: "📁 Workspace diatur ke c:\\ngodink" });
+    } catch {}
+    return renderWorkspaceMenu(chatId, query.message.message_id);
+  }
+
+  if (data === 'set_ws_hermes') {
+    settingsManager.setWorkspaceDir('c:\\ngodink\\tele-hermes-bot');
+    try {
+      await bot.answerCallbackQuery(query.id, { text: "📁 Workspace diatur ke tele-hermes-bot" });
+    } catch {}
+    return renderWorkspaceMenu(chatId, query.message.message_id);
+  }
+
+  if (data === 'set_ws_dl') {
+    settingsManager.setWorkspaceDir('C:\\Users\\azka\\dl-workspace');
+    try {
+      await bot.answerCallbackQuery(query.id, { text: "📁 Workspace diatur ke dl-workspace" });
+    } catch {}
+    return renderWorkspaceMenu(chatId, query.message.message_id);
+  }
+
   if (data === 'refresh_settings') {
     try {
       await bot.answerCallbackQuery(query.id, { text: "🔄 Pengaturan diperbarui" });
@@ -141,3 +172,4 @@ async function handleCallbackQuery(query) {
 module.exports = {
   handleCallbackQuery
 };
+

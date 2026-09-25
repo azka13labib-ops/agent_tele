@@ -3,7 +3,6 @@ const { TELEGRAM_TOKEN } = require('../config/env');
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
-// Tangani error polling Telegram (koneksi terputus sesaat/ECONNRESET)
 bot.on('polling_error', (error) => {
   if (error.code === 'EFATAL' || error.message?.includes('ECONNRESET') || error.message?.includes('ETIMEDOUT')) {
     return;
@@ -11,10 +10,6 @@ bot.on('polling_error', (error) => {
   console.warn(`[Telegram Polling Notice]: ${error.code || ''} ${error.message || ''}`);
 });
 
-/**
- * Helper Pengiriman Pesan Telegram yang Aman
- * Otomatis memecah pesan melebihi batas 3800 karakter dan fallback jika Markdown gagal diparse
- */
 async function safeSendMessage(chatId, text, options = {}) {
   if (!text) return;
   const MAX_CHUNK = 3800;
@@ -41,3 +36,4 @@ module.exports = {
   bot,
   safeSendMessage
 };
+
