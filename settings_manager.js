@@ -16,7 +16,7 @@ function ensureDir() {
 function loadSettings() {
   ensureDir();
   const defaultSettings = {
-    autoAccept: process.env.AUTO_ACCEPT === 'true' // Default: false (butuh konfirmasi)
+    autoAccept: process.env.AUTO_ACCEPT === 'false' ? false : true // Default: true (aktif otomatis)
   };
 
   if (fs.existsSync(SETTINGS_FILE)) {

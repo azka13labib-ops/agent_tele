@@ -48,7 +48,7 @@ bot.on('polling_error', (error) => {
     // Abaikan logging berlebihan untuk network disconnect sesaat
     return;
   }
-  console.warn(`[Telegram Polling Notice]: ${error.code || error.message}`);
+  console.warn(`[Telegram Polling Notice]: ${error.code || ''} ${error.message || ''}`);
 });
 
 const openai = new OpenAI({
@@ -176,6 +176,24 @@ const toolDefinitions = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: "function",
+    function: {
+      name: "atur_auto_accept",
+      description: "Mengatur mode Auto-Accept (eksekusi otomatis perintah PowerShell & pembuatan file tanpa konfirmasi manual)",
+      parameters: {
+        type: "object",
+        properties: {
+          aktif: {
+            type: "boolean",
+            description: "true untuk mengaktifkan Auto-Accept (eksekusi instan), false untuk mematikan (butuh konfirmasi manual)"
+          }
+        },
+        required: ["aktif"],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -185,6 +203,14 @@ const allTools = [...toolDefinitions, ...dlToolDefinitions, ...knowledgeManager.
 // Implementasi Eksekusi Tools (Lokal / Remote via Worker)
 // ─────────────────────────────────────────────
 async function executeTool(name, args) {
+  if (name === 'atur_auto_accept') {
+    const isEnable = Boolean(args.aktif);
+    settingsManager.setAutoAccept(isEnable);
+    return isEnable
+      ? "Mode Auto-Accept BERHASIL DIAKTIFKAN. Semua perintah terminal dan pembuatan file ke depan akan dieksekusi instan tanpa meminta konfirmasi manual."
+      : "Mode Auto-Accept BERHASIL DINONAKTIFKAN. Perintah berpotensi sensitif akan kembali meminta konfirmasi manual.";
+  }
+
   // Jika bot berjalan di Server dan dihubungkan ke Worker Laptop via Tailscale
   if (REMOTE_WORKER_URL) {
     try {
@@ -280,7 +306,10 @@ async function sendConfirmationMessage(chatId, actionId, functionName, functionA
   let detail = '';
 
   if (functionName === 'jalankan_cmd') {
-    detail = `🖥️ *Perintah PowerShell:*\n\`\`\`powershell\n${functionArgs.perintah}\n\`\`\`\n📌 *Tujuan:* ${functionArgs.penjelasan || 'Tidak ada penjelasan'}`;
+    const cmdPreview = (functionArgs.perintah || '').length > 600
+      ? (functionArgs.perintah || '').substring(0, 600) + '\n... (perintah dipotong)'
+      : (functionArgs.perintah || '');
+    detail = `🖥️ *Perintah PowerShell:*\n\`\`\`powershell\n${cmdPreview}\n\`\`\`\n📌 *Tujuan:* ${functionArgs.penjelasan || 'Tidak ada penjelasan'}`;
   } else if (functionName === 'tulis_file') {
     const preview = (functionArgs.konten || '').length > 400
       ? (functionArgs.konten || '').substring(0, 400) + '\n... (konten dipotong)'
@@ -292,13 +321,16 @@ async function sendConfirmationMessage(chatId, actionId, functionName, functionA
 
   const messageText =
     `⚠️ *KONFIRMASI DIPERLUKAN*\n\n` +
-    `Agent ingin melakukan aksi sistem berpotensi sensitif:\n\n${detail}\n\n` +
-    `_Apakah lo mengizinkan aksi ini dieksekusi di komputermu?_`;
+    `Agent ingin melakukan aksi sistem sensitif:\n\n${detail}\n\n` +
+    `_Pilih opsi eksekusi di bawah, atau aktifkan Auto-Accept agar selanjutnya tidak perlu konfirmasi manual:_`;
 
   const replyMarkup = {
     inline_keyboard: [
       [
-        { text: '✅ Izinkan & Jalankan', callback_data: `approve_${actionId}` },
+        { text: '✅ Izinkan Sekali', callback_data: `approve_${actionId}` },
+        { text: '⚡ Izinkan & Auto-Accept ON', callback_data: `approve_all_${actionId}` }
+      ],
+      [
         { text: '❌ Tolak / Batalkan', callback_data: `reject_${actionId}` }
       ]
     ]
@@ -310,9 +342,13 @@ async function sendConfirmationMessage(chatId, actionId, functionName, functionA
       reply_markup: replyMarkup
     });
   } catch {
-    await bot.sendMessage(chatId, messageText.replace(/[*_`]/g, ''), {
-      reply_markup: replyMarkup
-    });
+    try {
+      await bot.sendMessage(chatId, messageText.replace(/[*_`]/g, ''), {
+        reply_markup: replyMarkup
+      });
+    } catch {
+      await bot.sendMessage(chatId, `⚠️ Konfirmasi aksi [${functionName}]: ketik "ya" untuk jalan sekali, "auto" untuk aktifkan auto-accept, atau "batal" untuk membatalkan.`);
+    }
   }
 }
 
@@ -376,34 +412,20 @@ async function runAgentLoop(chatId) {
 
     // Cek apakah AI memanggil tool
     if (responseMsg.tool_calls && responseMsg.tool_calls.length > 0) {
-      const toolCall = responseMsg.tool_calls[0];
-      const functionName = toolCall.function.name;
-      let functionArgs = {};
-      try {
-        functionArgs = JSON.parse(toolCall.function.arguments);
-      } catch {
-        functionArgs = {};
-      }
+      let pauseForConfirmation = false;
 
-      const isSensitive = ['jalankan_cmd', 'tulis_file'].includes(functionName);
+      for (const toolCall of responseMsg.tool_calls) {
+        const functionName = toolCall.function.name;
+        let functionArgs = {};
+        try {
+          functionArgs = JSON.parse(toolCall.function.arguments);
+        } catch {
+          functionArgs = {};
+        }
 
-      if (isSensitive) {
-        if (settingsManager.isAutoAccept()) {
-          const actionLabel = functionName === 'jalankan_cmd'
-            ? `⚡ *[Auto-Accept]* Menjalankan PowerShell:\n\`${functionArgs.perintah}\``
-            : `✍️ *[Auto-Accept]* Menulis file:\n\`${functionArgs.namaFile}\``;
+        const isSensitive = ['jalankan_cmd', 'tulis_file'].includes(functionName);
 
-          await safeSendMessage(chatId, actionLabel);
-          const result = await executeTool(functionName, functionArgs);
-
-          messages.push({
-            role: "tool",
-            tool_call_id: toolCall.id,
-            content: String(result)
-          });
-
-          sessionManager.saveSessionMessages(chatId, session.id, messages);
-        } else {
+        if (isSensitive && !settingsManager.isAutoAccept()) {
           const actionId = `${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
           pendingActions[chatId] = {
             actionId,
@@ -414,22 +436,32 @@ async function runAgentLoop(chatId) {
           };
 
           await sendConfirmationMessage(chatId, actionId, functionName, functionArgs);
-          return; // Jeda loop sampai user konfirmasi
+          pauseForConfirmation = true;
+          break; // Jeda loop sampai user konfirmasi aksi ini
         }
-      } else {
-        const statusLabel =
-          functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
-          functionName === 'pelajari_url' ? `🌐 Membaca & merangkum dokumen \`${functionArgs.url}\`...` :
-          functionName === 'cari_pengetahuan' ? `🧠 Mencari catatan tentang \`${functionArgs.query}\`...` :
-          functionName === 'baca_file' ? `📖 Membaca \`${functionArgs.namaFile}\`...` :
-          functionName === 'lihat_folder' ? `📂 Melihat isi \`${functionArgs.pathFolder || './'}\`...` :
-          functionName === 'cek_gpu' ? `🖥️ Memeriksa status GPU NVIDIA...` :
-          functionName === 'cek_env_dl' ? `🧪 Memeriksa environment Deep Learning...` :
-          functionName === 'inspeksi_dataset' ? `📊 Menganalisis dataset \`${functionArgs.pathFolder}\`...` :
-          functionName === 'monitor_training' ? `📈 Memeriksa progress training model...` :
-          `🔍 Mencari \`${functionArgs.kataKunci}\`...`;
 
-        await safeSendMessage(chatId, statusLabel);
+        if (isSensitive) {
+          const actionLabel = functionName === 'jalankan_cmd'
+            ? `⚡ *[Auto-Accept]* Menjalankan PowerShell:\n\`${functionArgs.perintah}\``
+            : `✍️ *[Auto-Accept]* Menulis file:\n\`${functionArgs.namaFile}\``;
+
+          await safeSendMessage(chatId, actionLabel);
+        } else {
+          const statusLabel =
+            functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
+            functionName === 'pelajari_url' ? `🌐 Membaca & merangkum dokumen \`${functionArgs.url}\`...` :
+            functionName === 'cari_pengetahuan' ? `🧠 Mencari catatan tentang \`${functionArgs.query}\`...` :
+            functionName === 'baca_file' ? `📖 Membaca \`${functionArgs.namaFile}\`...` :
+            functionName === 'lihat_folder' ? `📂 Melihat isi \`${functionArgs.pathFolder || './'}\`...` :
+            functionName === 'cek_gpu' ? `🖥️ Memeriksa status GPU NVIDIA...` :
+            functionName === 'cek_env_dl' ? `🧪 Memeriksa environment Deep Learning...` :
+            functionName === 'inspeksi_dataset' ? `📊 Menganalisis dataset \`${functionArgs.pathFolder}\`...` :
+            functionName === 'monitor_training' ? `📈 Memeriksa progress training model...` :
+            functionName === 'atur_auto_accept' ? `⚙️ Mengatur Auto-Accept ke: *${functionArgs.aktif ? 'AKTIF' : 'NONAKTIF'}*...` :
+            `🔍 Mencari \`${functionArgs.kataKunci}\`...`;
+
+          await safeSendMessage(chatId, statusLabel);
+        }
 
         const result = await executeTool(functionName, functionArgs);
 
@@ -440,6 +472,10 @@ async function runAgentLoop(chatId) {
         });
 
         sessionManager.saveSessionMessages(chatId, session.id, messages);
+      }
+
+      if (pauseForConfirmation) {
+        return; // Jeda sampai user konfirmasi
       }
     } else {
       // Jawaban final assistant
@@ -596,21 +632,29 @@ bot.on('callback_query', async (query) => {
 
   // 1. Konfirmasi Aksi Sensitif
   const pending = pendingActions[chatId];
-  if (pending && (data === `approve_${pending.actionId}` || data === `reject_${pending.actionId}`)) {
+  if (pending && (data === `approve_${pending.actionId}` || data === `approve_all_${pending.actionId}` || data === `reject_${pending.actionId}`)) {
     delete pendingActions[chatId]; // Langsung hapus agar tidak dieksekusi ganda jika diklik cepat
     try {
       await bot.editMessageReplyMarkup({ inline_keyboard: [] }, {
         chat_id: chatId,
         message_id: query.message.message_id
       });
-      const statusText = data.startsWith('approve') ? "✅ DISETUJUI" : "❌ DITOLAK";
+      const statusText = data.startsWith('approve_all')
+        ? "⚡ DISETUJUI & AUTO-ACCEPT DIAKTIFKAN"
+        : data.startsWith('approve')
+        ? "✅ DISETUJUI"
+        : "❌ DITOLAK";
       await bot.editMessageText(query.message.text + `\n\n*(Status: ${statusText})*`, {
         chat_id: chatId,
         message_id: query.message.message_id
       });
     } catch {}
 
-    if (data.startsWith('approve')) {
+    if (data.startsWith('approve_all')) {
+      settingsManager.setAutoAccept(true);
+      await safeSendMessage(chatId, "⚡ *Auto-Accept Berhasil Diaktifkan!* Mulai sekarang perintah & penulisan file akan berjalan instan tanpa jeda konfirmasi manual.");
+      await handleUserConfirmation(chatId, true, pending);
+    } else if (data.startsWith('approve')) {
       await handleUserConfirmation(chatId, true, pending);
     } else {
       await handleUserConfirmation(chatId, false, pending);
@@ -928,13 +972,31 @@ bot.on('message', async (msg) => {
     return renderSettingsPanel(chatId);
   }
 
-  // ── /autoaccept: Shortcut toggle auto-accept ──
-  if (text.startsWith('/autoaccept')) {
-    const arg = text.replace(/^\/autoaccept/, '').trim().toLowerCase();
+  // ── /autoaccept & Variasi Teks Pengaturan Auto-Accept ──
+  const lowerText = text.toLowerCase().trim();
+  if (
+    lowerText.startsWith('/autoaccept') ||
+    lowerText.startsWith('autoaccept') ||
+    lowerText.startsWith('auto accept') ||
+    lowerText.startsWith('auto-accept') ||
+    lowerText === 'aktifkan auto accept' ||
+    lowerText === 'nyalakan auto accept' ||
+    lowerText === 'matikan auto accept' ||
+    lowerText === 'turn on auto accept' ||
+    lowerText === 'turn off auto accept'
+  ) {
     let newStatus;
-    if (arg === 'on' || arg === 'true' || arg === '1' || arg === 'aktif' || arg === 'enable') {
+    if (
+      lowerText.includes('on') || lowerText.includes('aktif') || lowerText.includes('true') ||
+      lowerText.includes('enable') || lowerText.includes('1') || lowerText.startsWith('aktifkan') ||
+      lowerText.startsWith('nyalakan') || lowerText.includes('turn on')
+    ) {
       newStatus = settingsManager.setAutoAccept(true);
-    } else if (arg === 'off' || arg === 'false' || arg === '0' || arg === 'mati' || arg === 'disable') {
+    } else if (
+      lowerText.includes('off') || lowerText.includes('mati') || lowerText.includes('false') ||
+      lowerText.includes('disable') || lowerText.includes('0') || lowerText.startsWith('matikan') ||
+      lowerText.includes('turn off')
+    ) {
       newStatus = settingsManager.setAutoAccept(false);
     } else {
       newStatus = settingsManager.toggleAutoAccept();
@@ -952,11 +1014,18 @@ bot.on('message', async (msg) => {
   // ── Konfirmasi Pending Action via Teks ────────
   if (pendingActions[chatId]) {
     const pending = pendingActions[chatId];
-    const jawaban = text.toLowerCase();
+    const jawaban = text.toLowerCase().trim();
+    const autoPatterns = ['auto', 'auto accept', 'auto-accept', 'selalu', 'always', 'gas terus', 'auto on'];
     const yesPatterns = ['ya', 'yes', 'ok', 'oke', 'lanjut', 'gas', 'izinkan', 'y', 'boleh'];
-    const noPatterns = ['tidak', 'batal', 'cancel', 'no', 'jangan', 'gak', 'nggak', 'n', 'tolak'];
+    const noPatterns = ['tidak', 'batal', 'cancel', 'no', 'jangan', 'gak', 'nggak', 'n', 'tolak', 'skip', 'abaikan'];
 
-    if (yesPatterns.includes(jawaban)) {
+    if (autoPatterns.includes(jawaban)) {
+      delete pendingActions[chatId];
+      settingsManager.setAutoAccept(true);
+      await safeSendMessage(chatId, "⚡ *Auto-Accept Diaktifkan!* Aksi dijalankan dan ke depannya semua aksi akan dieksekusi otomatis.");
+      await handleUserConfirmation(chatId, true, pending);
+      return;
+    } else if (yesPatterns.includes(jawaban)) {
       delete pendingActions[chatId];
       await handleUserConfirmation(chatId, true, pending);
       return;
@@ -965,10 +1034,23 @@ bot.on('message', async (msg) => {
       await handleUserConfirmation(chatId, false, pending);
       return;
     } else {
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: "✅ Izinkan Aksi Ini", callback_data: `approve_${pending.actionId}` },
+            { text: "⚡ Izinkan & Auto-Accept ON", callback_data: `approve_all_${pending.actionId}` }
+          ],
+          [
+            { text: "❌ Batalkan & Lanjut Chat Baru", callback_data: `reject_${pending.actionId}` }
+          ]
+        ]
+      };
       await safeSendMessage(
         chatId,
-        `⏸️ *Ada aksi yang butuh persetujuan lo!*\n` +
-        `Silakan klik tombol *Izinkan* / *Tolak* di atas, atau ketik *"ya"* / *"tidak"*.`
+        `⏸️ *Masih ada aksi tertunda yang butuh konfirmasi:*\n` +
+        `• Aksi: \`${pending.functionName}\`\n\n` +
+        `_Silakan pilih tombol di bawah, atau ketik *"ya"* / *"auto"* / *"batal"*:_`,
+        { reply_markup: keyboard }
       );
       return;
     }
