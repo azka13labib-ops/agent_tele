@@ -1,3 +1,9 @@
+process.stdout?.on?.('error', () => {});
+process.stderr?.on?.('error', () => {});
+process.on('uncaughtException', (err) => {
+  if (err?.code === 'EPIPE' || err?.code === 'EBADF') return;
+  console.error(err);
+});
 require('dotenv').config();
 const http = require('http');
 const os = require('os');
