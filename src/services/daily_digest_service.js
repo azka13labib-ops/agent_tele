@@ -1,5 +1,6 @@
-const { OWNER_IDS } = require('../config/env');
+const { OWNER_IDS, AI_MODEL } = require('../config/env');
 const { safeSendMessage } = require('../core/bot');
+const { openai } = require('../core/ai');
 const settingsManager = require('./settings_manager');
 
 let isSendingDigest = false;
@@ -15,7 +16,8 @@ async function fetchTopFullstackRepos(count = 10) {
   ];
 
   const pickedQuery = queries[Math.floor(Math.random() * queries.length)];
-  const url = `https://api.github.com/search/repositories?q=${pickedQuery}&sort=updated&order=desc&per_page=15`;
+  const sort = Math.random() > 0.5 ? 'stars' : 'updated';
+  const url = `https://api.github.com/search/repositories?q=${pickedQuery}&sort=${sort}&order=desc&per_page=15`;
 
   try {
     const resp = await fetch(url, {
@@ -50,16 +52,16 @@ async function fetchTopFullstackRepos(count = 10) {
 
 function getDefaultFullstackRepos() {
   return [
-    { name: "shadcn-ui/ui", url: "https://github.com/shadcn-ui/ui", stars: 75000, language: "TypeScript", description: "Komponen UI modern, fleksibel, dan copy-paste untuk Next.js/React" },
-    { name: "astral-sh/uv", url: "https://github.com/astral-sh/uv", stars: 39000, language: "Rust", description: "Package manager & resolver Python ultra-cepat untuk backend/AI services" },
-    { name: "fastapi/fastapi", url: "https://github.com/fastapi/fastapi", stars: 78000, language: "Python", description: "Framework API backend modern, cepat, dengan auto-generated docs" },
-    { name: "trpc/trpc", url: "https://github.com/trpc/trpc", stars: 35000, language: "TypeScript", description: "End-to-end typesafe APIs untuk stack React, Next.js, dan Node" },
-    { name: "prisma/prisma", url: "https://github.com/prisma/prisma", stars: 40000, language: "TypeScript", description: "Next-generation ORM untuk Node.js dan TypeScript" },
-    { name: "supabase/supabase", url: "https://github.com/supabase/supabase", stars: 73000, language: "TypeScript", description: "Backend open-source alternatif Firebase berbasis PostgreSQL" },
-    { name: "payloadcms/payload", url: "https://github.com/payloadcms/payload", stars: 30000, language: "TypeScript", description: "Headless CMS & App Framework berbasis Next.js dan TypeScript" },
-    { name: "tailwindlabs/tailwindcss", url: "https://github.com/tailwindlabs/tailwindcss", stars: 82000, language: "CSS", description: "Utility-first CSS framework untuk desain antarmuka cepat" },
-    { name: "TanStack/query", url: "https://github.com/TanStack/query", stars: 43000, language: "TypeScript", description: "Powerful asynchronous state management untuk React, Vue, Svelte" },
-    { name: "honojs/hono", url: "https://github.com/honojs/hono", stars: 22000, language: "TypeScript", description: "Ultrafast web framework untuk Cloudflare Workers, Node, Deno, Bun" }
+    { name: "shadcn-ui/ui", url: "https://github.com/shadcn-ui/ui", stars: 75000, language: "TypeScript", description: "Koleksi komponen UI modern yang dapat disesuaikan dan di-copy-paste langsung ke proyek Next.js dan React" },
+    { name: "astral-sh/uv", url: "https://github.com/astral-sh/uv", stars: 39000, language: "Rust", description: "Package resolver dan manager Python super cepat berbasis Rust untuk mempercepat integrasi backend dan script AI" },
+    { name: "fastapi/fastapi", url: "https://github.com/fastapi/fastapi", stars: 78000, language: "Python", description: "Framework API backend modern dengan performa tinggi, validasi tipe otomatis, dan dokumentasi interaktif Swagger bawaan" },
+    { name: "trpc/trpc", url: "https://github.com/trpc/trpc", stars: 35000, language: "TypeScript", description: "Solusi pembuatan API bertipe aman dari ujung ke ujung antara frontend React/Next.js dan backend tanpa perlu code generation" },
+    { name: "prisma/prisma", url: "https://github.com/prisma/prisma", stars: 40000, language: "TypeScript", description: "ORM generasi modern untuk Node.js dan TypeScript yang memudahkan migrasi skema database dan penulisan query typesafe" },
+    { name: "supabase/supabase", url: "https://github.com/supabase/supabase", stars: 73000, language: "TypeScript", description: "Platform backend open-source alternatif Firebase berbasis PostgreSQL lengkap dengan autentikasi, database real-time, dan storage" },
+    { name: "payloadcms/payload", url: "https://github.com/payloadcms/payload", stars: 30000, language: "TypeScript", description: "Headless CMS dan app framework modern berbasis Next.js yang memberikan kontrol penuh atas arsitektur data dan API" },
+    { name: "tailwindlabs/tailwindcss", url: "https://github.com/tailwindlabs/tailwindcss", stars: 82000, language: "CSS", description: "Utility-first CSS framework untuk mendesain antarmuka aplikasi web responsif dan estetik langsung di dalam kode markup" },
+    { name: "TanStack/query", url: "https://github.com/TanStack/query", stars: 43000, language: "TypeScript", description: "Library manajemen async state dan data fetching andal untuk caching otomatis, sinkronisasi, dan pengelolaan data server" },
+    { name: "honojs/hono", url: "https://github.com/honojs/hono", stars: 22000, language: "TypeScript", description: "Web framework ultra-cepat dan ringan yang bisa berjalan di berbagai runtime seperti Cloudflare Workers, Node.js, Deno, dan Bun" }
   ];
 }
 
@@ -93,12 +95,64 @@ async function fetchTopTechNews(count = 5) {
 
 function getDefaultTechNews() {
   return [
-    { title: "Next.js 15 Release: Turbopack, React 19 Support, and Async Request APIs", url: "https://nextjs.org/blog", description: "Fitur baru pada Next.js 15 mempercepat build time hingga 70% dan menyederhanakan caching.", author: "Next.js Team" },
-    { title: "The State of AI Agents in Modern Software Engineering", url: "https://dev.to", description: "Bagaimana autonomous agentic coding merevolusi testing, refactoring, dan automation pipeline.", author: "Tech Insights" },
-    { title: "PostgreSQL 17 Released: Significant Performance Improvements and JSON Enhancements", url: "https://postgresql.org", description: "Upgrade performa memori query, logical replication failover, dan JSON_TABLE standard SQL.", author: "PostgreSQL Global" },
-    { title: "TypeScript 5.6: Disallowed Nullish Checks and Region-Style Diagnostic Reporting", url: "https://devblogs.microsoft.com/typescript", description: "Pemeriksaan tipe data semakin ketat untuk mencegah bug tersembunyi pada logika conditional.", author: "Microsoft TS" },
-    { title: "Tailwind CSS v4.0 Alpha: Built from Scratch for Speed with CSS-First Configuration", url: "https://tailwindcss.com/blog", description: "Engine baru berbasis Oxide tanpa config JavaScript, rendering build instan.", author: "Tailwind Labs" }
+    { title: "Next.js 15 Release: Turbopack, React 19 Support, and Async Request APIs", url: "https://nextjs.org/blog", description: "Rilis Next.js 15 membawa dukungan penuh React 19, Turbopack stabil untuk dev server yang lebih kencang, serta model caching baru.", author: "Next.js Team" },
+    { title: "The State of AI Agents in Modern Software Engineering", url: "https://dev.to", description: "Membahas evolusi coding agent otonom dalam mempercepat refactoring kode, penyusunan automated test, dan penyelesaian issue teknis.", author: "Tech Insights" },
+    { title: "PostgreSQL 17 Released: Significant Performance Improvements and JSON Enhancements", url: "https://postgresql.org", description: "Peningkatan manajemen memori query berkapasitas besar, peningkatan performa indexing, dan fungsi standar JSON_TABLE SQL.", author: "PostgreSQL Global" },
+    { title: "TypeScript 5.6: Disallowed Nullish Checks and Region-Style Diagnostic Reporting", url: "https://devblogs.microsoft.com/typescript", description: "Peningkatan sistem pengetikan ketat untuk mendeteksi perbandingan logika bernilai konstan dan mencegah bug conditional tersembunyi.", author: "Microsoft TS" },
+    { title: "Tailwind CSS v4.0 Alpha: Built from Scratch for Speed with CSS-First Configuration", url: "https://tailwindcss.com/blog", description: "Arsitektur baru berbasis compiler Oxide dengan kecepatan build instan tanpa perlu file konfigurasi JavaScript yang rumit.", author: "Tailwind Labs" }
   ];
+}
+
+async function translateAndEnrichDigest(repos, news) {
+  try {
+    const reposPayload = repos.map((r, i) => ({
+      id: i,
+      name: r.name,
+      desc: r.description || ''
+    }));
+    const newsPayload = news.map((n, i) => ({
+      id: i,
+      title: n.title,
+      desc: n.description || ''
+    }));
+
+    const response = await openai.chat.completions.create({
+      model: AI_MODEL,
+      messages: [
+        {
+          role: 'system',
+          content: 'Kamu adalah software engineer reviewer and technical translator profesional. Tugasmu adalah menerjemahkan dan menjelaskan fungsi masing-masing repositori open source serta intisari berita ke dalam Bahasa Indonesia yang alami, padat, jelas (1-2 kalimat), dan sangat berbobot untuk kebutuhan fullstack developer. Dilarang menggunakan bahasa Inggris pada nilai "fungsi" dan "intisari" (istilah teknis umum seperti API, framework, database, state management tetap boleh). Balas HANYA dengan format JSON murni tanpa markdown fence.'
+        },
+        {
+          role: 'user',
+          content: `Terjemahkan dan jelaskan ke Bahasa Indonesia:\nFormat JSON wajib: {"repos":[{"id":0,"fungsi":"..."}],"news":[{"id":0,"intisari":"..."}]}\n\nData:\n${JSON.stringify({ repos: reposPayload, news: newsPayload })}`
+        }
+      ],
+      temperature: 0.2
+    });
+
+    const raw = response.choices[0]?.message?.content || '';
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (Array.isArray(parsed.repos)) {
+        parsed.repos.forEach(item => {
+          if (repos[item.id] && item.fungsi && typeof item.fungsi === 'string' && item.fungsi.trim().length > 0) {
+            repos[item.id].description = item.fungsi.replace(/[\r\n]+/g, ' ').trim();
+          }
+        });
+      }
+      if (Array.isArray(parsed.news)) {
+        parsed.news.forEach(item => {
+          if (news[item.id] && item.intisari && typeof item.intisari === 'string' && item.intisari.trim().length > 0) {
+            news[item.id].description = item.intisari.replace(/[\r\n]+/g, ' ').trim();
+          }
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("[DailyDigest] AI translation warning:", err.message);
+  }
 }
 
 async function sendDailyDigest(forcedChatId = null) {
@@ -121,6 +175,8 @@ async function sendDailyDigest(forcedChatId = null) {
       fetchTopFullstackRepos(10),
       fetchTopTechNews(5)
     ]);
+
+    await translateAndEnrichDigest(repos, news);
 
     const dateStr = new Date().toLocaleDateString('id-ID', {
       weekday: 'long',
@@ -197,6 +253,7 @@ function startDailyDigestScheduler() {
 module.exports = {
   fetchTopFullstackRepos,
   fetchTopTechNews,
+  translateAndEnrichDigest,
   sendDailyDigest,
   startDailyDigestScheduler
 };
