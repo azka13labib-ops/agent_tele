@@ -26,8 +26,8 @@ async function renderSettingsPanel(chatId, messageId = null) {
   const dailyDigest = settingsManager.isDailyDigest();
   const dailyBadge = dailyDigest ? "🟢 *AKTIF (1x Sehari)*" : "🔴 *NONAKTIF*";
   const dailyDesc = dailyDigest
-    ? "_Bot mengirim 10 open-source repositori pilihan & 5 berita teknologi terkini setiap 24 jam._"
-    : "_Briefing harian 10 repo & 5 berita sedang dinonaktifkan._";
+    ? "_Bot mengkurasi 10 open-source AI repo & 5 berita AI terkini setiap 24 jam dan otomatis mempelajarinya._"
+    : "_Briefing harian AI 10 repo & 5 berita sedang dinonaktifkan._";
 
   const text =
     `⚙️ *PENGATURAN BOT HERMES*\n\n` +
@@ -44,7 +44,7 @@ async function renderSettingsPanel(chatId, messageId = null) {
     `• Status: ${autoLearnBadge}\n` +
     `• Topik: _Trending Open Source & Developer Tools_\n` +
     `• Info: ${autoLearnDesc}\n\n` +
-    `🌅 *5. Daily Fullstack Digest (10 Repo & 5 Berita):*\n` +
+    `🌅 *5. Daily AI & Fullstack Digest (10 Repo & 5 Berita):*\n` +
     `• Status: ${dailyBadge}\n` +
     `• Info: ${dailyDesc}\n\n` +
     `_Klik tombol di bawah untuk mengubah setelan secara instan:_`;

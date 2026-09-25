@@ -19,8 +19,8 @@ async function handleCommand(chatId, text) {
       `📌 *Sesi Aktif Saat Ini:* "${active.title}"\n\n` +
       `⚡ *Fitur & Perintah Cepat:*\n` +
       `• \`/learn <url>\` : Pelajari repo GitHub, paper ArXiv, Hugging Face, atau link web/artikel apa saja!\n` +
-      `• \`/digest\` : Dapatkan langsung 10 repo open source fullstack & 5 berita teknologi hari ini\n` +
-      `• \`/daily [on/off/now]\` : Pengaturan briefing harian (10 repo & 5 berita)\n` +
+      `• \`/digest\` : Dapatkan langsung 10 AI repo open source & 5 berita AI hari ini (otomatis dipelajari Hermes)\n` +
+      `• \`/daily [on/off/now]\` : Pengaturan briefing harian AI (10 AI repo & 5 berita)\n` +
       `• \`/brain\` : Lihat semua materi & skill yang sudah dipelajari permanen\n` +
       `• \`/gpu\` : Cek VRAM, suhu & status GPU NVIDIA RTX 4060 real-time\n` +
       `• \`/env\` : Cek versi Python, PyTorch, CUDA, & uv\n` +
@@ -436,10 +436,11 @@ async function handleCommand(chatId, text) {
       settingsManager.setDailyDigest(true);
       await safeSendMessage(
         chatId,
-        `🌅 *Daily Fullstack Digest Diaktifkan!*\n\n` +
+        `🤖 *Daily AI Intelligence Digest Diaktifkan!*\n\n` +
         `• Status: 🟢 AKTIF\n` +
         `• Jadwal: Setiap 24 jam sekali\n` +
-        `• Konten: Minimal 10 repo open source terbaik + 5 berita developer terkini\n\n` +
+        `• Konten: 10 AI repo open-source terbaik + 5 berita AI terkini\n` +
+        `• Pembelajaran: Otomatis disimpan ke memori permanen (` + '`/brain`' + `)\n\n` +
         `_Ketik \`/digest now\` untuk mendapatkan briefing sekarang juga._`
       );
       return true;
@@ -449,7 +450,7 @@ async function handleCommand(chatId, text) {
       settingsManager.setDailyDigest(false);
       await safeSendMessage(
         chatId,
-        `⏸️ *Daily Fullstack Digest Dinonaktifkan!*\n\n` +
+        `⏸️ *Daily AI Digest Dinonaktifkan!*\n\n` +
         `• Status: 🔴 NONAKTIF\n\n` +
         `_Ketik \`/daily on\` untuk mengaktifkan kembali._`
       );
@@ -459,7 +460,7 @@ async function handleCommand(chatId, text) {
     if (subCmd === 'now' || subCmd === 'sekarang' || subCmd === '' || lowerText === '/digest') {
       await safeSendMessage(
         chatId,
-        `⏳ *Menyiapkan Daily Fullstack Digest hari ini...*\n_Hermes sedang mengkurasi 10 open-source repositories & 5 berita teknologi terkini..._`
+        `⏳ *Menyiapkan Daily AI Digest hari ini...*\n_Hermes sedang mengkurasi 10 open-source AI repositories & 5 berita AI terkini, menerjemahkan fungsi ke Bahasa Indonesia, dan menyimpannya ke memori (/brain)..._`
       );
       dailyDigestService.sendDailyDigest(chatId).then(res => {
         if (!res.success && res.reason !== 'in_progress') {
@@ -475,12 +476,13 @@ async function handleCommand(chatId, text) {
 
     await safeSendMessage(
       chatId,
-      `🌅 *Pengaturan Daily Fullstack Digest*\n\n` +
+      `🤖 *Pengaturan Daily AI Intelligence Digest*\n\n` +
       `• *Status:* ${isDaily ? '🟢 AKTIF (1x Sehari)' : '🔴 NONAKTIF'}\n` +
       `• *Terakhir Terkirim:* ${lastStr}\n` +
-      `• *Isi:* 10 Repository Open Source + 5 Berita Developer Terkini\n\n` +
+      `• *Isi:* 10 Repository AI Open Source + 5 Berita AI Terkini\n` +
+      `• *Auto-Learn:* Otomatis dipelajari dan diindeks ke memori permanen\n\n` +
       `⚡ *Perintah Kontrol:*\n` +
-      `• \`/digest now\` : Kirim briefing sekarang juga\n` +
+      `• \`/digest now\` : Kirim briefing & pelajari sekarang juga\n` +
       `• \`/daily on\` : Aktifkan pengiriman otomatis tiap 24 jam\n` +
       `• \`/daily off\` : Matikan pengiriman harian`
     );

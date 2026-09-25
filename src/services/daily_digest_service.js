@@ -1,6 +1,9 @@
+const path = require('path');
+const fs = require('fs');
 const { OWNER_IDS, AI_MODEL } = require('../config/env');
 const { safeSendMessage } = require('../core/bot');
 const { openai } = require('../core/ai');
+const { NOTES_DIR, INDEX_FILE, ensureDirectories } = require('../config/paths');
 const settingsManager = require('./settings_manager');
 
 let isSendingDigest = false;
@@ -8,11 +11,13 @@ let digestSchedulerInterval = null;
 
 async function fetchTopFullstackRepos(count = 10) {
   const queries = [
-    'topic:developer-tools+stars:>1500',
-    'topic:fullstack+stars:>500',
-    'topic:nextjs+stars:>1000',
-    'topic:typescript+topic:devtools+stars:>1000',
-    'topic:web+topic:framework+stars:>2000'
+    'topic:ai+topic:developer-tools+stars:>1000',
+    'topic:llm+topic:agent+stars:>500',
+    'topic:generative-ai+stars:>1000',
+    'topic:ai-agent+stars:>500',
+    'topic:machine-learning+topic:developer-tools+stars:>1000',
+    'topic:rag+topic:llm+stars:>500',
+    'topic:ai+topic:framework+stars:>1500'
   ];
 
   const pickedQuery = queries[Math.floor(Math.random() * queries.length)];
@@ -28,11 +33,11 @@ async function fetchTopFullstackRepos(count = 10) {
       signal: AbortSignal.timeout(15000)
     });
 
-    if (!resp.ok) return getDefaultFullstackRepos().slice(0, count);
+    if (!resp.ok) return getDefaultAIRepos().slice(0, count);
 
     const data = await resp.json();
     if (!data.items || !Array.isArray(data.items) || data.items.length === 0) {
-      return getDefaultFullstackRepos().slice(0, count);
+      return getDefaultAIRepos().slice(0, count);
     }
 
     const repos = data.items.slice(0, count).map(r => ({
@@ -40,43 +45,46 @@ async function fetchTopFullstackRepos(count = 10) {
       url: r.html_url,
       stars: r.stargazers_count,
       language: r.language || 'Multi',
-      description: r.description ? r.description.replace(/[\r\n]+/g, ' ').trim() : 'Tools produktivitas dan arsitektur fullstack'
+      description: r.description ? r.description.replace(/[\r\n]+/g, ' ').trim() : 'Tools AI dan machine learning open source untuk developer'
     }));
 
-    return repos.length >= 5 ? repos : getDefaultFullstackRepos().slice(0, count);
+    return repos.length >= 5 ? repos : getDefaultAIRepos().slice(0, count);
   } catch (err) {
-    console.warn("Error fetching GitHub repos:", err.message);
-    return getDefaultFullstackRepos().slice(0, count);
+    console.warn("Error fetching GitHub AI repos:", err.message);
+    return getDefaultAIRepos().slice(0, count);
   }
 }
 
-function getDefaultFullstackRepos() {
+function getDefaultAIRepos() {
   return [
-    { name: "shadcn-ui/ui", url: "https://github.com/shadcn-ui/ui", stars: 75000, language: "TypeScript", description: "Koleksi komponen UI modern yang dapat disesuaikan dan di-copy-paste langsung ke proyek Next.js dan React" },
-    { name: "astral-sh/uv", url: "https://github.com/astral-sh/uv", stars: 39000, language: "Rust", description: "Package resolver dan manager Python super cepat berbasis Rust untuk mempercepat integrasi backend dan script AI" },
-    { name: "fastapi/fastapi", url: "https://github.com/fastapi/fastapi", stars: 78000, language: "Python", description: "Framework API backend modern dengan performa tinggi, validasi tipe otomatis, dan dokumentasi interaktif Swagger bawaan" },
-    { name: "trpc/trpc", url: "https://github.com/trpc/trpc", stars: 35000, language: "TypeScript", description: "Solusi pembuatan API bertipe aman dari ujung ke ujung antara frontend React/Next.js dan backend tanpa perlu code generation" },
-    { name: "prisma/prisma", url: "https://github.com/prisma/prisma", stars: 40000, language: "TypeScript", description: "ORM generasi modern untuk Node.js dan TypeScript yang memudahkan migrasi skema database dan penulisan query typesafe" },
-    { name: "supabase/supabase", url: "https://github.com/supabase/supabase", stars: 73000, language: "TypeScript", description: "Platform backend open-source alternatif Firebase berbasis PostgreSQL lengkap dengan autentikasi, database real-time, dan storage" },
-    { name: "payloadcms/payload", url: "https://github.com/payloadcms/payload", stars: 30000, language: "TypeScript", description: "Headless CMS dan app framework modern berbasis Next.js yang memberikan kontrol penuh atas arsitektur data dan API" },
-    { name: "tailwindlabs/tailwindcss", url: "https://github.com/tailwindlabs/tailwindcss", stars: 82000, language: "CSS", description: "Utility-first CSS framework untuk mendesain antarmuka aplikasi web responsif dan estetik langsung di dalam kode markup" },
-    { name: "TanStack/query", url: "https://github.com/TanStack/query", stars: 43000, language: "TypeScript", description: "Library manajemen async state dan data fetching andal untuk caching otomatis, sinkronisasi, dan pengelolaan data server" },
-    { name: "honojs/hono", url: "https://github.com/honojs/hono", stars: 22000, language: "TypeScript", description: "Web framework ultra-cepat dan ringan yang bisa berjalan di berbagai runtime seperti Cloudflare Workers, Node.js, Deno, dan Bun" }
+    { name: "langchain-ai/langchainjs", url: "https://github.com/langchain-ai/langchainjs", stars: 14000, language: "TypeScript", description: "Framework orkestrasi aplikasi LLM, chains, dan agen AI cerdas berbasis JavaScript dan TypeScript" },
+    { name: "ollama/ollama", url: "https://github.com/ollama/ollama", stars: 98000, language: "Go", description: "Platform paling populer dan efisien untuk menjalankan model AI besar seperti Llama 3, DeepSeek, dan Mistral secara lokal" },
+    { name: "vllm-project/vllm", url: "https://github.com/vllm-project/vllm", stars: 32000, language: "Python", description: "Engine inferensi dan serving LLM performa tinggi dengan throughput ultra-cepat memanfaatkan teknik PagedAttention" },
+    { name: "browser-use/browser-use", url: "https://github.com/browser-use/browser-use", stars: 22000, language: "Python", description: "AI agent otonom yang mampu mengendalikan browser web untuk scraping otomatis, pengisian form, dan navigasi data" },
+    { name: "modelcontextprotocol/servers", url: "https://github.com/modelcontextprotocol/servers", stars: 12000, language: "TypeScript", description: "Koleksi implementasi standar Model Context Protocol (MCP) untuk menghubungkan AI dengan tool eksternal dan database" },
+    { name: "continuedev/continue", url: "https://github.com/continuedev/continue", stars: 21000, language: "TypeScript", description: "Asisten coding AI open-source terkemuka yang terintegrasi langsung di editor VS Code dan JetBrains" },
+    { name: "run-llama/LlamaIndexTS", url: "https://github.com/run-llama/LlamaIndexTS", stars: 6000, language: "TypeScript", description: "Framework orkestrasi data, indexing dokumen, dan Retrieval-Augmented Generation (RAG) untuk ekosistem TypeScript" },
+    { name: "OpenBB-finance/OpenBBTerminal", url: "https://github.com/OpenBB-finance/OpenBBTerminal", stars: 38000, language: "Python", description: "Platform analitik finansial dan riset pasar komprehensif bertenaga AI agent open-source" },
+    { name: "comfyanonymous/ComfyUI", url: "https://github.com/comfyanonymous/ComfyUI", stars: 55000, language: "Python", description: "Antarmuka grafis modular berbasis node tercanggih untuk mendesain alur kerja Stable Diffusion dan Generative AI" },
+    { name: "karpathy/nanoGPT", url: "https://github.com/karpathy/nanoGPT", stars: 36000, language: "Python", description: "Repositori paling sederhana dan tercepat untuk melatih dan memahami arsitektur Transformer GPT dari nol" }
   ];
 }
 
 async function fetchTopTechNews(count = 5) {
+  const tags = ['ai', 'machinelearning', 'llm'];
+  const pickedTag = tags[Math.floor(Math.random() * tags.length)];
+
   try {
-    const resp = await fetch('https://dev.to/api/articles?tag=webdev&top=1&per_page=7', {
+    const resp = await fetch(`https://dev.to/api/articles?tag=${pickedTag}&top=1&per_page=7`, {
       headers: { 'User-Agent': 'Hermes-Agent-DailyDigest/2.0' },
       signal: AbortSignal.timeout(12000)
     });
 
-    if (!resp.ok) return getDefaultTechNews().slice(0, count);
+    if (!resp.ok) return getDefaultAINews().slice(0, count);
 
     const articles = await resp.json();
     if (!Array.isArray(articles) || articles.length === 0) {
-      return getDefaultTechNews().slice(0, count);
+      return getDefaultAINews().slice(0, count);
     }
 
     const news = articles.slice(0, count).map(a => ({
@@ -88,18 +96,18 @@ async function fetchTopTechNews(count = 5) {
 
     return news;
   } catch (err) {
-    console.warn("Error fetching tech news:", err.message);
-    return getDefaultTechNews().slice(0, count);
+    console.warn("Error fetching AI tech news:", err.message);
+    return getDefaultAINews().slice(0, count);
   }
 }
 
-function getDefaultTechNews() {
+function getDefaultAINews() {
   return [
-    { title: "Next.js 15 Release: Turbopack, React 19 Support, and Async Request APIs", url: "https://nextjs.org/blog", description: "Rilis Next.js 15 membawa dukungan penuh React 19, Turbopack stabil untuk dev server yang lebih kencang, serta model caching baru.", author: "Next.js Team" },
-    { title: "The State of AI Agents in Modern Software Engineering", url: "https://dev.to", description: "Membahas evolusi coding agent otonom dalam mempercepat refactoring kode, penyusunan automated test, dan penyelesaian issue teknis.", author: "Tech Insights" },
-    { title: "PostgreSQL 17 Released: Significant Performance Improvements and JSON Enhancements", url: "https://postgresql.org", description: "Peningkatan manajemen memori query berkapasitas besar, peningkatan performa indexing, dan fungsi standar JSON_TABLE SQL.", author: "PostgreSQL Global" },
-    { title: "TypeScript 5.6: Disallowed Nullish Checks and Region-Style Diagnostic Reporting", url: "https://devblogs.microsoft.com/typescript", description: "Peningkatan sistem pengetikan ketat untuk mendeteksi perbandingan logika bernilai konstan dan mencegah bug conditional tersembunyi.", author: "Microsoft TS" },
-    { title: "Tailwind CSS v4.0 Alpha: Built from Scratch for Speed with CSS-First Configuration", url: "https://tailwindcss.com/blog", description: "Arsitektur baru berbasis compiler Oxide dengan kecepatan build instan tanpa perlu file konfigurasi JavaScript yang rumit.", author: "Tailwind Labs" }
+    { title: "DeepSeek-V3 and R1 Architecture Breakthroughs in Open Source AI", url: "https://dev.to", description: "Inovasi arsitektur Mixture of Experts (MoE) dan Multi-head Latent Attention (MLA) yang menyaingi model komersial tertutup dengan efisiensi komputasi ekstrem.", author: "AI Research Group" },
+    { title: "The Rise of Autonomous AI Coding Agents in Fullstack Development", url: "https://dev.to", description: "Membahas bagaimana coding agent modern berevolusi dari sekadar autocompletion menjadi agen otonom yang mampu menjalankan terminal, testing, dan deployment.", author: "Tech Insights" },
+    { title: "Model Context Protocol (MCP): The New Standard for AI Tooling", url: "https://dev.to", description: "Standarisasi protokol terbuka yang memungkinkan model LLM berinteraksi secara aman dengan database, API lokal, dan environment developer.", author: "Open Source AI" },
+    { title: "Local LLM Inference Optimization on Consumer GPUs", url: "https://dev.to", description: "Perkembangan kuantisasi 4-bit, FlashAttention, dan teknik offloading memori yang memungkinkan model besar berjalan mulus di GPU laptop dan desktop.", author: "ML Engineering" },
+    { title: "OpenAI Function Calling and Structured JSON Outputs Best Practices", url: "https://dev.to", description: "Panduan arsitektur modern dalam memastikan response AI 100% konsisten dengan skema JSON untuk integrasi API backend yang andal.", author: "Fullstack AI Dev" }
   ];
 }
 
@@ -121,7 +129,7 @@ async function translateAndEnrichDigest(repos, news) {
       messages: [
         {
           role: 'system',
-          content: 'Kamu adalah software engineer reviewer and technical translator profesional. Tugasmu adalah menerjemahkan dan menjelaskan fungsi masing-masing repositori open source serta intisari berita ke dalam Bahasa Indonesia yang alami, padat, jelas (1-2 kalimat), dan sangat berbobot untuk kebutuhan fullstack developer. Dilarang menggunakan bahasa Inggris pada nilai "fungsi" dan "intisari" (istilah teknis umum seperti API, framework, database, state management tetap boleh). Balas HANYA dengan format JSON murni tanpa markdown fence.'
+          content: 'Kamu adalah software engineer reviewer and AI technical translator profesional. Tugasmu adalah menerjemahkan dan menjelaskan fungsi masing-masing repositori AI open source serta intisari berita AI ke dalam Bahasa Indonesia yang alami, padat, jelas (1-2 kalimat), dan sangat berbobot untuk kebutuhan fullstack developer. Dilarang menggunakan bahasa Inggris pada nilai "fungsi" dan "intisari" (istilah teknis umum seperti AI, LLM, API, framework, database tetap boleh). Balas HANYA dengan format JSON murni tanpa markdown fence.'
         },
         {
           role: 'user',
@@ -155,6 +163,108 @@ async function translateAndEnrichDigest(repos, news) {
   }
 }
 
+function autoLearnDigestItems(repos, news) {
+  try {
+    ensureDirectories();
+    let index = [];
+    if (fs.existsSync(INDEX_FILE)) {
+      try {
+        index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf-8'));
+      } catch {}
+    }
+
+    const now = Date.now();
+    let addedCount = 0;
+
+    for (const r of repos) {
+      const slug = r.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const noteFileName = `repo_ai_${slug}.md`;
+      const noteFilePath = path.join(NOTES_DIR, noteFileName);
+      const noteContent =
+        `# 🤖 Catatan AI Open Source: ${r.name}\n\n` +
+        `- **URL:** ${r.url}\n` +
+        `- **Bahasa:** ${r.language}\n` +
+        `- **Stars:** ${r.stars}\n` +
+        `- **Waktu Dipelajari:** ${new Date().toLocaleString('id-ID')}\n` +
+        `- **Tags:** ai, open_source, devtools, ${r.language.toLowerCase()}\n\n` +
+        `## 💡 Fungsi & Nilai Penting\n${r.description}\n\n` +
+        `---\n*Dipelajari otomatis dari kurasi harian Hermes AI Agent.*`;
+
+      fs.writeFileSync(noteFilePath, noteContent, 'utf-8');
+
+      const entryId = `repo_ai_${slug}`;
+      const existingIdx = index.findIndex(item => item.id === entryId);
+      const entry = {
+        id: entryId,
+        type: "ai_github_repo",
+        title: r.name,
+        source: r.url,
+        tags: ["ai", "open_source", "devtools", r.language.toLowerCase()],
+        summary: r.description,
+        keyTakeaways: [
+          `Fungsi: ${r.description}`,
+          `Bahasa: ${r.language} | Stars: ${r.stars}`
+        ],
+        noteFile: path.relative(path.resolve('./'), noteFilePath).replace(/\\/g, '/'),
+        learnedAt: now
+      };
+
+      if (existingIdx >= 0) {
+        index[existingIdx] = entry;
+      } else {
+        index.unshift(entry);
+        addedCount++;
+      }
+    }
+
+    for (let i = 0; i < news.length; i++) {
+      const n = news[i];
+      const slug = n.title.toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 40);
+      const noteFileName = `news_ai_${slug}.md`;
+      const noteFilePath = path.join(NOTES_DIR, noteFileName);
+      const noteContent =
+        `# 📰 Berita & Trend AI Terkini: ${n.title}\n\n` +
+        `- **URL:** ${n.url}\n` +
+        `- **Sumber / Penulis:** ${n.author || 'Dev Community'}\n` +
+        `- **Waktu Dipelajari:** ${new Date().toLocaleString('id-ID')}\n` +
+        `- **Tags:** ai, news, tech_trends\n\n` +
+        `## 📝 Intisari Berita\n${n.description}\n\n` +
+        `---\n*Dipelajari otomatis dari kurasi berita AI harian Hermes.*`;
+
+      fs.writeFileSync(noteFilePath, noteContent, 'utf-8');
+
+      const entryId = `news_ai_${slug}`;
+      const existingIdx = index.findIndex(item => item.id === entryId);
+      const entry = {
+        id: entryId,
+        type: "ai_tech_news",
+        title: n.title,
+        source: n.url,
+        tags: ["ai", "news", "trend"],
+        summary: n.description,
+        keyTakeaways: [
+          `Intisari: ${n.description}`,
+          `Sumber: ${n.author || 'Tech Community'}`
+        ],
+        noteFile: path.relative(path.resolve('./'), noteFilePath).replace(/\\/g, '/'),
+        learnedAt: now
+      };
+
+      if (existingIdx >= 0) {
+        index[existingIdx] = entry;
+      } else {
+        index.unshift(entry);
+        addedCount++;
+      }
+    }
+
+    fs.writeFileSync(INDEX_FILE, JSON.stringify(index, null, 2), 'utf-8');
+    console.log(`[DailyDigest AutoLearn] Berhasil menyimpan ${addedCount} materi AI baru ke Knowledge Base.`);
+  } catch (err) {
+    console.error("[DailyDigest AutoLearn Error]:", err.message);
+  }
+}
+
 async function sendDailyDigest(forcedChatId = null) {
   if (isSendingDigest) {
     console.log("[DailyDigest] Sedang mengirim digest, melewati...");
@@ -162,7 +272,7 @@ async function sendDailyDigest(forcedChatId = null) {
   }
 
   isSendingDigest = true;
-  console.log("[DailyDigest] Mengumpulkan 10 repositori fullstack & 5 berita teknologi...");
+  console.log("[DailyDigest] Mengumpulkan 10 repositori AI & 5 berita teknologi AI terbaru...");
 
   try {
     const targetChatId = forcedChatId || (OWNER_IDS.length > 0 ? OWNER_IDS[0] : null);
@@ -178,6 +288,8 @@ async function sendDailyDigest(forcedChatId = null) {
 
     await translateAndEnrichDigest(repos, news);
 
+    autoLearnDigestItems(repos, news);
+
     const dateStr = new Date().toLocaleDateString('id-ID', {
       weekday: 'long',
       year: 'numeric',
@@ -186,10 +298,10 @@ async function sendDailyDigest(forcedChatId = null) {
     });
 
     let reposText =
-      `🌅 *HERMES DAILY BRIEFING — FULLSTACK DEVELOPER DIGEST*\n` +
+      `🤖 *HERMES DAILY BRIEFING — AI DEVELOPER DIGEST*\n` +
       `📅 *${dateStr}*\n\n` +
-      `🚀 *TOP 10 OPEN SOURCE REPOSITORIES PILIHAN UNTUK FULLSTACK:*\n` +
-      `_Koleksi tools, library, dan arsitektur pilihan untuk meningkatkan produktivitas harianmu:_\n\n`;
+      `🚀 *TOP 10 OPEN SOURCE AI REPOSITORIES (TERBARU & TERBAIK):*\n` +
+      `_Koleksi tool AI, agent, LLM framework, dan model open source terkini untuk dipelajari:_\n\n`;
 
     repos.forEach((r, idx) => {
       const starsFormatted = r.stars >= 1000 ? `${(r.stars / 1000).toFixed(1)}k` : r.stars;
@@ -198,8 +310,8 @@ async function sendDailyDigest(forcedChatId = null) {
     });
 
     let newsText =
-      `📰 *5 BERITA & TREND TEKNOLOGI TERBARU:*\n` +
-      `_Update terkini seputar ekosistem web, AI developer, dan software engineering:_\n\n`;
+      `📰 *5 BERITA & TREND AI TERKINI:*\n` +
+      `_Update terhangat seputar ekosistem Artificial Intelligence, LLM, dan engineering:_\n\n`;
 
     news.forEach((n, idx) => {
       newsText += `${idx + 1}. ⚡ *[${n.title}](${n.url})*\n`;
@@ -208,17 +320,19 @@ async function sendDailyDigest(forcedChatId = null) {
     });
 
     newsText +=
-      `🧠 *Langkah Selanjutnya:*\n` +
-      `Ingin Hermes mempelajari lebih dalam salah satu repo di atas?\n` +
-      `• Ketik: \`/learn <url-repo>\`\n` +
-      `• Atau masukkan ke antrean: \`/watchlist add <url-repo>\``;
+      `🧠 *STATUS PEMBELAJARAN HERMES:*\n` +
+      `✅ *Semua 10 AI repo & 5 berita di atas sudah otomatis dipelajari & disimpan ke Memori Permanen Hermes (` + '`/brain`' + `)!*\n\n` +
+      `💡 *Langkah Selanjutnya:*\n` +
+      `Kamu bisa langsung menanyakan analisis atau kode dari materi di atas kapan saja, atau minta Hermes belajar lebih dalam:\n` +
+      `• Ketik: \`/learn <url>\` untuk deep-scan arsitektur kode\n` +
+      `• Ketik: \`/brain\` untuk mengecek seluruh daftar materi yang sudah tersimpan`;
 
     await safeSendMessage(targetChatId, reposText);
     await safeSendMessage(targetChatId, newsText);
 
     settingsManager.setLastDailyDigestAt(Date.now());
     isSendingDigest = false;
-    console.log("[DailyDigest] Berhasil dikirim ke Telegram!");
+    console.log("[DailyDigest] Berhasil dikirim ke Telegram dan disimpan ke Memori!");
     return { success: true };
   } catch (err) {
     console.error("[DailyDigest Error]:", err.message);
@@ -254,6 +368,7 @@ module.exports = {
   fetchTopFullstackRepos,
   fetchTopTechNews,
   translateAndEnrichDigest,
+  autoLearnDigestItems,
   sendDailyDigest,
   startDailyDigestScheduler
 };

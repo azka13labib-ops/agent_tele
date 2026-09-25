@@ -21,7 +21,7 @@ console.log(`📡 Mode Host: ${REMOTE_WORKER_URL ? 'SERVER (Remote Worker: ' + R
 console.log(`🔒 Access Control (Whitelist): ${OWNER_IDS.length > 0 ? 'AKTIF (Owner ID: ' + OWNER_IDS.join(', ') + ')' : '⚠️ TERBUKA (Harap isi OWNER_ID di .env)'}`);
 console.log(`⚡ Mode Auto-Accept: ${settingsManager.isAutoAccept() ? '🟢 AKTIF (Eksekusi Instan)' : '🛡️ NONAKTIF (Human-in-the-Loop)'}`);
 console.log(`🧠 Autonomous Hourly Learner: ${settingsManager.isAutoLearn() ? '🟢 AKTIF (1 Jam Sekali)' : '🔴 NONAKTIF'}`);
-console.log(`🌅 Daily Fullstack Digest: ${settingsManager.isDailyDigest() ? '🟢 AKTIF (1x Sehari: 10 Repo & 5 Berita)' : '🔴 NONAKTIF'}`);
+console.log(`🌅 Daily AI Digest (10 Repo & 5 Berita + Auto-Learn): ${settingsManager.isDailyDigest() ? '🟢 AKTIF' : '🔴 NONAKTIF'}`);
 console.log("🧠 Self-Learning & Knowledge Base: Aktif (/learn, /brain)");
 console.log("⚡ Hardware & DL Suite: Aktif (RTX 4060 GPU Tools)");
 console.log("📂 Sistem Multi-Session: Aktif & Tersimpan di Disk");
