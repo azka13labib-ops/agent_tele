@@ -30,11 +30,109 @@ function pruneMessages(messages) {
 }
 
 /**
+ * Sanitasi Struktur Pesan agar 100% Valid bagi OpenAI & Anthropic API
+ * Mencegah error "400 The last message must have role=user" atau tool_calls yang tidak berpasangan
+ */
+function sanitizeMessagesForAPI(rawMessages) {
+  if (!Array.isArray(rawMessages) || rawMessages.length === 0) return [];
+
+  const sanitized = [];
+  const systemMsg = rawMessages[0];
+  if (systemMsg && systemMsg.role === 'system') {
+    sanitized.push({ role: 'system', content: String(systemMsg.content || '') });
+  }
+
+  const startIdx = (systemMsg && systemMsg.role === 'system') ? 1 : 0;
+  for (let i = startIdx; i < rawMessages.length; i++) {
+    const msg = rawMessages[i];
+    if (!msg || !msg.role) continue;
+
+    if (msg.role === 'user') {
+      sanitized.push({
+        role: 'user',
+        content: String(msg.content || '')
+      });
+    } else if (msg.role === 'assistant') {
+      if (Array.isArray(msg.tool_calls) && msg.tool_calls.length > 0) {
+        sanitized.push({
+          role: 'assistant',
+          content: msg.content || null,
+          tool_calls: msg.tool_calls
+        });
+      } else if (msg.content && String(msg.content).trim()) {
+        sanitized.push({
+          role: 'assistant',
+          content: String(msg.content)
+        });
+      }
+    } else if (msg.role === 'tool') {
+      if (msg.tool_call_id) {
+        sanitized.push({
+          role: 'tool',
+          tool_call_id: msg.tool_call_id,
+          content: String(msg.content || '')
+        });
+      }
+    }
+  }
+
+  // Validasi agar setiap tool_call di assistant message memiliki pasangan pesan 'tool'
+  const finalMessages = [];
+  for (let i = 0; i < sanitized.length; i++) {
+    const msg = sanitized[i];
+    finalMessages.push(msg);
+
+    if (msg.role === 'assistant' && msg.tool_calls) {
+      const toolCallIds = new Set(msg.tool_calls.map(tc => tc.id));
+      let j = i + 1;
+      const foundToolIds = new Set();
+      while (j < sanitized.length && sanitized[j].role === 'tool') {
+        foundToolIds.add(sanitized[j].tool_call_id);
+        j++;
+      }
+      for (const tcId of toolCallIds) {
+        if (!foundToolIds.has(tcId)) {
+          finalMessages.push({
+            role: 'tool',
+            tool_call_id: tcId,
+            content: 'Aksi selesai atau dibatalkan.'
+          });
+        }
+      }
+    }
+  }
+
+  // Guard: Jika pesan terakhir adalah assistant tanpa tool (misal sisa respons), hapus agar tidak memicu 400
+  while (finalMessages.length > 1 && finalMessages[finalMessages.length - 1].role === 'assistant') {
+    finalMessages.pop();
+  }
+
+  return finalMessages;
+}
+
+/**
+ * Deteksi Perintah Read-Only / Safe Pengecekan Sistem
+ * Tidak perlu memicu konfirmasi Telegram karena tidak merusak sistem
+ */
+function isSafeCommand(command) {
+  if (!command) return true;
+  const cmd = command.toLowerCase().trim();
+  const safePrefixes = [
+    'get-process', 'ps', 'get-content', 'cat', 'type',
+    'get-childitem', 'dir', 'ls', 'test-path',
+    'python --version', 'node --version', 'uv --version', 'uv python',
+    'git status', 'git log', 'git diff', 'nvidia-smi', 'hostname', 'whoami',
+    'echo', 'write-output'
+  ];
+  return safePrefixes.some(p => cmd.startsWith(p));
+}
+
+/**
  * Agent ReAct Loop (Multi-Step Engine)
  */
 async function runAgentLoop(chatId) {
   let step = 0;
-  const MAX_STEPS = 6;
+  const MAX_STEPS = 8;
 
   while (step < MAX_STEPS) {
     step++;
@@ -48,24 +146,22 @@ async function runAgentLoop(chatId) {
 
     if (!messages || messages.length === 0) return;
 
-    // Guard: DeepSeek / OpenAI mewajibkan pesan terakhir bertipe 'user' atau 'tool'
-    const lastMsg = messages[messages.length - 1];
-    if (lastMsg && lastMsg.role === 'assistant') {
-      return;
-    }
-
     // Pastikan System Prompt selalu terinjeksi konteks pengetahuan permanen Hermes
     const knowledgeContext = knowledgeManager.getKnowledgeContext();
     if (messages.length > 0 && messages[0].role === 'system') {
       messages[0].content = SYSTEM_PROMPT + (knowledgeContext ? `\n\n${knowledgeContext}` : '');
     }
 
+    // Sanitasi pesan sebelum dikirim ke API
+    const apiMessages = sanitizeMessagesForAPI(messages);
+    if (!apiMessages || apiMessages.length === 0) return;
+
     let completion;
     try {
       const model = process.env.AI_MODEL || AI_MODEL;
       completion = await openai.chat.completions.create({
         model: model,
-        messages: messages,
+        messages: apiMessages,
         tools: allTools,
         parallel_tool_calls: false,
         temperature: 0.2,
@@ -99,7 +195,8 @@ async function runAgentLoop(chatId) {
           functionArgs = {};
         }
 
-        const isSensitive = ['jalankan_cmd', 'tulis_file'].includes(functionName);
+        const isSafe = functionName === 'jalankan_cmd' && isSafeCommand(functionArgs.perintah);
+        const isSensitive = ['jalankan_cmd', 'tulis_file'].includes(functionName) && !isSafe;
 
         if (isSensitive && !settingsManager.isAutoAccept()) {
           const actionId = `${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
@@ -124,6 +221,7 @@ async function runAgentLoop(chatId) {
           await safeSendMessage(chatId, actionLabel);
         } else {
           const statusLabel =
+            functionName === 'baca_web' ? `🌐 Membaca web \`${functionArgs.url}\`...` :
             functionName === 'pelajari_repo' ? `📥 Mengklon & mempelajari repo \`${functionArgs.repoUrl}\`...` :
             functionName === 'pelajari_url' ? `🌐 Membaca & merangkum dokumen \`${functionArgs.url}\`...` :
             functionName === 'cari_pengetahuan' ? `🧠 Mencari catatan tentang \`${functionArgs.query}\`...` :

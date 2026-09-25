@@ -119,6 +119,28 @@ const coreToolDefinitions = [
   {
     type: "function",
     function: {
+      name: "baca_web",
+      description: "Membaca dan mengekstrak isi teks bersih dari sebuah halaman website atau URL tanpa perlu terminal (seperti read_url_content di Antigravity)",
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "Alamat URL website yang ingin dibaca (contoh: 'https://styles.refero.design/...')"
+          },
+          fokus: {
+            type: "string",
+            description: "Topik atau kata kunci yang ingin difokuskan (opsional)"
+          }
+        },
+        required: ["url"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
       name: "atur_auto_accept",
       description: "Mengatur mode Auto-Accept (eksekusi otomatis perintah PowerShell & pembuatan file tanpa konfirmasi manual)",
       parameters: {

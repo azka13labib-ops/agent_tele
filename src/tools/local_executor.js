@@ -135,6 +135,67 @@ async function executeLocalTool(name, args) {
       return `Hasil pencarian untuk "${args.kataKunci}" (${found.length} ditemukan):\n` + found.join('\n');
     }
 
+    if (name === "baca_web") {
+      try {
+        const response = await fetch(args.url, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+          },
+          signal: AbortSignal.timeout(20000)
+        });
+
+        if (!response.ok) {
+          return `Error mengambil URL: HTTP ${response.status} ${response.statusText}`;
+        }
+
+        const html = await response.text();
+
+        // Bersihkan HTML tag dan script/style
+        let cleaned = html
+          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
+          .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
+          .replace(/<svg\b[^<]*(?:(?!<\/svg>)<[^<]*)*<\/svg>/gi, ' ')
+          .replace(/<!--[\s\S]*?-->/g, ' ')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/&nbsp;/gi, ' ')
+          .replace(/&amp;/gi, '&')
+          .replace(/&quot;/gi, '"')
+          .replace(/&lt;/gi, '<')
+          .replace(/&gt;/gi, '>')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        if (args.fokus) {
+          const lowerFocus = args.fokus.toLowerCase();
+          const words = cleaned.split(' ');
+          const matchingSnippets = [];
+          for (let i = 0; i < words.length; i++) {
+            if (words[i].toLowerCase().includes(lowerFocus)) {
+              const start = Math.max(0, i - 25);
+              const end = Math.min(words.length, i + 35);
+              matchingSnippets.push(words.slice(start, end).join(' '));
+              i += 30; // loncat agar tidak duplicate
+              if (matchingSnippets.length >= 5) break;
+            }
+          }
+          if (matchingSnippets.length > 0) {
+            return `Hasil baca web "${args.url}" dengan fokus "${args.fokus}":\n\n` +
+              matchingSnippets.map((s, idx) => `[Konteks ${idx + 1}]: ...${s}...`).join('\n\n');
+          }
+        }
+
+        const maxChars = 4500;
+        if (cleaned.length > maxChars) {
+          cleaned = cleaned.substring(0, maxChars) + "\n\n...[Konten dipotong. Gunakan parameter 'fokus' untuk mencari bagian spesifik]";
+        }
+
+        return `Hasil ekstraksi dari "${args.url}":\n\n${cleaned || '(Halaman tidak memiliki teks yang terbaca)'}`;
+      } catch (err) {
+        return `Gagal membaca URL "${args.url}": ${err.message}`;
+      }
+    }
+
     return `Fungsi "${name}" tidak dikenali.`;
   } catch (err) {
     let out = `Error eksekusi "${name}": ${err.message}`;

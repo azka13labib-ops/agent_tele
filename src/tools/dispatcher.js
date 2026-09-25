@@ -7,13 +7,17 @@ const { executeLocalTool } = require('./local_executor');
  * Dispatcher Eksekusi Tools (Lokal atau Remote via Laptop Worker di Tailscale)
  */
 async function executeTool(name, args) {
-  // 1. Tool pengaturan Auto-Accept lokal
+  // 1. Tool pengaturan Auto-Accept & Baca Web langsung
   if (name === 'atur_auto_accept') {
     const isEnable = Boolean(args.aktif);
     settingsManager.setAutoAccept(isEnable);
     return isEnable
       ? "Mode Auto-Accept BERHASIL DIAKTIFKAN. Semua perintah terminal dan pembuatan file ke depan akan dieksekusi instan tanpa meminta konfirmasi manual."
       : "Mode Auto-Accept BERHASIL DINONAKTIFKAN. Perintah berpotensi sensitif akan kembali meminta konfirmasi manual.";
+  }
+
+  if (name === 'baca_web') {
+    return executeLocalTool('baca_web', args);
   }
 
   // 2. Jika bot berjalan di Server dan dihubungkan ke Worker Laptop via Tailscale
