@@ -145,84 +145,111 @@ async function studyGithubRepo(repoUrl, focusTopic = "") {
   try {
 
     const cleanRepoUrl = `https://github.com/${owner}/${repoName}.git`;
-    console.log(`Cloning ${cleanRepoUrl} into ${targetDir}...`);
-    execSync(`git clone --depth 1 "${cleanRepoUrl}" "${targetDir}"`, {
-      encoding: 'utf-8',
-      timeout: 60000,
-      stdio: ['ignore', 'pipe', 'pipe']
-    });
+    let isCloned = false;
+    try {
+      execSync(`git clone --depth 1 "${cleanRepoUrl}" "${targetDir}"`, {
+        encoding: 'utf-8',
+        timeout: 60000,
+        stdio: ['ignore', 'pipe', 'pipe']
+      });
+      isCloned = fs.existsSync(targetDir);
+    } catch {}
 
-    if (!fs.existsSync(targetDir)) {
-      return { success: false, error: "Gagal mengklon repositori ke folder lokal." };
-    }
-
-    const dirEntries = fs.readdirSync(targetDir, { withFileTypes: true });
     const structureSummary = [];
     let readmeContent = "";
     let packageInfo = "";
     const sourceSnippets = [];
 
-    const readmeFile = dirEntries.find(e => /^readme(\.(md|markdown|rst|txt))?$/i.test(e.name));
-    if (readmeFile) {
-      try {
-        const rawReadme = fs.readFileSync(path.join(targetDir, readmeFile.name), 'utf-8');
-        readmeContent = rawReadme.substring(0, 10000);
-      } catch {}
-    }
-
-    const depFiles = ['package.json', 'requirements.txt', 'pyproject.toml', 'Cargo.toml', 'go.mod'];
-    for (const df of depFiles) {
-      const depPath = path.join(targetDir, df);
-      if (fs.existsSync(depPath)) {
+    if (isCloned) {
+      const dirEntries = fs.readdirSync(targetDir, { withFileTypes: true });
+      const readmeFile = dirEntries.find(e => /^readme(\.(md|markdown|rst|txt))?$/i.test(e.name));
+      if (readmeFile) {
         try {
-          const content = fs.readFileSync(depPath, 'utf-8');
-          packageInfo += `\n--- ${df} ---\n${content.substring(0, 2000)}\n`;
+          const rawReadme = fs.readFileSync(path.join(targetDir, readmeFile.name), 'utf-8');
+          readmeContent = rawReadme.substring(0, 10000);
         } catch {}
       }
-    }
 
-    for (const e of dirEntries) {
-      if (['.git', 'node_modules', 'dist', 'build', '.github'].includes(e.name)) continue;
-      if (e.isDirectory()) {
-        structureSummary.push(`📁 ${e.name}/`);
-        try {
-          const sub = fs.readdirSync(path.join(targetDir, e.name), { withFileTypes: true });
-          sub.slice(0, 8).forEach(s => {
-            structureSummary.push(`   └─ ${s.isDirectory() ? '📁' : '📄'} ${s.name}`);
-          });
-        } catch {}
-      } else {
-        structureSummary.push(`📄 ${e.name}`);
-      }
-    }
-
-    function findCodeFiles(dir, max = 3) {
-      const results = [];
-      const items = fs.readdirSync(dir, { withFileTypes: true });
-      for (const it of items) {
-        if (['.git', 'node_modules', 'dist', 'build', 'vendor'].includes(it.name)) continue;
-        const full = path.join(dir, it.name);
-        if (it.isFile() && /\.(js|ts|py|go|rs|cpp|c|sh|json)$/i.test(it.name)) {
-          if (!it.name.includes('.min.') && !it.name.includes('test') && !it.name.includes('spec')) {
-            results.push(full);
-            if (results.length >= max) break;
-          }
-        } else if (it.isDirectory() && results.length < max) {
+      const depFiles = ['package.json', 'requirements.txt', 'pyproject.toml', 'Cargo.toml', 'go.mod'];
+      for (const df of depFiles) {
+        const depPath = path.join(targetDir, df);
+        if (fs.existsSync(depPath)) {
           try {
-            results.push(...findCodeFiles(full, max - results.length));
+            const content = fs.readFileSync(depPath, 'utf-8');
+            packageInfo += `\n--- ${df} ---\n${content.substring(0, 2000)}\n`;
           } catch {}
         }
       }
-      return results;
-    }
 
-    const codeFiles = findCodeFiles(targetDir, 3);
-    for (const cf of codeFiles) {
+      for (const e of dirEntries) {
+        if (['.git', 'node_modules', 'dist', 'build', '.github'].includes(e.name)) continue;
+        if (e.isDirectory()) {
+          structureSummary.push(`📁 ${e.name}/`);
+          try {
+            const sub = fs.readdirSync(path.join(targetDir, e.name), { withFileTypes: true });
+            sub.slice(0, 8).forEach(s => {
+              structureSummary.push(`   └─ ${s.isDirectory() ? '📁' : '📄'} ${s.name}`);
+            });
+          } catch {}
+        } else {
+          structureSummary.push(`📄 ${e.name}`);
+        }
+      }
+
+      function findCodeFiles(dir, max = 3) {
+        const results = [];
+        const items = fs.readdirSync(dir, { withFileTypes: true });
+        for (const it of items) {
+          if (['.git', 'node_modules', 'dist', 'build', 'vendor'].includes(it.name)) continue;
+          const full = path.join(dir, it.name);
+          if (it.isFile() && /\.(js|ts|py|go|rs|cpp|c|sh|json)$/i.test(it.name)) {
+            if (!it.name.includes('.min.') && !it.name.includes('test') && !it.name.includes('spec')) {
+              results.push(full);
+              if (results.length >= max) break;
+            }
+          } else if (it.isDirectory() && results.length < max) {
+            try {
+              results.push(...findCodeFiles(full, max - results.length));
+            } catch {}
+          }
+        }
+        return results;
+      }
+
+      const codeFiles = findCodeFiles(targetDir, 3);
+      for (const cf of codeFiles) {
+        try {
+          const rel = path.relative(targetDir, cf);
+          const code = fs.readFileSync(cf, 'utf-8').substring(0, 3500);
+          sourceSnippets.push(`\n### Cuplikan File: \`${rel}\`\n\`\`\`\n${code}\n\`\`\``);
+        } catch {}
+      }
+    } else {
       try {
-        const rel = path.relative(targetDir, cf);
-        const code = fs.readFileSync(cf, 'utf-8').substring(0, 3500);
-        sourceSnippets.push(`\n### Cuplikan File: \`${rel}\`\n\`\`\`\n${code}\n\`\`\``);
+        const rawReadmeUrl = `https://raw.githubusercontent.com/${owner}/${repoName}/HEAD/README.md`;
+        const resp = await fetch(rawReadmeUrl, { headers: { 'User-Agent': 'Hermes-Agent/2.0' } });
+        if (resp.ok) {
+          readmeContent = await resp.text();
+        }
       } catch {}
+
+      if (!readmeContent) {
+        try {
+          const apiResp = await fetch(`https://api.github.com/repos/${owner}/${repoName}`, {
+            headers: { 'User-Agent': 'Hermes-Agent/2.0' }
+          });
+          if (apiResp.ok) {
+            const repoData = await apiResp.json();
+            readmeContent = `Repository: ${repoData.full_name}\nDescription: ${repoData.description}\nStars: ${repoData.stargazers_count}\nTopics: ${(repoData.topics || []).join(', ')}`;
+          }
+        } catch {}
+      }
+
+      if (!readmeContent) {
+        return { success: false, error: "Gagal mengambil data repositori dari GitHub." };
+      }
+
+      structureSummary.push(`📁 ${owner}/${repoName} (via GitHub API)`);
     }
 
     const openai = getOpenAIClient();
