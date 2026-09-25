@@ -23,6 +23,12 @@ async function renderSettingsPanel(chatId, messageId = null) {
     ? "_Hermes mempelajari repo open source & dev tools baru tiap 1 jam dan melapor ke chat._"
     : "_Pembelajaran otomatis terjadwal sedang dimatikan._";
 
+  const dailyDigest = settingsManager.isDailyDigest();
+  const dailyBadge = dailyDigest ? "🟢 *AKTIF (1x Sehari)*" : "🔴 *NONAKTIF*";
+  const dailyDesc = dailyDigest
+    ? "_Bot mengirim 10 open-source repositori pilihan & 5 berita teknologi terkini setiap 24 jam._"
+    : "_Briefing harian 10 repo & 5 berita sedang dinonaktifkan._";
+
   const text =
     `⚙️ *PENGATURAN BOT HERMES*\n\n` +
     `⚡ *1. Mode Auto-Accept:*\n` +
@@ -38,17 +44,22 @@ async function renderSettingsPanel(chatId, messageId = null) {
     `• Status: ${autoLearnBadge}\n` +
     `• Topik: _Trending Open Source & Developer Tools_\n` +
     `• Info: ${autoLearnDesc}\n\n` +
+    `🌅 *5. Daily Fullstack Digest (10 Repo & 5 Berita):*\n` +
+    `• Status: ${dailyBadge}\n` +
+    `• Info: ${dailyDesc}\n\n` +
     `_Klik tombol di bawah untuk mengubah setelan secara instan:_`;
 
   const autoBtnText = autoAccept ? "⚡ Auto-Accept: Matikan" : "⚡ Auto-Accept: Aktifkan";
   const verboseBtnText = verbose ? "🔕 Ubah ke Mode Silent (Senyap)" : "📢 Ubah ke Mode Verbose (Detail)";
   const autoLearnBtnText = autoLearn ? "🧠 Auto-Learn: Matikan" : "🧠 Auto-Learn: Aktifkan (Tiap 1 Jam)";
+  const dailyBtnText = dailyDigest ? "🌅 Daily Digest: Matikan" : "🌅 Daily Digest: Aktifkan (1x Sehari)";
 
   const keyboard = {
     inline_keyboard: [
       [{ text: autoBtnText, callback_data: "toggle_setting_auto_accept" }],
       [{ text: verboseBtnText, callback_data: "toggle_setting_verbose" }],
       [{ text: autoLearnBtnText, callback_data: "toggle_setting_auto_learn" }],
+      [{ text: dailyBtnText, callback_data: "toggle_setting_daily_digest" }],
       [{ text: "📁 Ganti Workspace Folder", callback_data: "menu_workspace" }],
       [{ text: "🔄 Refresh Pengaturan", callback_data: "refresh_settings" }]
     ]

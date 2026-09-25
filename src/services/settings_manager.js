@@ -126,6 +126,37 @@ function setLastAutoLearnAt(timestamp) {
   return current.lastAutoLearnAt;
 }
 
+function isDailyDigest() {
+  const settings = loadSettings();
+  return settings.dailyDigest !== false;
+}
+
+function setDailyDigest(enabled) {
+  const current = loadSettings();
+  current.dailyDigest = Boolean(enabled);
+  saveSettings(current);
+  return current.dailyDigest;
+}
+
+function toggleDailyDigest() {
+  const current = loadSettings();
+  current.dailyDigest = current.dailyDigest === false ? true : false;
+  saveSettings(current);
+  return current.dailyDigest;
+}
+
+function getLastDailyDigestAt() {
+  const settings = loadSettings();
+  return Number(settings.lastDailyDigestAt) || 0;
+}
+
+function setLastDailyDigestAt(timestamp) {
+  const current = loadSettings();
+  current.lastDailyDigestAt = timestamp;
+  saveSettings(current);
+  return current.lastDailyDigestAt;
+}
+
 module.exports = {
   loadSettings,
   saveSettings,
@@ -143,6 +174,11 @@ module.exports = {
   getAutoLearnIntervalHours,
   setAutoLearnIntervalHours,
   getLastAutoLearnAt,
-  setLastAutoLearnAt
+  setLastAutoLearnAt,
+  isDailyDigest,
+  setDailyDigest,
+  toggleDailyDigest,
+  getLastDailyDigestAt,
+  setLastDailyDigestAt
 };
 

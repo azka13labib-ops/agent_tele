@@ -7,6 +7,7 @@ const { executeTool } = require('../tools/dispatcher');
 const { renderSettingsPanel, renderSessionsList } = require('../ui/menus');
 const { pendingActions } = require('../core/agent');
 const autoLearnService = require('../services/auto_learn_service');
+const dailyDigestService = require('../services/daily_digest_service');
 
 async function handleCommand(chatId, text) {
 
@@ -18,6 +19,8 @@ async function handleCommand(chatId, text) {
       `📌 *Sesi Aktif Saat Ini:* "${active.title}"\n\n` +
       `⚡ *Fitur & Perintah Cepat:*\n` +
       `• \`/learn <url>\` : Pelajari repo GitHub, paper ArXiv, Hugging Face, atau link web/artikel apa saja!\n` +
+      `• \`/digest\` : Dapatkan langsung 10 repo open source fullstack & 5 berita teknologi hari ini\n` +
+      `• \`/daily [on/off/now]\` : Pengaturan briefing harian (10 repo & 5 berita)\n` +
       `• \`/brain\` : Lihat semua materi & skill yang sudah dipelajari permanen\n` +
       `• \`/gpu\` : Cek VRAM, suhu & status GPU NVIDIA RTX 4060 real-time\n` +
       `• \`/env\` : Cek versi Python, PyTorch, CUDA, & uv\n` +
@@ -424,6 +427,63 @@ async function handleCommand(chatId, text) {
 
     const listText = autoLearnService.formatWatchlist();
     await safeSendMessage(chatId, listText);
+    return true;
+  }
+
+  if (lowerText.startsWith('/digest') || lowerText.startsWith('/daily')) {
+    const subCmd = text.replace(/^\/(digest|daily)/i, '').trim().toLowerCase();
+    if (subCmd === 'on' || subCmd === 'aktif') {
+      settingsManager.setDailyDigest(true);
+      await safeSendMessage(
+        chatId,
+        `🌅 *Daily Fullstack Digest Diaktifkan!*\n\n` +
+        `• Status: 🟢 AKTIF\n` +
+        `• Jadwal: Setiap 24 jam sekali\n` +
+        `• Konten: Minimal 10 repo open source terbaik + 5 berita developer terkini\n\n` +
+        `_Ketik \`/digest now\` untuk mendapatkan briefing sekarang juga._`
+      );
+      return true;
+    }
+
+    if (subCmd === 'off' || subCmd === 'matikan') {
+      settingsManager.setDailyDigest(false);
+      await safeSendMessage(
+        chatId,
+        `⏸️ *Daily Fullstack Digest Dinonaktifkan!*\n\n` +
+        `• Status: 🔴 NONAKTIF\n\n` +
+        `_Ketik \`/daily on\` untuk mengaktifkan kembali._`
+      );
+      return true;
+    }
+
+    if (subCmd === 'now' || subCmd === 'sekarang' || subCmd === '' || lowerText === '/digest') {
+      await safeSendMessage(
+        chatId,
+        `⏳ *Menyiapkan Daily Fullstack Digest hari ini...*\n_Hermes sedang mengkurasi 10 open-source repositories & 5 berita teknologi terkini..._`
+      );
+      dailyDigestService.sendDailyDigest(chatId).then(res => {
+        if (!res.success && res.reason !== 'in_progress') {
+          safeSendMessage(chatId, `⚠️ Gagal mengirim digest: ${res.error || res.reason}`);
+        }
+      });
+      return true;
+    }
+
+    const isDaily = settingsManager.isDailyDigest();
+    const lastAt = settingsManager.getLastDailyDigestAt();
+    const lastStr = lastAt ? new Date(lastAt).toLocaleString('id-ID') : "Belum pernah";
+
+    await safeSendMessage(
+      chatId,
+      `🌅 *Pengaturan Daily Fullstack Digest*\n\n` +
+      `• *Status:* ${isDaily ? '🟢 AKTIF (1x Sehari)' : '🔴 NONAKTIF'}\n` +
+      `• *Terakhir Terkirim:* ${lastStr}\n` +
+      `• *Isi:* 10 Repository Open Source + 5 Berita Developer Terkini\n\n` +
+      `⚡ *Perintah Kontrol:*\n` +
+      `• \`/digest now\` : Kirim briefing sekarang juga\n` +
+      `• \`/daily on\` : Aktifkan pengiriman otomatis tiap 24 jam\n` +
+      `• \`/daily off\` : Matikan pengiriman harian`
+    );
     return true;
   }
 
