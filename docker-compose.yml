@@ -5,8 +5,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    # Host networking allows the container to talk directly to Tailscale IPs (100.x.y.z)
     network_mode: host
     volumes:
+      - ./src:/app/src
+      - ./index.js:/app/index.js
       - ./knowledge:/app/knowledge
       - ./sessions:/app/sessions
+
