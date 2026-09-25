@@ -4,6 +4,7 @@ const settingsManager = require('../services/settings_manager');
 const sessionManager = require('../services/session_manager');
 const { pendingActions, handleUserConfirmation } = require('../core/agent');
 const { renderSettingsPanel, renderWorkspaceMenu } = require('../ui/menus');
+const quizService = require('../services/quiz_service');
 
 async function handleCallbackQuery(query) {
   const senderId = String(query.from ? query.from.id : query.message?.chat?.id);
@@ -188,6 +189,60 @@ async function handleCallbackQuery(query) {
       await bot.answerCallbackQuery(query.id, { text: "🔄 Pengaturan diperbarui" });
     } catch {}
     return renderSettingsPanel(chatId, query.message.message_id);
+  }
+
+  if (data.startsWith('quiz_ans_')) {
+    const ansIdx = parseInt(data.replace('quiz_ans_', ''), 10);
+    const result = quizService.answerQuiz(chatId, ansIdx);
+    if (result.success) {
+      const statusHeader = result.isCorrect
+        ? "🎉 *JAWABAN BENAR! ARSITEKTUR TEPAT!*"
+        : `❌ *KURANG TEPAT!*\n• Pilihanmu: *${result.chosenLetter}*\n• Kunci Jawaban Benar: *${result.correctLetter}. ${result.correctText}*`;
+
+      const responseText =
+        `${statusHeader}\n\n` +
+        `💡 *PENJELASAN TEKNIS (${result.topic}):*\n` +
+        `${result.explanation}\n\n` +
+        `_Terus latih pemahaman sistem produksimu setiap hari!_`;
+
+      const nextKeyboard = {
+        inline_keyboard: [
+          [{ text: "🎯 Soal Kuis Berikutnya", callback_data: "quiz_next" }]
+        ]
+      };
+
+      await safeSendMessage(chatId, responseText, { reply_markup: nextKeyboard });
+    } else {
+      await safeSendMessage(chatId, `⚠️ ${result.error}`);
+    }
+    return;
+  }
+
+  if (data === 'quiz_next') {
+    await safeSendMessage(chatId, "⏳ *Menyiapkan soal studi kasus berikutnya...*");
+    const res = await quizService.generateQuizQuestion(chatId);
+    if (res.success) {
+      const q = res.quiz;
+      let qText = `🎯 *ARSITEKTUR & SYSTEM DESIGN QUIZ*\n\n📌 *Topik:* ${q.topic}\n\n${q.question}\n\n`;
+      const letterMap = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, idx) => {
+        qText += `*${letterMap[idx]}.* ${opt}\n\n`;
+      });
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: "A", callback_data: "quiz_ans_0" },
+            { text: "B", callback_data: "quiz_ans_1" },
+            { text: "C", callback_data: "quiz_ans_2" },
+            { text: "D", callback_data: "quiz_ans_3" }
+          ]
+        ]
+      };
+      await safeSendMessage(chatId, qText, { reply_markup: keyboard });
+    } else {
+      await safeSendMessage(chatId, `⚠️ ${res.error}`);
+    }
+    return;
   }
 }
 

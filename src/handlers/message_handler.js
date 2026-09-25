@@ -4,13 +4,12 @@ const sessionManager = require('../services/session_manager');
 const settingsManager = require('../services/settings_manager');
 const { handleCommand } = require('./command_handler');
 const { pendingActions, handleUserConfirmation, runAgentLoop } = require('../core/agent');
+const { transcribeVoiceMessage } = require('../services/voice_service');
 
 async function handleMessage(msg) {
   const chatId = msg.chat.id;
   const senderId = String(msg.from ? msg.from.id : chatId);
-  const text = (msg.text || '').trim();
-
-  if (!text) return;
+  let text = (msg.text || '').trim();
 
   if (!isAuthorized(senderId)) {
     console.warn(`[Security Alert] Akses ditolak dari Telegram ID: ${senderId} (@${msg.from?.username || 'unknown'}) | Pesan: "${text}"`);
@@ -22,6 +21,22 @@ async function handleMessage(msg) {
       `_Akses ditutup demi keamanan sistem._`
     );
   }
+
+  if (!text && (msg.voice || msg.audio)) {
+    const fileId = msg.voice ? msg.voice.file_id : msg.audio.file_id;
+    await safeSendMessage(chatId, "🎙️ *Mendengarkan Voice Note...*\n_Sedang mentranskripsikan audio dengan Whisper AI..._");
+    const transResult = await transcribeVoiceMessage(fileId);
+    if (!transResult.success) {
+      return safeSendMessage(
+        chatId,
+        `⚠️ *Gagal Memproses Pesan Suara:*\n${transResult.error}\n\n_Silakan ketik instruksi Anda secara tertulis._`
+      );
+    }
+    text = transResult.text;
+    await safeSendMessage(chatId, `🗣️ *Transkrip Suara:*\n_"${text}"_\n\n⚡ *Memproses instruksi ke Agent...*`);
+  }
+
+  if (!text) return;
 
   const isCommandHandled = await handleCommand(chatId, text);
   if (isCommandHandled) return;

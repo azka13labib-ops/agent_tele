@@ -8,6 +8,9 @@ const { renderSettingsPanel, renderSessionsList } = require('../ui/menus');
 const { pendingActions } = require('../core/agent');
 const autoLearnService = require('../services/auto_learn_service');
 const dailyDigestService = require('../services/daily_digest_service');
+const codeReviewerService = require('../services/code_reviewer_service');
+const quizService = require('../services/quiz_service');
+const doctorService = require('../services/doctor_service');
 
 async function handleCommand(chatId, text) {
 
@@ -19,7 +22,11 @@ async function handleCommand(chatId, text) {
       `📌 *Sesi Aktif Saat Ini:* "${active.title}"\n\n` +
       `⚡ *Fitur & Perintah Cepat:*\n` +
       `• \`/learn <url>\` : Pelajari repo GitHub, paper ArXiv, Hugging Face, atau link web/artikel apa saja!\n` +
-      `• \`/digest\` : Dapatkan langsung 10 AI repo open source & 5 berita AI hari ini (otomatis dipelajari Hermes)\n` +
+      `• \`/digest\` : Dapatkan 10 AI repo open source & 5 berita AI hari ini (otomatis dipelajari Hermes)\n` +
+      `• \`/review [file/code]\` : Senior Code Review & Security Audit mendalam untuk kode Anda\n` +
+      `• \`/doctor <error log>\` : Diagnosis akar masalah bug & rekomendasi perbaikan kode instan\n` +
+      `• \`/quiz [topik]\` : Latihan studi kasus arsitektur & system design interaktif\n` +
+      `• 🎙️ *Voice Note:* Kirim pesan suara kapan saja untuk dieksekusi via Whisper AI\n` +
       `• \`/daily [on/off/now]\` : Pengaturan briefing harian AI (10 AI repo & 5 berita)\n` +
       `• \`/brain\` : Lihat semua materi & skill yang sudah dipelajari permanen\n` +
       `• \`/gpu\` : Cek VRAM, suhu & status GPU NVIDIA RTX 4060 real-time\n` +
@@ -486,6 +493,93 @@ async function handleCommand(chatId, text) {
       `• \`/daily on\` : Aktifkan pengiriman otomatis tiap 24 jam\n` +
       `• \`/daily off\` : Matikan pengiriman harian`
     );
+    return true;
+  }
+
+  if (lowerText.startsWith('/review')) {
+    const arg = text.replace(/^\/review/i, '').trim();
+    if (!arg) {
+      await safeSendMessage(chatId, "🔍 *Memulai Code Review file terbaru di workspace...*\n_Hermes sedang mengaudit keamanan, potensi bug, performa, dan arsitektur kode..._");
+      const res = await codeReviewerService.reviewRecentWorkspaceCode();
+      if (res.success) {
+        await safeSendMessage(chatId, res.reviewText);
+      } else {
+        await safeSendMessage(chatId, `⚠️ ${res.error}\n\n_Tips: Gunakan \`/review <nama_file>\` atau \`/review <paste kode>\`_`);
+      }
+      return true;
+    }
+
+    if (arg.includes('\n') || arg.includes('{') || arg.includes('function') || arg.includes('const ') || arg.includes('def ')) {
+      await safeSendMessage(chatId, "🔍 *Menganalisis cuplikan kode...*\n_Sedang mengaudit keamanan, potensi bug, dan arsitektur..._");
+      const res = await codeReviewerService.reviewCodeSnippet(arg);
+      if (res.success) {
+        await safeSendMessage(chatId, res.reviewText);
+      } else {
+        await safeSendMessage(chatId, `⚠️ ${res.error}`);
+      }
+      return true;
+    }
+
+    await safeSendMessage(chatId, `🔍 *Menganalisis file:* \`${arg}\`...\n_Sedang mengaudit keamanan, potensi bug, dan arsitektur..._`);
+    const res = await codeReviewerService.reviewWorkspaceFile(arg);
+    if (res.success) {
+      await safeSendMessage(chatId, res.reviewText);
+    } else {
+      await safeSendMessage(chatId, `⚠️ ${res.error}`);
+    }
+    return true;
+  }
+
+  if (lowerText.startsWith('/quiz')) {
+    const topic = text.replace(/^\/quiz/i, '').trim();
+    await safeSendMessage(chatId, "🎯 *Menyiapkan soal studi kasus arsitektur & system design...*\n_Mengambil materi terkini dari memori pengetahuan Hermes..._");
+    const res = await quizService.generateQuizQuestion(chatId, topic);
+    if (res.success) {
+      const q = res.quiz;
+      let qText = `🎯 *ARSITEKTUR & SYSTEM DESIGN QUIZ*\n\n📌 *Topik:* ${q.topic}\n\n${q.question}\n\n`;
+      const letterMap = ['A', 'B', 'C', 'D'];
+      q.options.forEach((opt, idx) => {
+        qText += `*${letterMap[idx]}.* ${opt}\n\n`;
+      });
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: "A", callback_data: "quiz_ans_0" },
+            { text: "B", callback_data: "quiz_ans_1" },
+            { text: "C", callback_data: "quiz_ans_2" },
+            { text: "D", callback_data: "quiz_ans_3" }
+          ]
+        ]
+      };
+      await safeSendMessage(chatId, qText, { reply_markup: keyboard });
+    } else {
+      await safeSendMessage(chatId, `⚠️ ${res.error}`);
+    }
+    return true;
+  }
+
+  if (lowerText.startsWith('/doctor')) {
+    const errorLog = text.replace(/^\/doctor/i, '').trim();
+    if (!errorLog) {
+      await safeSendMessage(
+        chatId,
+        `🩺 *Hermes Emergency Bug Doctor & Fixer*\n\n` +
+        `Gunakan fitur ini untuk mendiagnosis crash log atau stack trace error secara instan:\n\n` +
+        `• *Format:* \`/doctor <paste error log atau stack trace>\`\n` +
+        `• *Contoh:*\n` +
+        `  \`/doctor TypeError: Cannot read properties of undefined (reading 'map') at app.js:42:10\`\n\n` +
+        `Hermes akan otomatis mendiagnosis akar masalah, membaca file sumber di workspace, dan memberikan rekomendasi kode perbaikan konkret.`
+      );
+      return true;
+    }
+
+    await safeSendMessage(chatId, "🩺 *Memeriksa error log & stack trace...*\n_Hermes sedang melacak file sumber dan mendiagnosis akar masalah..._");
+    const res = await doctorService.diagnoseError(errorLog);
+    if (res.success) {
+      await safeSendMessage(chatId, res.diagnosisText);
+    } else {
+      await safeSendMessage(chatId, `⚠️ ${res.error}`);
+    }
     return true;
   }
 
