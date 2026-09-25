@@ -102,9 +102,9 @@ Hermes is an autonomous AI developer agent built for Telegram. It runs 24/7 on a
    git clone https://github.com/azka13labib-ops/agent_tele.git
    cd agent_tele
    ```
-2. Create `.env` from the server template:
+2. Create `.env` from template:
    ```bash
-   cp .env.server.example .env
+   cp .env.example .env
    ```
    Set `AI_BASE_URL` and `REMOTE_WORKER_URL` to your laptop's Tailscale IP (e.g. `http://100.85.233.8:20130`).
 3. Launch with Docker Compose:

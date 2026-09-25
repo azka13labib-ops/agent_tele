@@ -1,8 +1,8 @@
 require('dotenv').config();
 const http = require('http');
 const os = require('os');
-const { executeTool } = require('./tools_executor');
-const { handleDlTool } = require('./tools_dl');
+const { executeTool } = require('./src/tools/local_executor');
+const { handleDlTool } = require('./src/tools/dl_tools');
 
 const PORT = parseInt(process.env.WORKER_PORT || '20130', 10);
 const SECRET = process.env.WORKER_SECRET || 'hermes-tailscale-secret';
