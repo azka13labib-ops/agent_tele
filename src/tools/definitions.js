@@ -1,0 +1,148 @@
+const { dlToolDefinitions } = require('./dl_tools');
+const { knowledgeToolDefinitions } = require('../services/knowledge_manager');
+
+const coreToolDefinitions = [
+  {
+    type: "function",
+    function: {
+      name: "lihat_folder",
+      description: "Melihat daftar file dan subfolder di suatu direktori lokal",
+      parameters: {
+        type: "object",
+        properties: {
+          pathFolder: {
+            type: "string",
+            description: "Path folder yang ingin dicek. Contoh: './', './src', 'C:/Users'"
+          }
+        },
+        required: ["pathFolder"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "baca_file",
+      description: "Membaca isi teks dari sebuah file lokal dengan baris terformat",
+      parameters: {
+        type: "object",
+        properties: {
+          namaFile: {
+            type: "string",
+            description: "Path file yang ingin dibaca. Contoh: './index.js', 'package.json'"
+          },
+          startLine: {
+            type: "number",
+            description: "Nomor baris awal untuk mulai membaca (opsional, default: 1)"
+          },
+          maxLines: {
+            type: "number",
+            description: "Jumlah maksimum baris yang ingin dibaca (opsional, default: 100)"
+          }
+        },
+        required: ["namaFile"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "tulis_file",
+      description: "Membuat file baru atau memperbarui isi file lokal secara menyeluruh",
+      parameters: {
+        type: "object",
+        properties: {
+          namaFile: {
+            type: "string",
+            description: "Path file tujuan yang ingin dibuat/ditulis"
+          },
+          konten: {
+            type: "string",
+            description: "Isi teks/kode lengkap yang akan ditulis ke file"
+          },
+          penjelasan: {
+            type: "string",
+            description: "Penjelasan singkat perubahan atau tujuan penulisan file ini"
+          }
+        },
+        required: ["namaFile", "konten", "penjelasan"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "jalankan_cmd",
+      description: "Menjalankan perintah PowerShell di komputer Windows lokal",
+      parameters: {
+        type: "object",
+        properties: {
+          perintah: {
+            type: "string",
+            description: "Perintah PowerShell yang akan dieksekusi di Windows"
+          },
+          penjelasan: {
+            type: "string",
+            description: "Penjelasan singkat alasan dan tujuan perintah ini dijalankan"
+          }
+        },
+        required: ["perintah", "penjelasan"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "cari_file",
+      description: "Mencari file atau folder berdasarkan nama/kata kunci secara rekursif",
+      parameters: {
+        type: "object",
+        properties: {
+          kataKunci: {
+            type: "string",
+            description: "Nama file atau pola kata kunci yang dicari"
+          },
+          rootFolder: {
+            type: "string",
+            description: "Folder awal pencarian (opsional, default: './')"
+          }
+        },
+        required: ["kataKunci"],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: "function",
+    function: {
+      name: "atur_auto_accept",
+      description: "Mengatur mode Auto-Accept (eksekusi otomatis perintah PowerShell & pembuatan file tanpa konfirmasi manual)",
+      parameters: {
+        type: "object",
+        properties: {
+          aktif: {
+            type: "boolean",
+            description: "true untuk mengaktifkan Auto-Accept (eksekusi instan), false untuk mematikan (butuh konfirmasi manual)"
+          }
+        },
+        required: ["aktif"],
+        additionalProperties: false
+      }
+    }
+  }
+];
+
+const allTools = [
+  ...coreToolDefinitions,
+  ...dlToolDefinitions,
+  ...knowledgeToolDefinitions
+];
+
+module.exports = {
+  coreToolDefinitions,
+  allTools
+};

@@ -1,5 +1,137 @@
 [
   {
+    "id": "url_user_interface_design___wikipedia_1790304169480",
+    "type": "documentation",
+    "title": "User interface design - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/User_interface_design",
+    "tags": [
+      "docs",
+      "guide",
+      "ui-design",
+      "ux-design",
+      "design-thinking",
+      "iso-9241",
+      "usability",
+      "human-computer-interaction"
+    ],
+    "summary": "Dokumen ini merupakan artikel ensiklopedis yang memaparkan definisi, jenis, prinsip, dan metodologi desain antarmuka pengguna (UI) dengan fokus pada maksimalisasi usability dan user experience. Nilai pentingnya terletak pada penyatuan kerangka praktis (design thinking EDIPT, usability testing) dengan standar internasional (ISO 9241) yang dapat langsung dijadikan acuan oleh AI Agent Hermes saat membantu pengguna merancang, mengevaluasi, atau mengaudit antarmuka digital.",
+    "keyTakeaways": [
+      "UI design adalah proses membangun antarmuka yang mengomunikasikan secara jelas apa yang penting kepada pengguna, dengan tujuan membuat interaksi sesederhana dan seefisien mungkin (user-centered design).",
+      "Terdapat tiga jenis antarmuka utama: GUI (visual), voice-controlled (Siri/Alexa), dan gesture-based (VR/3D), masing-masing menuntut keahlian desain yang berbeda.",
+      "Kerangka design thinking modern adalah EDIPT (Empathize, Define, Ideate, Prototype, Test) yang bersifat non-linear dan iteratif, dicetuskan oleh David M. Kelley (2004) dari Stanford d.school.",
+      "ISO 9241 menetapkan 7 prinsip dialog (dinamis/\"feel\"), 7 atribut presentasi informasi (statis/\"look\"), serta definisi usability berdasarkan effectiveness, efficiency, dan satisfaction.",
+      "UI ≠ UX: UI adalah bagian dari UX. UI yang sempurna tidak menyelamatkan UX yang buruk jika konten/database di baliknya tidak memadai (contoh kasus website review film)."
+    ],
+    "noteFile": "knowledge/notes/url_user_interface_design___wikipedia_1790304169480.md",
+    "learnedAt": 1790304169480
+  },
+  {
+    "id": "url_fitts_s_law___wikipedia_1790304067267",
+    "type": "documentation",
+    "title": "Fitts's law - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/Fitts%27s_law",
+    "tags": [
+      "docs",
+      "guide"
+    ],
+    "summary": "Materi dari Fitts's law - Wikipedia",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/url_fitts_s_law___wikipedia_1790304067267.md",
+    "learnedAt": 1790304067267
+  },
+  {
+    "id": "url_heuristic_evaluation___wikipedia_1790304050001",
+    "type": "documentation",
+    "title": "Heuristic evaluation - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/Heuristic_evaluation",
+    "tags": [
+      "docs",
+      "guide",
+      "usability",
+      "ui-design",
+      "hci",
+      "nielsen-heuristics",
+      "ux-evaluation",
+      "heuristic-evaluation"
+    ],
+    "summary": "Dokumen ini menjelaskan heuristic evaluation—metode inspeksi usability untuk mengidentifikasi masalah pada desain antarmuka (UI) dengan menilai kepatuhannya terhadap prinsip usability yang diakui. Nilai utamanya adalah menyediakan framework evaluasi UI cepat, murah, dan tidak bergantung pada user testing, dengan Nielsen's 10 Usability Heuristics sebagai standar industri yang paling banyak dipakai untuk mendesain UI yang mudah dipahami manusia.",
+    "keyTakeaways": [
+      "Heuristic evaluation adalah usability inspection method informal di mana evaluator memeriksa UI dan menilai kepatuhannya terhadap prinsip usability (\"heuristics\"); dikembangkan oleh Rolf Molich dan Jakob Nielsen.",
+      "Nielsen's 10 Heuristics (versi final 2005) adalah standar paling banyak digunakan: Visibility of system status, Match with real world, User control & freedom, Consistency & standards, Error prevention, Recognition rather than recall, Flexibility & efficiency, Aesthetic & minimalist design, Help users recover from errors, Help & documentation.",
+      "Direkomendasikan 3–5 evaluator per studi; evaluasi harus dimulai secara individual lalu diagregasi untuk mengurangi group confirmation bias (individual-first, aggregate-later).",
+      "Kelebihan: cepat (hitungan hari), murah, tidak butuh user; Kekurangan: hasil sangat dipengaruhi pengetahuan expert, tidak ada hard data, dan hasilnya sering berbeda dari performance/user testing (masing-masing menemukan masalah berbeda).",
+      "Ada kerangka alternatif: Gerhardt-Powals' Cognitive Engineering Principles, Shneiderman's Eight Golden Rules, dan Weinschenk-Barker Classification (20 tipe)."
+    ],
+    "noteFile": "knowledge/notes/url_heuristic_evaluation___wikipedia_1790304049998.md",
+    "learnedAt": 1790304050001
+  },
+  {
+    "id": "url_heuristic_evaluation___wikipedia_1790303924236",
+    "type": "documentation",
+    "title": "Heuristic evaluation - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/Heuristic_evaluation",
+    "tags": [
+      "docs",
+      "guide"
+    ],
+    "summary": "Materi dari Heuristic evaluation - Wikipedia",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/url_heuristic_evaluation___wikipedia_1790303924235.md",
+    "learnedAt": 1790303924236
+  },
+  {
+    "id": "url_https___lawsofux_com__1790303904597",
+    "type": "documentation",
+    "title": "https://lawsofux.com/",
+    "source": "https://lawsofux.com/",
+    "tags": [
+      "docs",
+      "guide",
+      "ux",
+      "ui",
+      "design-principles",
+      "cognitive-psychology",
+      "hci",
+      "design-system"
+    ],
+    "summary": "Laws of UX adalah kompilasi 30 prinsip psikologi kognitif dan perilaku manusia (seperti Hick's Law, Fitts's Law, Miller's Law, dan Jakob's Law) yang menjadi fondasi ilmiah untuk merancang antarmuka pengguna. Materi ini krusial bagi AI Agent Hermes dalam memberikan rekomendasi desain, audit UX, atau mengevaluasi keputusan UI karena setiap hukum memiliki dasar empiris yang dapat diterjemahkan menjadi aturan implementasi konkret.",
+    "keyTakeaways": [
+      "UX bukan soal selera, melainkan hasil dari hukum kognitif manusia yang terukur — seperti keterbatasan working memory (Miller's Law: 7±2 item) dan waktu keputusan (Hick's Law: waktu naik seiring jumlah pilihan).",
+      "Desain yang baik mengurangi beban kognitif (Cognitive Load) melalui teknik Chunking, Law of Proximity, Law of Common Region, dan Law of Prägnanz — mengelompokkan elemen menjadi unit bermakna agar mudah diproses.",
+      "Familiaritas mengalahkan inovasi semata: Jakob's Law dan Mental Model mengajarkan bahwa pengguna lebih cepat memahami UI yang meniru pola yang sudah mereka kenal di situs/aplikasi lain.",
+      "Persepsi dan retensi pengguna dapat direkayasa: Aesthetic-Usability Effect, Von Restorff Effect, Serial Position Effect, Peak-End Rule, dan Goal-Gradient Effect memengaruhi apakah pengguna menyukai, mengingat, dan menyelesaikan pengalaman."
+    ],
+    "noteFile": "knowledge/notes/url_https___lawsofux_com__1790303904596.md",
+    "learnedAt": 1790303904597
+  },
+  {
+    "id": "repo_miqdadbadjuber_anti_slop",
+    "type": "github_repo",
+    "title": "miqdadbadjuber/anti-slop",
+    "source": "https://github.com/miqdadbadjuber/anti-slop.git",
+    "tags": [
+      "miqdadbadjuber",
+      "anti-slop",
+      "ai-agent-rules",
+      "prompt-architecture",
+      "design-filter",
+      "plugin-marketplace",
+      "mcp-server",
+      "agent-skills"
+    ],
+    "summary": "Repositori \"anti-slop\" adalah sistem aturan (rules) untuk AI coding agent yang berfungsi sebagai *filter* — bukan style guide — untuk menghapus \"AI slop\": copy generik, angka palsu, pola UI klise (sparkle logo, beta pill, fake terminal), tanpa membuat hasil jadi steril. Ia didistribusikan sebagai multi-plugin (Claude, Cline, Codex, Cursor, Kimi) dengan 38 aturan bertingkat (R-01 s/d R-38), Liveliness Toolkit, Delivery Gate, dan CLI + MCP server untuk validasi kontras.",
+    "keyTakeaways": [
+      "Arsitektur \"filter, not style guide\": repositori sengaja TIDAK menetapkan warna/font/layout — arah estetika diserahkan ke `DESIGN.md` milik user (R-37). Ini pemisahan concern yang tajam antara *removal* (anti-slop) vs *direction* (DESIGN.md).",
+      "aturan terbagi tiga tier: **Hard Gate** (absolut, tidak bisa dinegosiasi), **Purpose-Gate** (teknik boleh dipakai, tapi wajib ada alasan/justifikasi), dan **Quality Locks** (menjaga konsistensi output).",
+      "Distribusi plugin-first multi-ekosistem: file manifest terpisah untuk `.claude-plugin/`, `.cline-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.kimi-plugin/`, dan `.agents/plugins/`, semuanya menunjuk ke source yang sama (`./` atau `./skills/`).",
+      "\"Additive skills\" — skill dimuat satu per concern, sehingga agent hanya load yang relevan (hemat context window, hemat token) alih-alih monolit prompt raksasa.",
+      "Delivery Gate mewajibkan laporan PASS/FAIL empat blok sebelum artefak apa pun dikirim (ship), menjadikan proses self-audit sebagai bagian dari output, bukan langkah opsional.",
+      "Ada MCP server `antislop-contrast` (diluncurkan via `node .claude-plugin/contrast-mcp-launcher.mjs`) yang mengindikasikan validasi aksesibilitas warna dijalankan sebagai tool callable oleh agent, bukan sekadar rule di teks prompt."
+    ],
+    "noteFile": "knowledge/notes/repo_miqdadbadjuber_anti_slop.md",
+    "learnedAt": 1790301322643
+  },
+  {
     "id": "url_attention_is_all_you_need_1790285409336",
     "type": "research_paper",
     "title": "Attention Is All You Need",
