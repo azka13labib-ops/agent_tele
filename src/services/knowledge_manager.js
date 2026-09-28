@@ -11,7 +11,7 @@ function ensureDirs() {
 function loadIndex() {
   ensureDirs();
   try {
-    const raw = fs.readFileSync(INDEX_FILE, 'utf-8');
+    const raw = fs.readFileSync(INDEX_FILE, 'utf-8').replace(/^\uFEFF/, '');
     return JSON.parse(raw);
   } catch (err) {
     console.error("Error reading knowledge index:", err.message);

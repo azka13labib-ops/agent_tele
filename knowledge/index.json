@@ -1,179 +1,195 @@
 [
-  {
-    "id": "url_user_interface_design___wikipedia_1790304169480",
-    "type": "documentation",
-    "title": "User interface design - Wikipedia",
-    "source": "https://en.wikipedia.org/wiki/User_interface_design",
-    "tags": [
-      "docs",
-      "guide",
-      "ui-design",
-      "ux-design",
-      "design-thinking",
-      "iso-9241",
-      "usability",
-      "human-computer-interaction"
-    ],
-    "summary": "Dokumen ini merupakan artikel ensiklopedis yang memaparkan definisi, jenis, prinsip, dan metodologi desain antarmuka pengguna (UI) dengan fokus pada maksimalisasi usability dan user experience. Nilai pentingnya terletak pada penyatuan kerangka praktis (design thinking EDIPT, usability testing) dengan standar internasional (ISO 9241) yang dapat langsung dijadikan acuan oleh AI Agent Hermes saat membantu pengguna merancang, mengevaluasi, atau mengaudit antarmuka digital.",
-    "keyTakeaways": [
-      "UI design adalah proses membangun antarmuka yang mengomunikasikan secara jelas apa yang penting kepada pengguna, dengan tujuan membuat interaksi sesederhana dan seefisien mungkin (user-centered design).",
-      "Terdapat tiga jenis antarmuka utama: GUI (visual), voice-controlled (Siri/Alexa), dan gesture-based (VR/3D), masing-masing menuntut keahlian desain yang berbeda.",
-      "Kerangka design thinking modern adalah EDIPT (Empathize, Define, Ideate, Prototype, Test) yang bersifat non-linear dan iteratif, dicetuskan oleh David M. Kelley (2004) dari Stanford d.school.",
-      "ISO 9241 menetapkan 7 prinsip dialog (dinamis/\"feel\"), 7 atribut presentasi informasi (statis/\"look\"), serta definisi usability berdasarkan effectiveness, efficiency, dan satisfaction.",
-      "UI ≠ UX: UI adalah bagian dari UX. UI yang sempurna tidak menyelamatkan UX yang buruk jika konten/database di baliknya tidak memadai (contoh kasus website review film)."
-    ],
-    "noteFile": "knowledge/notes/url_user_interface_design___wikipedia_1790304169480.md",
-    "learnedAt": 1790304169480
-  },
-  {
-    "id": "url_fitts_s_law___wikipedia_1790304067267",
-    "type": "documentation",
-    "title": "Fitts's law - Wikipedia",
-    "source": "https://en.wikipedia.org/wiki/Fitts%27s_law",
-    "tags": [
-      "docs",
-      "guide"
-    ],
-    "summary": "Materi dari Fitts's law - Wikipedia",
-    "keyTakeaways": [],
-    "noteFile": "knowledge/notes/url_fitts_s_law___wikipedia_1790304067267.md",
-    "learnedAt": 1790304067267
-  },
-  {
-    "id": "url_heuristic_evaluation___wikipedia_1790304050001",
-    "type": "documentation",
-    "title": "Heuristic evaluation - Wikipedia",
-    "source": "https://en.wikipedia.org/wiki/Heuristic_evaluation",
-    "tags": [
-      "docs",
-      "guide",
-      "usability",
-      "ui-design",
-      "hci",
-      "nielsen-heuristics",
-      "ux-evaluation",
-      "heuristic-evaluation"
-    ],
-    "summary": "Dokumen ini menjelaskan heuristic evaluation—metode inspeksi usability untuk mengidentifikasi masalah pada desain antarmuka (UI) dengan menilai kepatuhannya terhadap prinsip usability yang diakui. Nilai utamanya adalah menyediakan framework evaluasi UI cepat, murah, dan tidak bergantung pada user testing, dengan Nielsen's 10 Usability Heuristics sebagai standar industri yang paling banyak dipakai untuk mendesain UI yang mudah dipahami manusia.",
-    "keyTakeaways": [
-      "Heuristic evaluation adalah usability inspection method informal di mana evaluator memeriksa UI dan menilai kepatuhannya terhadap prinsip usability (\"heuristics\"); dikembangkan oleh Rolf Molich dan Jakob Nielsen.",
-      "Nielsen's 10 Heuristics (versi final 2005) adalah standar paling banyak digunakan: Visibility of system status, Match with real world, User control & freedom, Consistency & standards, Error prevention, Recognition rather than recall, Flexibility & efficiency, Aesthetic & minimalist design, Help users recover from errors, Help & documentation.",
-      "Direkomendasikan 3–5 evaluator per studi; evaluasi harus dimulai secara individual lalu diagregasi untuk mengurangi group confirmation bias (individual-first, aggregate-later).",
-      "Kelebihan: cepat (hitungan hari), murah, tidak butuh user; Kekurangan: hasil sangat dipengaruhi pengetahuan expert, tidak ada hard data, dan hasilnya sering berbeda dari performance/user testing (masing-masing menemukan masalah berbeda).",
-      "Ada kerangka alternatif: Gerhardt-Powals' Cognitive Engineering Principles, Shneiderman's Eight Golden Rules, dan Weinschenk-Barker Classification (20 tipe)."
-    ],
-    "noteFile": "knowledge/notes/url_heuristic_evaluation___wikipedia_1790304049998.md",
-    "learnedAt": 1790304050001
-  },
-  {
-    "id": "url_heuristic_evaluation___wikipedia_1790303924236",
-    "type": "documentation",
-    "title": "Heuristic evaluation - Wikipedia",
-    "source": "https://en.wikipedia.org/wiki/Heuristic_evaluation",
-    "tags": [
-      "docs",
-      "guide"
-    ],
-    "summary": "Materi dari Heuristic evaluation - Wikipedia",
-    "keyTakeaways": [],
-    "noteFile": "knowledge/notes/url_heuristic_evaluation___wikipedia_1790303924235.md",
-    "learnedAt": 1790303924236
-  },
-  {
-    "id": "url_https___lawsofux_com__1790303904597",
-    "type": "documentation",
-    "title": "https://lawsofux.com/",
-    "source": "https://lawsofux.com/",
-    "tags": [
-      "docs",
-      "guide",
-      "ux",
-      "ui",
-      "design-principles",
-      "cognitive-psychology",
-      "hci",
-      "design-system"
-    ],
-    "summary": "Laws of UX adalah kompilasi 30 prinsip psikologi kognitif dan perilaku manusia (seperti Hick's Law, Fitts's Law, Miller's Law, dan Jakob's Law) yang menjadi fondasi ilmiah untuk merancang antarmuka pengguna. Materi ini krusial bagi AI Agent Hermes dalam memberikan rekomendasi desain, audit UX, atau mengevaluasi keputusan UI karena setiap hukum memiliki dasar empiris yang dapat diterjemahkan menjadi aturan implementasi konkret.",
-    "keyTakeaways": [
-      "UX bukan soal selera, melainkan hasil dari hukum kognitif manusia yang terukur — seperti keterbatasan working memory (Miller's Law: 7±2 item) dan waktu keputusan (Hick's Law: waktu naik seiring jumlah pilihan).",
-      "Desain yang baik mengurangi beban kognitif (Cognitive Load) melalui teknik Chunking, Law of Proximity, Law of Common Region, dan Law of Prägnanz — mengelompokkan elemen menjadi unit bermakna agar mudah diproses.",
-      "Familiaritas mengalahkan inovasi semata: Jakob's Law dan Mental Model mengajarkan bahwa pengguna lebih cepat memahami UI yang meniru pola yang sudah mereka kenal di situs/aplikasi lain.",
-      "Persepsi dan retensi pengguna dapat direkayasa: Aesthetic-Usability Effect, Von Restorff Effect, Serial Position Effect, Peak-End Rule, dan Goal-Gradient Effect memengaruhi apakah pengguna menyukai, mengingat, dan menyelesaikan pengalaman."
-    ],
-    "noteFile": "knowledge/notes/url_https___lawsofux_com__1790303904596.md",
-    "learnedAt": 1790303904597
-  },
-  {
-    "id": "repo_miqdadbadjuber_anti_slop",
-    "type": "github_repo",
-    "title": "miqdadbadjuber/anti-slop",
-    "source": "https://github.com/miqdadbadjuber/anti-slop.git",
-    "tags": [
-      "miqdadbadjuber",
-      "anti-slop",
-      "ai-agent-rules",
-      "prompt-architecture",
-      "design-filter",
-      "plugin-marketplace",
-      "mcp-server",
-      "agent-skills"
-    ],
-    "summary": "Repositori \"anti-slop\" adalah sistem aturan (rules) untuk AI coding agent yang berfungsi sebagai *filter* — bukan style guide — untuk menghapus \"AI slop\": copy generik, angka palsu, pola UI klise (sparkle logo, beta pill, fake terminal), tanpa membuat hasil jadi steril. Ia didistribusikan sebagai multi-plugin (Claude, Cline, Codex, Cursor, Kimi) dengan 38 aturan bertingkat (R-01 s/d R-38), Liveliness Toolkit, Delivery Gate, dan CLI + MCP server untuk validasi kontras.",
-    "keyTakeaways": [
-      "Arsitektur \"filter, not style guide\": repositori sengaja TIDAK menetapkan warna/font/layout — arah estetika diserahkan ke `DESIGN.md` milik user (R-37). Ini pemisahan concern yang tajam antara *removal* (anti-slop) vs *direction* (DESIGN.md).",
-      "aturan terbagi tiga tier: **Hard Gate** (absolut, tidak bisa dinegosiasi), **Purpose-Gate** (teknik boleh dipakai, tapi wajib ada alasan/justifikasi), dan **Quality Locks** (menjaga konsistensi output).",
-      "Distribusi plugin-first multi-ekosistem: file manifest terpisah untuk `.claude-plugin/`, `.cline-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.kimi-plugin/`, dan `.agents/plugins/`, semuanya menunjuk ke source yang sama (`./` atau `./skills/`).",
-      "\"Additive skills\" — skill dimuat satu per concern, sehingga agent hanya load yang relevan (hemat context window, hemat token) alih-alih monolit prompt raksasa.",
-      "Delivery Gate mewajibkan laporan PASS/FAIL empat blok sebelum artefak apa pun dikirim (ship), menjadikan proses self-audit sebagai bagian dari output, bukan langkah opsional.",
-      "Ada MCP server `antislop-contrast` (diluncurkan via `node .claude-plugin/contrast-mcp-launcher.mjs`) yang mengindikasikan validasi aksesibilitas warna dijalankan sebagai tool callable oleh agent, bukan sekadar rule di teks prompt."
-    ],
-    "noteFile": "knowledge/notes/repo_miqdadbadjuber_anti_slop.md",
-    "learnedAt": 1790301322643
-  },
-  {
-    "id": "url_attention_is_all_you_need_1790285409336",
-    "type": "research_paper",
-    "title": "Attention Is All You Need",
-    "source": "https://arxiv.org/abs/1706.03762",
-    "tags": [
-      "arxiv",
-      "paper-ai",
-      "research",
-      "transformer",
-      "attention"
-    ],
-    "summary": "Paper ini memperkenalkan arsitektur Transformer, yang pertama kali mengandalkan mekanisme attention sepenuhnya tanpa memakai RNN/CNN untuk pemrosesan sekuensial. Transformer menjadi fondasi bagi model NLP modern seperti BERT, GPT, dan berbagai model multimodal. Kontribusi utamanya adalah multi-head self-attention, positional encoding, dan pelatihan yang sangat paralel dengan performa SOTA di bidang machine translation.",
-    "keyTakeaways": [
-      "Arsitektur Transformer menggantikan recurrent dan convolution layers dengan mekanisme attention, sehingga komputasi dapat diparalelkan dan jarak antar token dalam sekuens menjadi pendek (O(1) untuk setiap pasangan token).",
-      "Inti dari Transformer adalah Scaled Dot-Product Attention: Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V.",
-      "Multi-head attention memungkinkan model memperhatikan informasi dari berbagai representasi subspace secara bersamaan, meningkatkan kemampuan ekspresif dibanding attention tunggal.",
-      "Posisi token dalam sekuens disuntikkan melalui positional encoding dengan fungsi sinus/kosinus, karena attention tidak memiliki urutan bawaan.",
-      "Teknik pelatihan penting: Adam optimizer dengan learning rate warmup, label smoothing, dropout, residual connection, dan layer normalization."
-    ],
-    "noteFile": "knowledge/notes/url_attention_is_all_you_need_1790285409273.md",
-    "learnedAt": 1790285409336
-  },
-  {
-    "id": "url_readme_md_1790285365892",
-    "type": "code_file",
-    "title": "nanoGPT (Andrej Karpathy)",
-    "source": "https://raw.githubusercontent.com/karpathy/nanoGPT/master/README.md",
-    "tags": [
-      "nanogpt",
-      "gpt-training",
-      "deeplearning",
-      "pytorch",
-      "karpathy"
-    ],
-    "summary": "Dokumen ini adalah README dari repositori nanoGPT, implementasi GPT yang sederhana dan cepat untuk training/finetuning model GPT ukuran menengah. Materi menjelaskan cara instalasi, quick start training karakter Shakespeare, reproduksi GPT-2 di OpenWebText, finetuning, sampling, dan efisiensi komputasi. Nilai pentingnya terletak pada desain kode yang minimal, mudah di-hack, dan menjadi referensi praktis untuk memahami pipeline GPT end-to-end.",
-    "keyTakeaways": [
-      "nanoGPT adalah rewrite minGPT yang mengutamakan kesederhanaan: train.py dan model.py masing-masing ~300 baris; bisa memuat pretrained GPT-2 OpenAI.",
-      "Workflow inti: siapkan data tokenisasi menjadi `train.bin`/`val.bin`, atur hyperparameter via config, jalankan `train.py`, lalu `sample.py` untuk generate teks.",
-      "Reproduksi GPT-2 124M membutuhkan 8x A100 40GB dan DDP, sekitar 4 hari, mencapai loss ~2.85 pada OpenWebText.",
-      "Finetuning tinggal menginisialisasi dari pretrained GPT-2 dengan `init_from` dan learning rate kecil; PyTorch 2.0 `compile` memberi speedup signifikan, tapi bisa dimatikan dengan `--compile=False`."
-    ],
-    "noteFile": "knowledge/notes/url_readme_md_1790285365872.md",
-    "learnedAt": 1790285365892
-  }
+    {
+        "id":  "url_fitts_s_law___wikipedia_1790350489994",
+        "type":  "documentation",
+        "title":  "Fitts\u0027s law - Wikipedia",
+        "source":  "https://en.wikipedia.org/wiki/Fitts%27s_law",
+        "tags":  [
+                     "docs",
+                     "guide"
+                 ],
+        "summary":  "Dokumen teknis \"Fitts\u0027s law - Wikipedia\" - berhasil diindeks dari konten teks.",
+        "keyTakeaways":  [
+
+                         ],
+        "noteFile":  "knowledge/notes/url_fitts_s_law___wikipedia_1790350489992.md",
+        "learnedAt":  1790350489994
+    },
+    {
+        "id":  "repo_shadcn_ui_ui",
+        "type":  "github_repo",
+        "title":  "shadcn-ui/ui",
+        "source":  "https://github.com/shadcn-ui/ui.git",
+        "tags":  [
+                     "shadcn-ui",
+                     "ui",
+                     "component-registry",
+                     "radix-ui",
+                     "tailwindcss",
+                     "cli",
+                     "accessible-components",
+                     "react",
+                     "monorepo",
+                     "copy-paste-distribution"
+                 ],
+        "summary":  "shadcn/ui adalah kumpulan komponen UI React yang didesain cantik dan accessible, dibagikan bukan lewat npm package biasa melainkan lewat sistem *copy-paste registry* berbasis JSON. Komponen dibangun dari primitives Radix UI dan distyling dengan Tailwind CSS, lalu didistribusikan ke proyek pengguna menggunakan CLI (`shadcn`). Filosofi intinya: \"Open Code, bukan Open Source library\" â€” pengguna memiliki kode sumber komponennya sendiri.",
+        "keyTakeaways":  [
+                             "Copy-paste registry pattern**: Komponen tidak di-install sebagai dependency, melainkan di-copy langsung ke proyek user via CLI, memberi kontrol penuh atas kode dan styling.",
+                             "Monorepo Terstruktur**: `apps/v4` (website docs + registry generator), `packages/shadcn` (CLI distributor), `packages/react`, `packages/helpers` â€” dipisahkan dengan jelas antara konsumsi (consumer) dan distribusi (publisher).",
+                             "Radix UI + Tailwind CSS sebagai fondasi**: Radix menyediakan primitives headless yang accessible (ARIA, keyboard nav, focus management), Tailwind menangani styling. Komponen menggabungkan keduanya via wrapper pattern.",
+                             "Registry sebagai single source of truth**: File JSON registry (`registry:build`) menjadi kontrak antara publisher dan CLI â€” berisi metadata, dependencies, files, dan target path untuk setiap komponen.",
+                             "Zero-lock-in philosophy**: Karena kode dimiliki user, customisasi tidak terbatas oleh API library eksternal, tapi tetap mendapat benefit dari update upstream lewat re-sync CLI."
+                         ],
+        "noteFile":  "knowledge/notes/repo_shadcn_ui_ui.md",
+        "learnedAt":  1790350480667
+    },
+    {
+        "id":  "url_user_interface_design___wikipedia_1790304169480",
+        "type":  "documentation",
+        "title":  "User interface design - Wikipedia",
+        "source":  "https://en.wikipedia.org/wiki/User_interface_design",
+        "tags":  [
+                     "docs",
+                     "guide",
+                     "ui-design",
+                     "ux-design",
+                     "design-thinking",
+                     "iso-9241",
+                     "usability",
+                     "human-computer-interaction"
+                 ],
+        "summary":  "Dokumen ini merupakan artikel ensiklopedis yang memaparkan definisi, jenis, prinsip, dan metodologi desain antarmuka pengguna (UI) dengan fokus pada maksimalisasi usability dan user experience. Nilai pentingnya terletak pada penyatuan kerangka praktis (design thinking EDIPT, usability testing) dengan standar internasional (ISO 9241) yang dapat langsung dijadikan acuan oleh AI Agent Hermes saat membantu pengguna merancang, mengevaluasi, atau mengaudit antarmuka digital.",
+        "keyTakeaways":  [
+                             "UI design adalah proses membangun antarmuka yang mengomunikasikan secara jelas apa yang penting kepada pengguna, dengan tujuan membuat interaksi sesederhana dan seefisien mungkin (user-centered design).",
+                             "Terdapat tiga jenis antarmuka utama: GUI (visual), voice-controlled (Siri/Alexa), dan gesture-based (VR/3D), masing-masing menuntut keahlian desain yang berbeda.",
+                             "Kerangka design thinking modern adalah EDIPT (Empathize, Define, Ideate, Prototype, Test) yang bersifat non-linear dan iteratif, dicetuskan oleh David M. Kelley (2004) dari Stanford d.school.",
+                             "ISO 9241 menetapkan 7 prinsip dialog (dinamis/\"feel\"), 7 atribut presentasi informasi (statis/\"look\"), serta definisi usability berdasarkan effectiveness, efficiency, dan satisfaction.",
+                             "UI â‰  UX: UI adalah bagian dari UX. UI yang sempurna tidak menyelamatkan UX yang buruk jika konten/database di baliknya tidak memadai (contoh kasus website review film)."
+                         ],
+        "noteFile":  "knowledge/notes/url_user_interface_design___wikipedia_1790304169480.md",
+        "learnedAt":  1790304169480
+    },
+    {
+        "id":  "url_heuristic_evaluation___wikipedia_1790304050001",
+        "type":  "documentation",
+        "title":  "Heuristic evaluation - Wikipedia",
+        "source":  "https://en.wikipedia.org/wiki/Heuristic_evaluation",
+        "tags":  [
+                     "docs",
+                     "guide",
+                     "usability",
+                     "ui-design",
+                     "hci",
+                     "nielsen-heuristics",
+                     "ux-evaluation",
+                     "heuristic-evaluation"
+                 ],
+        "summary":  "Dokumen ini menjelaskan heuristic evaluationâ€”metode inspeksi usability untuk mengidentifikasi masalah pada desain antarmuka (UI) dengan menilai kepatuhannya terhadap prinsip usability yang diakui. Nilai utamanya adalah menyediakan framework evaluasi UI cepat, murah, dan tidak bergantung pada user testing, dengan Nielsen\u0027s 10 Usability Heuristics sebagai standar industri yang paling banyak dipakai untuk mendesain UI yang mudah dipahami manusia.",
+        "keyTakeaways":  [
+                             "Heuristic evaluation adalah usability inspection method informal di mana evaluator memeriksa UI dan menilai kepatuhannya terhadap prinsip usability (\"heuristics\"); dikembangkan oleh Rolf Molich dan Jakob Nielsen.",
+                             "Nielsen\u0027s 10 Heuristics (versi final 2005) adalah standar paling banyak digunakan: Visibility of system status, Match with real world, User control \u0026 freedom, Consistency \u0026 standards, Error prevention, Recognition rather than recall, Flexibility \u0026 efficiency, Aesthetic \u0026 minimalist design, Help users recover from errors, Help \u0026 documentation.",
+                             "Direkomendasikan 3â€“5 evaluator per studi; evaluasi harus dimulai secara individual lalu diagregasi untuk mengurangi group confirmation bias (individual-first, aggregate-later).",
+                             "Kelebihan: cepat (hitungan hari), murah, tidak butuh user; Kekurangan: hasil sangat dipengaruhi pengetahuan expert, tidak ada hard data, dan hasilnya sering berbeda dari performance/user testing (masing-masing menemukan masalah berbeda).",
+                             "Ada kerangka alternatif: Gerhardt-Powals\u0027 Cognitive Engineering Principles, Shneiderman\u0027s Eight Golden Rules, dan Weinschenk-Barker Classification (20 tipe)."
+                         ],
+        "noteFile":  "knowledge/notes/url_heuristic_evaluation___wikipedia_1790304049998.md",
+        "learnedAt":  1790304050001
+    },
+    {
+        "id":  "url_https___lawsofux_com__1790303904597",
+        "type":  "documentation",
+        "title":  "https://lawsofux.com/",
+        "source":  "https://lawsofux.com/",
+        "tags":  [
+                     "docs",
+                     "guide",
+                     "ux",
+                     "ui",
+                     "design-principles",
+                     "cognitive-psychology",
+                     "hci",
+                     "design-system"
+                 ],
+        "summary":  "Laws of UX adalah kompilasi 30 prinsip psikologi kognitif dan perilaku manusia (seperti Hick\u0027s Law, Fitts\u0027s Law, Miller\u0027s Law, dan Jakob\u0027s Law) yang menjadi fondasi ilmiah untuk merancang antarmuka pengguna. Materi ini krusial bagi AI Agent Hermes dalam memberikan rekomendasi desain, audit UX, atau mengevaluasi keputusan UI karena setiap hukum memiliki dasar empiris yang dapat diterjemahkan menjadi aturan implementasi konkret.",
+        "keyTakeaways":  [
+                             "UX bukan soal selera, melainkan hasil dari hukum kognitif manusia yang terukur â€” seperti keterbatasan working memory (Miller\u0027s Law: 7Â±2 item) dan waktu keputusan (Hick\u0027s Law: waktu naik seiring jumlah pilihan).",
+                             "Desain yang baik mengurangi beban kognitif (Cognitive Load) melalui teknik Chunking, Law of Proximity, Law of Common Region, dan Law of PrÃ¤gnanz â€” mengelompokkan elemen menjadi unit bermakna agar mudah diproses.",
+                             "Familiaritas mengalahkan inovasi semata: Jakob\u0027s Law dan Mental Model mengajarkan bahwa pengguna lebih cepat memahami UI yang meniru pola yang sudah mereka kenal di situs/aplikasi lain.",
+                             "Persepsi dan retensi pengguna dapat direkayasa: Aesthetic-Usability Effect, Von Restorff Effect, Serial Position Effect, Peak-End Rule, dan Goal-Gradient Effect memengaruhi apakah pengguna menyukai, mengingat, dan menyelesaikan pengalaman."
+                         ],
+        "noteFile":  "knowledge/notes/url_https___lawsofux_com__1790303904596.md",
+        "learnedAt":  1790303904597
+    },
+    {
+        "id":  "repo_miqdadbadjuber_anti_slop",
+        "type":  "github_repo",
+        "title":  "miqdadbadjuber/anti-slop",
+        "source":  "https://github.com/miqdadbadjuber/anti-slop.git",
+        "tags":  [
+                     "miqdadbadjuber",
+                     "anti-slop",
+                     "ai-agent-rules",
+                     "prompt-architecture",
+                     "design-filter",
+                     "plugin-marketplace",
+                     "mcp-server",
+                     "agent-skills"
+                 ],
+        "summary":  "Repositori \"anti-slop\" adalah sistem aturan (rules) untuk AI coding agent yang berfungsi sebagai *filter* â€” bukan style guide â€” untuk menghapus \"AI slop\": copy generik, angka palsu, pola UI klise (sparkle logo, beta pill, fake terminal), tanpa membuat hasil jadi steril. Ia didistribusikan sebagai multi-plugin (Claude, Cline, Codex, Cursor, Kimi) dengan 38 aturan bertingkat (R-01 s/d R-38), Liveliness Toolkit, Delivery Gate, dan CLI + MCP server untuk validasi kontras.",
+        "keyTakeaways":  [
+                             "Arsitektur \"filter, not style guide\": repositori sengaja TIDAK menetapkan warna/font/layout â€” arah estetika diserahkan ke `DESIGN.md` milik user (R-37). Ini pemisahan concern yang tajam antara *removal* (anti-slop) vs *direction* (DESIGN.md).",
+                             "aturan terbagi tiga tier: **Hard Gate** (absolut, tidak bisa dinegosiasi), **Purpose-Gate** (teknik boleh dipakai, tapi wajib ada alasan/justifikasi), dan **Quality Locks** (menjaga konsistensi output).",
+                             "Distribusi plugin-first multi-ekosistem: file manifest terpisah untuk `.claude-plugin/`, `.cline-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.kimi-plugin/`, dan `.agents/plugins/`, semuanya menunjuk ke source yang sama (`./` atau `./skills/`).",
+                             "\"Additive skills\" â€” skill dimuat satu per concern, sehingga agent hanya load yang relevan (hemat context window, hemat token) alih-alih monolit prompt raksasa.",
+                             "Delivery Gate mewajibkan laporan PASS/FAIL empat blok sebelum artefak apa pun dikirim (ship), menjadikan proses self-audit sebagai bagian dari output, bukan langkah opsional.",
+                             "Ada MCP server `antislop-contrast` (diluncurkan via `node .claude-plugin/contrast-mcp-launcher.mjs`) yang mengindikasikan validasi aksesibilitas warna dijalankan sebagai tool callable oleh agent, bukan sekadar rule di teks prompt."
+                         ],
+        "noteFile":  "knowledge/notes/repo_miqdadbadjuber_anti_slop.md",
+        "learnedAt":  1790301322643
+    },
+    {
+        "id":  "url_attention_is_all_you_need_1790285409336",
+        "type":  "research_paper",
+        "title":  "Attention Is All You Need",
+        "source":  "https://arxiv.org/abs/1706.03762",
+        "tags":  [
+                     "arxiv",
+                     "paper-ai",
+                     "research",
+                     "transformer",
+                     "attention"
+                 ],
+        "summary":  "Paper ini memperkenalkan arsitektur Transformer, yang pertama kali mengandalkan mekanisme attention sepenuhnya tanpa memakai RNN/CNN untuk pemrosesan sekuensial. Transformer menjadi fondasi bagi model NLP modern seperti BERT, GPT, dan berbagai model multimodal. Kontribusi utamanya adalah multi-head self-attention, positional encoding, dan pelatihan yang sangat paralel dengan performa SOTA di bidang machine translation.",
+        "keyTakeaways":  [
+                             "Arsitektur Transformer menggantikan recurrent dan convolution layers dengan mekanisme attention, sehingga komputasi dapat diparalelkan dan jarak antar token dalam sekuens menjadi pendek (O(1) untuk setiap pasangan token).",
+                             "Inti dari Transformer adalah Scaled Dot-Product Attention: Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V.",
+                             "Multi-head attention memungkinkan model memperhatikan informasi dari berbagai representasi subspace secara bersamaan, meningkatkan kemampuan ekspresif dibanding attention tunggal.",
+                             "Posisi token dalam sekuens disuntikkan melalui positional encoding dengan fungsi sinus/kosinus, karena attention tidak memiliki urutan bawaan.",
+                             "Teknik pelatihan penting: Adam optimizer dengan learning rate warmup, label smoothing, dropout, residual connection, dan layer normalization."
+                         ],
+        "noteFile":  "knowledge/notes/url_attention_is_all_you_need_1790285409273.md",
+        "learnedAt":  1790285409336
+    },
+    {
+        "id":  "url_readme_md_1790285365892",
+        "type":  "code_file",
+        "title":  "nanoGPT (Andrej Karpathy)",
+        "source":  "https://raw.githubusercontent.com/karpathy/nanoGPT/master/README.md",
+        "tags":  [
+                     "nanogpt",
+                     "gpt-training",
+                     "deeplearning",
+                     "pytorch",
+                     "karpathy"
+                 ],
+        "summary":  "Dokumen ini adalah README dari repositori nanoGPT, implementasi GPT yang sederhana dan cepat untuk training/finetuning model GPT ukuran menengah. Materi menjelaskan cara instalasi, quick start training karakter Shakespeare, reproduksi GPT-2 di OpenWebText, finetuning, sampling, dan efisiensi komputasi. Nilai pentingnya terletak pada desain kode yang minimal, mudah di-hack, dan menjadi referensi praktis untuk memahami pipeline GPT end-to-end.",
+        "keyTakeaways":  [
+                             "nanoGPT adalah rewrite minGPT yang mengutamakan kesederhanaan: train.py dan model.py masing-masing ~300 baris; bisa memuat pretrained GPT-2 OpenAI.",
+                             "Workflow inti: siapkan data tokenisasi menjadi `train.bin`/`val.bin`, atur hyperparameter via config, jalankan `train.py`, lalu `sample.py` untuk generate teks.",
+                             "Reproduksi GPT-2 124M membutuhkan 8x A100 40GB dan DDP, sekitar 4 hari, mencapai loss ~2.85 pada OpenWebText.",
+                             "Finetuning tinggal menginisialisasi dari pretrained GPT-2 dengan `init_from` dan learning rate kecil; PyTorch 2.0 `compile` memberi speedup signifikan, tapi bisa dimatikan dengan `--compile=False`."
+                         ],
+        "noteFile":  "knowledge/notes/url_readme_md_1790285365872.md",
+        "learnedAt":  1790285365892
+    }
 ]
