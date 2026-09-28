@@ -1,195 +1,1876 @@
 [
-    {
-        "id":  "url_fitts_s_law___wikipedia_1790350489994",
-        "type":  "documentation",
-        "title":  "Fitts\u0027s law - Wikipedia",
-        "source":  "https://en.wikipedia.org/wiki/Fitts%27s_law",
-        "tags":  [
-                     "docs",
-                     "guide"
-                 ],
-        "summary":  "Dokumen teknis \"Fitts\u0027s law - Wikipedia\" - berhasil diindeks dari konten teks.",
-        "keyTakeaways":  [
-
-                         ],
-        "noteFile":  "knowledge/notes/url_fitts_s_law___wikipedia_1790350489992.md",
-        "learnedAt":  1790350489994
-    },
-    {
-        "id":  "repo_shadcn_ui_ui",
-        "type":  "github_repo",
-        "title":  "shadcn-ui/ui",
-        "source":  "https://github.com/shadcn-ui/ui.git",
-        "tags":  [
-                     "shadcn-ui",
-                     "ui",
-                     "component-registry",
-                     "radix-ui",
-                     "tailwindcss",
-                     "cli",
-                     "accessible-components",
-                     "react",
-                     "monorepo",
-                     "copy-paste-distribution"
-                 ],
-        "summary":  "shadcn/ui adalah kumpulan komponen UI React yang didesain cantik dan accessible, dibagikan bukan lewat npm package biasa melainkan lewat sistem *copy-paste registry* berbasis JSON. Komponen dibangun dari primitives Radix UI dan distyling dengan Tailwind CSS, lalu didistribusikan ke proyek pengguna menggunakan CLI (`shadcn`). Filosofi intinya: \"Open Code, bukan Open Source library\" â€” pengguna memiliki kode sumber komponennya sendiri.",
-        "keyTakeaways":  [
-                             "Copy-paste registry pattern**: Komponen tidak di-install sebagai dependency, melainkan di-copy langsung ke proyek user via CLI, memberi kontrol penuh atas kode dan styling.",
-                             "Monorepo Terstruktur**: `apps/v4` (website docs + registry generator), `packages/shadcn` (CLI distributor), `packages/react`, `packages/helpers` â€” dipisahkan dengan jelas antara konsumsi (consumer) dan distribusi (publisher).",
-                             "Radix UI + Tailwind CSS sebagai fondasi**: Radix menyediakan primitives headless yang accessible (ARIA, keyboard nav, focus management), Tailwind menangani styling. Komponen menggabungkan keduanya via wrapper pattern.",
-                             "Registry sebagai single source of truth**: File JSON registry (`registry:build`) menjadi kontrak antara publisher dan CLI â€” berisi metadata, dependencies, files, dan target path untuk setiap komponen.",
-                             "Zero-lock-in philosophy**: Karena kode dimiliki user, customisasi tidak terbatas oleh API library eksternal, tapi tetap mendapat benefit dari update upstream lewat re-sync CLI."
-                         ],
-        "noteFile":  "knowledge/notes/repo_shadcn_ui_ui.md",
-        "learnedAt":  1790350480667
-    },
-    {
-        "id":  "url_user_interface_design___wikipedia_1790304169480",
-        "type":  "documentation",
-        "title":  "User interface design - Wikipedia",
-        "source":  "https://en.wikipedia.org/wiki/User_interface_design",
-        "tags":  [
-                     "docs",
-                     "guide",
-                     "ui-design",
-                     "ux-design",
-                     "design-thinking",
-                     "iso-9241",
-                     "usability",
-                     "human-computer-interaction"
-                 ],
-        "summary":  "Dokumen ini merupakan artikel ensiklopedis yang memaparkan definisi, jenis, prinsip, dan metodologi desain antarmuka pengguna (UI) dengan fokus pada maksimalisasi usability dan user experience. Nilai pentingnya terletak pada penyatuan kerangka praktis (design thinking EDIPT, usability testing) dengan standar internasional (ISO 9241) yang dapat langsung dijadikan acuan oleh AI Agent Hermes saat membantu pengguna merancang, mengevaluasi, atau mengaudit antarmuka digital.",
-        "keyTakeaways":  [
-                             "UI design adalah proses membangun antarmuka yang mengomunikasikan secara jelas apa yang penting kepada pengguna, dengan tujuan membuat interaksi sesederhana dan seefisien mungkin (user-centered design).",
-                             "Terdapat tiga jenis antarmuka utama: GUI (visual), voice-controlled (Siri/Alexa), dan gesture-based (VR/3D), masing-masing menuntut keahlian desain yang berbeda.",
-                             "Kerangka design thinking modern adalah EDIPT (Empathize, Define, Ideate, Prototype, Test) yang bersifat non-linear dan iteratif, dicetuskan oleh David M. Kelley (2004) dari Stanford d.school.",
-                             "ISO 9241 menetapkan 7 prinsip dialog (dinamis/\"feel\"), 7 atribut presentasi informasi (statis/\"look\"), serta definisi usability berdasarkan effectiveness, efficiency, dan satisfaction.",
-                             "UI â‰  UX: UI adalah bagian dari UX. UI yang sempurna tidak menyelamatkan UX yang buruk jika konten/database di baliknya tidak memadai (contoh kasus website review film)."
-                         ],
-        "noteFile":  "knowledge/notes/url_user_interface_design___wikipedia_1790304169480.md",
-        "learnedAt":  1790304169480
-    },
-    {
-        "id":  "url_heuristic_evaluation___wikipedia_1790304050001",
-        "type":  "documentation",
-        "title":  "Heuristic evaluation - Wikipedia",
-        "source":  "https://en.wikipedia.org/wiki/Heuristic_evaluation",
-        "tags":  [
-                     "docs",
-                     "guide",
-                     "usability",
-                     "ui-design",
-                     "hci",
-                     "nielsen-heuristics",
-                     "ux-evaluation",
-                     "heuristic-evaluation"
-                 ],
-        "summary":  "Dokumen ini menjelaskan heuristic evaluationâ€”metode inspeksi usability untuk mengidentifikasi masalah pada desain antarmuka (UI) dengan menilai kepatuhannya terhadap prinsip usability yang diakui. Nilai utamanya adalah menyediakan framework evaluasi UI cepat, murah, dan tidak bergantung pada user testing, dengan Nielsen\u0027s 10 Usability Heuristics sebagai standar industri yang paling banyak dipakai untuk mendesain UI yang mudah dipahami manusia.",
-        "keyTakeaways":  [
-                             "Heuristic evaluation adalah usability inspection method informal di mana evaluator memeriksa UI dan menilai kepatuhannya terhadap prinsip usability (\"heuristics\"); dikembangkan oleh Rolf Molich dan Jakob Nielsen.",
-                             "Nielsen\u0027s 10 Heuristics (versi final 2005) adalah standar paling banyak digunakan: Visibility of system status, Match with real world, User control \u0026 freedom, Consistency \u0026 standards, Error prevention, Recognition rather than recall, Flexibility \u0026 efficiency, Aesthetic \u0026 minimalist design, Help users recover from errors, Help \u0026 documentation.",
-                             "Direkomendasikan 3â€“5 evaluator per studi; evaluasi harus dimulai secara individual lalu diagregasi untuk mengurangi group confirmation bias (individual-first, aggregate-later).",
-                             "Kelebihan: cepat (hitungan hari), murah, tidak butuh user; Kekurangan: hasil sangat dipengaruhi pengetahuan expert, tidak ada hard data, dan hasilnya sering berbeda dari performance/user testing (masing-masing menemukan masalah berbeda).",
-                             "Ada kerangka alternatif: Gerhardt-Powals\u0027 Cognitive Engineering Principles, Shneiderman\u0027s Eight Golden Rules, dan Weinschenk-Barker Classification (20 tipe)."
-                         ],
-        "noteFile":  "knowledge/notes/url_heuristic_evaluation___wikipedia_1790304049998.md",
-        "learnedAt":  1790304050001
-    },
-    {
-        "id":  "url_https___lawsofux_com__1790303904597",
-        "type":  "documentation",
-        "title":  "https://lawsofux.com/",
-        "source":  "https://lawsofux.com/",
-        "tags":  [
-                     "docs",
-                     "guide",
-                     "ux",
-                     "ui",
-                     "design-principles",
-                     "cognitive-psychology",
-                     "hci",
-                     "design-system"
-                 ],
-        "summary":  "Laws of UX adalah kompilasi 30 prinsip psikologi kognitif dan perilaku manusia (seperti Hick\u0027s Law, Fitts\u0027s Law, Miller\u0027s Law, dan Jakob\u0027s Law) yang menjadi fondasi ilmiah untuk merancang antarmuka pengguna. Materi ini krusial bagi AI Agent Hermes dalam memberikan rekomendasi desain, audit UX, atau mengevaluasi keputusan UI karena setiap hukum memiliki dasar empiris yang dapat diterjemahkan menjadi aturan implementasi konkret.",
-        "keyTakeaways":  [
-                             "UX bukan soal selera, melainkan hasil dari hukum kognitif manusia yang terukur â€” seperti keterbatasan working memory (Miller\u0027s Law: 7Â±2 item) dan waktu keputusan (Hick\u0027s Law: waktu naik seiring jumlah pilihan).",
-                             "Desain yang baik mengurangi beban kognitif (Cognitive Load) melalui teknik Chunking, Law of Proximity, Law of Common Region, dan Law of PrÃ¤gnanz â€” mengelompokkan elemen menjadi unit bermakna agar mudah diproses.",
-                             "Familiaritas mengalahkan inovasi semata: Jakob\u0027s Law dan Mental Model mengajarkan bahwa pengguna lebih cepat memahami UI yang meniru pola yang sudah mereka kenal di situs/aplikasi lain.",
-                             "Persepsi dan retensi pengguna dapat direkayasa: Aesthetic-Usability Effect, Von Restorff Effect, Serial Position Effect, Peak-End Rule, dan Goal-Gradient Effect memengaruhi apakah pengguna menyukai, mengingat, dan menyelesaikan pengalaman."
-                         ],
-        "noteFile":  "knowledge/notes/url_https___lawsofux_com__1790303904596.md",
-        "learnedAt":  1790303904597
-    },
-    {
-        "id":  "repo_miqdadbadjuber_anti_slop",
-        "type":  "github_repo",
-        "title":  "miqdadbadjuber/anti-slop",
-        "source":  "https://github.com/miqdadbadjuber/anti-slop.git",
-        "tags":  [
-                     "miqdadbadjuber",
-                     "anti-slop",
-                     "ai-agent-rules",
-                     "prompt-architecture",
-                     "design-filter",
-                     "plugin-marketplace",
-                     "mcp-server",
-                     "agent-skills"
-                 ],
-        "summary":  "Repositori \"anti-slop\" adalah sistem aturan (rules) untuk AI coding agent yang berfungsi sebagai *filter* â€” bukan style guide â€” untuk menghapus \"AI slop\": copy generik, angka palsu, pola UI klise (sparkle logo, beta pill, fake terminal), tanpa membuat hasil jadi steril. Ia didistribusikan sebagai multi-plugin (Claude, Cline, Codex, Cursor, Kimi) dengan 38 aturan bertingkat (R-01 s/d R-38), Liveliness Toolkit, Delivery Gate, dan CLI + MCP server untuk validasi kontras.",
-        "keyTakeaways":  [
-                             "Arsitektur \"filter, not style guide\": repositori sengaja TIDAK menetapkan warna/font/layout â€” arah estetika diserahkan ke `DESIGN.md` milik user (R-37). Ini pemisahan concern yang tajam antara *removal* (anti-slop) vs *direction* (DESIGN.md).",
-                             "aturan terbagi tiga tier: **Hard Gate** (absolut, tidak bisa dinegosiasi), **Purpose-Gate** (teknik boleh dipakai, tapi wajib ada alasan/justifikasi), dan **Quality Locks** (menjaga konsistensi output).",
-                             "Distribusi plugin-first multi-ekosistem: file manifest terpisah untuk `.claude-plugin/`, `.cline-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.kimi-plugin/`, dan `.agents/plugins/`, semuanya menunjuk ke source yang sama (`./` atau `./skills/`).",
-                             "\"Additive skills\" â€” skill dimuat satu per concern, sehingga agent hanya load yang relevan (hemat context window, hemat token) alih-alih monolit prompt raksasa.",
-                             "Delivery Gate mewajibkan laporan PASS/FAIL empat blok sebelum artefak apa pun dikirim (ship), menjadikan proses self-audit sebagai bagian dari output, bukan langkah opsional.",
-                             "Ada MCP server `antislop-contrast` (diluncurkan via `node .claude-plugin/contrast-mcp-launcher.mjs`) yang mengindikasikan validasi aksesibilitas warna dijalankan sebagai tool callable oleh agent, bukan sekadar rule di teks prompt."
-                         ],
-        "noteFile":  "knowledge/notes/repo_miqdadbadjuber_anti_slop.md",
-        "learnedAt":  1790301322643
-    },
-    {
-        "id":  "url_attention_is_all_you_need_1790285409336",
-        "type":  "research_paper",
-        "title":  "Attention Is All You Need",
-        "source":  "https://arxiv.org/abs/1706.03762",
-        "tags":  [
-                     "arxiv",
-                     "paper-ai",
-                     "research",
-                     "transformer",
-                     "attention"
-                 ],
-        "summary":  "Paper ini memperkenalkan arsitektur Transformer, yang pertama kali mengandalkan mekanisme attention sepenuhnya tanpa memakai RNN/CNN untuk pemrosesan sekuensial. Transformer menjadi fondasi bagi model NLP modern seperti BERT, GPT, dan berbagai model multimodal. Kontribusi utamanya adalah multi-head self-attention, positional encoding, dan pelatihan yang sangat paralel dengan performa SOTA di bidang machine translation.",
-        "keyTakeaways":  [
-                             "Arsitektur Transformer menggantikan recurrent dan convolution layers dengan mekanisme attention, sehingga komputasi dapat diparalelkan dan jarak antar token dalam sekuens menjadi pendek (O(1) untuk setiap pasangan token).",
-                             "Inti dari Transformer adalah Scaled Dot-Product Attention: Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V.",
-                             "Multi-head attention memungkinkan model memperhatikan informasi dari berbagai representasi subspace secara bersamaan, meningkatkan kemampuan ekspresif dibanding attention tunggal.",
-                             "Posisi token dalam sekuens disuntikkan melalui positional encoding dengan fungsi sinus/kosinus, karena attention tidak memiliki urutan bawaan.",
-                             "Teknik pelatihan penting: Adam optimizer dengan learning rate warmup, label smoothing, dropout, residual connection, dan layer normalization."
-                         ],
-        "noteFile":  "knowledge/notes/url_attention_is_all_you_need_1790285409273.md",
-        "learnedAt":  1790285409336
-    },
-    {
-        "id":  "url_readme_md_1790285365892",
-        "type":  "code_file",
-        "title":  "nanoGPT (Andrej Karpathy)",
-        "source":  "https://raw.githubusercontent.com/karpathy/nanoGPT/master/README.md",
-        "tags":  [
-                     "nanogpt",
-                     "gpt-training",
-                     "deeplearning",
-                     "pytorch",
-                     "karpathy"
-                 ],
-        "summary":  "Dokumen ini adalah README dari repositori nanoGPT, implementasi GPT yang sederhana dan cepat untuk training/finetuning model GPT ukuran menengah. Materi menjelaskan cara instalasi, quick start training karakter Shakespeare, reproduksi GPT-2 di OpenWebText, finetuning, sampling, dan efisiensi komputasi. Nilai pentingnya terletak pada desain kode yang minimal, mudah di-hack, dan menjadi referensi praktis untuk memahami pipeline GPT end-to-end.",
-        "keyTakeaways":  [
-                             "nanoGPT adalah rewrite minGPT yang mengutamakan kesederhanaan: train.py dan model.py masing-masing ~300 baris; bisa memuat pretrained GPT-2 OpenAI.",
-                             "Workflow inti: siapkan data tokenisasi menjadi `train.bin`/`val.bin`, atur hyperparameter via config, jalankan `train.py`, lalu `sample.py` untuk generate teks.",
-                             "Reproduksi GPT-2 124M membutuhkan 8x A100 40GB dan DDP, sekitar 4 hari, mencapai loss ~2.85 pada OpenWebText.",
-                             "Finetuning tinggal menginisialisasi dari pretrained GPT-2 dengan `init_from` dan learning rate kecil; PyTorch 2.0 `compile` memberi speedup signifikan, tapi bisa dimatikan dengan `--compile=False`."
-                         ],
-        "noteFile":  "knowledge/notes/url_readme_md_1790285365872.md",
-        "learnedAt":  1790285365892
-    }
+  {
+    "id": "repo_repowise_dev_repowise",
+    "type": "github_repo",
+    "title": "repowise-dev/repowise",
+    "source": "https://github.com/repowise-dev/repowise.git",
+    "tags": [
+      "repowise-dev",
+      "repowise",
+      "codebase-intelligence",
+      "mcp",
+      "code-health",
+      "static-analysis",
+      "dependency-graph",
+      "git-analytics",
+      "dead-code-detection",
+      "architectural-decisions",
+      "ai-agents"
+    ],
+    "summary": "Repowise adalah tool codebase intelligence self-hosted yang mengindeks kode, dependency graph, riwayat git, tes, dokumentasi, dan keputusan arsitektur menjadi satu local index yang selalu update. Index tersebut disajikan ke developer dan AI agent melalui MCP, menghasilkan jawaban bersitasi, analisis dampak perubahan, skor code health, dan deteksi dead code — semuanya tanpa panggilan LLM untuk analisis inti.",
+    "keyTakeaways": [
+      "Arsitektur \"One index, three ways to use it\": satu local index persisten yang melayani tiga use-case (understand code, change safely, improve continuously) melalui editor, PR review, dashboard, dan multi-repo workspace.",
+      "Analisis inti (graph, risk, health, test, dead code, PR review) 100% deterministik tanpa LLM — LLM hanya opsional untuk prosa dokumentasi, memangkas biaya dan menjamin reproducibility.",
+      "Integrasi via MCP (Model Context Protocol) sebagai titik masuk utama untuk AI agent seperti Hermes, memungkinkan agent membaca pemahaman bersitasi tanpa harus \"rediscover\" codebase setiap turn.",
+      "Benchmark berbasis bukti: −31.6% output agent, 97.2% context payload lebih kecil (393 vs 13,984 token), 2.3× lebih banyak defect terdeteksi pada budget 20% baris — dengan metodologi, sampel, dan losing rows yang dipublikasikan.",
+      "Distribusi Python via PyPI, lisensi AGPL-3.0 dengan opsi komersial, mendukung self-hosting dengan core analysis tetap di infrastruktur pengguna (zero API key)."
+    ],
+    "noteFile": "knowledge/notes/repo_repowise_dev_repowise.md",
+    "learnedAt": 1790602267415
+  },
+  {
+    "id": "repo_xpf0000_flyenv",
+    "type": "github_repo",
+    "title": "xpf0000/FlyEnv",
+    "source": "https://github.com/xpf0000/FlyEnv.git",
+    "tags": [
+      "xpf0000",
+      "flyenv",
+      "local-dev-environment",
+      "electron",
+      "cross-platform",
+      "runtime-manager",
+      "mcp",
+      "ai-tooling",
+      "xampp-alternative"
+    ],
+    "summary": "FlyEnv adalah aplikasi desktop native cross-platform (Windows, macOS, Linux) yang berfungsi sebagai pengganti modern XAMPP/MAMP/Laragon/Laravel Herd untuk mengelola stack pengembangan lokal secara lengkap — runtime (PHP, Node.js, Python, Java, Go, .NET, dll), database (MySQL, PostgreSQL, MongoDB, Redis, ClickHouse, Neo4j, Qdrant), web server (Nginx, Apache, Caddy, FrankenPHP, Tomcat), hingga AI coding CLI dan MCP Server — semuanya tanpa container. Fokus utamanya adalah menyediakan workspace terpadu untuk menjalankan layanan native per-project tanpa overhead Docker, sekaligus menjadi jembatan antara workflow developer klasik dan tooling AI modern.",
+    "keyTakeaways": [
+      "Arsitektur \"native, no-container\" — menjalankan service sebagai proses OS langsung, bukan containerized, menggantikan peran XAMPP/Laragon/Docker Desktop untuk kebutuhan dev harian.",
+      "Manajemen runtime multi-versi per-project (PHP, Node, Python, Java, Go, Ruby, Rust, dll) sebagai inti orkestrasi.",
+      "Integrasi AI-first: mengelola AI coding CLIs (Claude Code, Codex, OpenCode, Kimi, Copilot CLI) dan mengekspos kapabilitas environment melalui built-in **FlyEnv MCP Server**.",
+      "Model abstraksi berbasis \"stack recipes\" (Laravel, Django, ERPNext, Gitea) yang menyusun kombinasi runtime + DB + web server + TLS dalam satu paket.",
+      "Cross-platform parity dengan virtual-hosting lokal (`myapp.test` + HTTPS cert + reverse proxy) sebagai layer HTTP yang menyeragamkan environment."
+    ],
+    "noteFile": "knowledge/notes/repo_xpf0000_flyenv.md",
+    "learnedAt": 1790594814699
+  },
+  {
+    "id": "repo_kuddev_pebrel",
+    "type": "github_repo",
+    "title": "Kuddev/pebrel",
+    "source": "https://github.com/Kuddev/pebrel.git",
+    "tags": [
+      "rust",
+      "gpui",
+      "terminal-emulator",
+      "gpu-accelerated",
+      "ssh",
+      "sftp",
+      "ai-cli",
+      "split-panes",
+      "persistent-sessions",
+      "windows",
+      "zed-framework",
+      "opengl"
+    ],
+    "summary": "Pebrel (sebelumnya Nebula) adalah terminal emulator native yang diakselerasi GPU, ditulis dengan Rust dan GPUI (framework UI dari Zed), yang menyatukan shell lokal, SSH/SFTP, persistent sessions, draggable split panes, dan alur kerja AI CLI (Claude Code, Codex, OpenCode) dalam satu workspace desktop untuk Windows, macOS, dan Linux. Repositori ini menonjol karena menjadikan sesi AI CLI sebagai warga kelas satu (first-class) — output agen dapat dipantau dan dibaca langsung tanpa berpindah aplikasi.",
+    "keyTakeaways": [
+      "Arsitektur UI berbasis GPUI (retained-mode, GPU-accelerated via OpenGL ES 2.0+) — mengorbankan portabilitas klasik terminal demi rendering vektor/tab/split yang mulus dan UI deklaratif yang mirip Zed Editor.",
+      "Pemisahan tegas antara shell lokal (PTY native) dan remote host (SSH/SFTP client), dengan model \"persistent sessions\" agar sesi tetap hidup antar reconnect/restart.",
+      "Sistem split panes draggable dengan hierarki tab (sidebar atau top tabs) sebagai unit komposisi utama workspace.",
+      "Integrasi AI CLI sebagai \"agent-aware workflow\": Pebrel mengawasi aktivitas agen (Claude Code, Codex, OpenCode) dan menyajikan output-nya dalam panel native (bukan sekadar terminal passthrough)."
+    ],
+    "noteFile": "knowledge/notes/repo_kuddev_pebrel.md",
+    "learnedAt": 1790591096257
+  },
+  {
+    "id": "repo_chromedevtools_devtools_frontend",
+    "type": "github_repo",
+    "title": "ChromeDevTools/devtools-frontend",
+    "source": "https://github.com/ChromeDevTools/devtools-frontend.git",
+    "tags": [
+      "ChromeDevTools",
+      "devtools-frontend"
+    ],
+    "summary": "Repositori ChromeDevTools/devtools-frontend",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/repo_chromedevtools_devtools_frontend.md",
+    "learnedAt": 1790587359095
+  },
+  {
+    "id": "news_ai_i_built_two_agent_systems__each_one_prov",
+    "type": "ai_tech_news",
+    "title": "I Built Two Agent Systems. Each One Proved the Other One Wrong.",
+    "source": "https://dev.to/debashish_ghosal/i-built-two-agent-systems-each-one-proved-the-other-one-wrong-1f58",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Membangun dua sistem agen — satu dengan review LLM, satu dengan debat LLM — menunjukkan bahwa tiap pendekatan punya kelemahan dan saling membantah; penting untuk memilih mekanisme evaluasi sesuai konteks.",
+    "keyTakeaways": [
+      "Intisari: Membangun dua sistem agen — satu dengan review LLM, satu dengan debat LLM — menunjukkan bahwa tiap pendekatan punya kelemahan dan saling membantah; penting untuk memilih mekanisme evaluasi sesuai konteks.",
+      "Sumber: Debashish Ghosal"
+    ],
+    "noteFile": "knowledge/notes/news_ai_i_built_two_agent_systems__each_one_prov.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "news_ai_what_an_anthill_can_teach_us_about_orche",
+    "type": "ai_tech_news",
+    "title": "What an anthill can teach us about orchestrating agents.",
+    "source": "https://dev.to/marcosomma/what-an-anthill-can-teach-us-about-orchestrating-agents-e2a",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Temuan dari simulator koloni semut (ant-sim) memberi pelajaran tentang orkestrasi agen: pola sederhana, interaksi lokal, dan umpan balik dapat menghasilkan perilaku kolektif yang efisien.",
+    "keyTakeaways": [
+      "Intisari: Temuan dari simulator koloni semut (ant-sim) memberi pelajaran tentang orkestrasi agen: pola sederhana, interaksi lokal, dan umpan balik dapat menghasilkan perilaku kolektif yang efisien.",
+      "Sumber: marcosomma"
+    ],
+    "noteFile": "knowledge/notes/news_ai_what_an_anthill_can_teach_us_about_orche.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "news_ai_i_tried_to_prompt_a_3d_dev_library_into_",
+    "type": "ai_tech_news",
+    "title": "I Tried to Prompt a 3D DEV Library Into Existence. Then I Had to Build My Own Level Editor.",
+    "source": "https://dev.to/mikachu/i-tried-to-prompt-a-3d-dev-library-into-existence-then-i-had-to-build-my-own-level-editor-37gf",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Eksperimen vibe-coding sebuah library 3D DEV menunjukkan bahwa prompt saja tidak cukup; penulis akhirnya harus membangun level editor sendiri, menyoroti batas AI dalam pengembangan tool 3D kompleks.",
+    "keyTakeaways": [
+      "Intisari: Eksperimen vibe-coding sebuah library 3D DEV menunjukkan bahwa prompt saja tidak cukup; penulis akhirnya harus membangun level editor sendiri, menyoroti batas AI dalam pengembangan tool 3D kompleks.",
+      "Sumber: Mika Flowers"
+    ],
+    "noteFile": "knowledge/notes/news_ai_i_tried_to_prompt_a_3d_dev_library_into_.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "news_ai_7_best_ai_project_management_tools_for_s",
+    "type": "ai_tech_news",
+    "title": "7 Best AI Project Management Tools for Software Development Teams in 2026",
+    "source": "https://dev.to/therealmrmumba/7-best-ai-project-management-tools-for-software-development-teams-in-2026-fik",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "AI mengubah manajemen proyek dari pelacakan tugas tradisional menjadi alur kerja yang digerakkan agen AI; daftar ini membahas tujuh alat terbaik untuk tim pengembangan perangkat lunak pada 2026.",
+    "keyTakeaways": [
+      "Intisari: AI mengubah manajemen proyek dari pelacakan tugas tradisional menjadi alur kerja yang digerakkan agen AI; daftar ini membahas tujuh alat terbaik untuk tim pengembangan perangkat lunak pada 2026.",
+      "Sumber: Emmanuel Mumba"
+    ],
+    "noteFile": "knowledge/notes/news_ai_7_best_ai_project_management_tools_for_s.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "news_ai_implementation_is_where_judgements_go_to",
+    "type": "ai_tech_news",
+    "title": "Implementation is where judgements go to become invisible",
+    "source": "https://dev.to/tom_jones_230c4659491adcd/implementation-is-where-judgements-go-to-become-invisible-4p1h",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Implementasi sering membuat keputusan atau penilaian menjadi tidak terlihat; artikel ini menyoroti bagaimana pilihan teknis menyembunyikan asumsi dan trade-off yang perlu diwaspadai developer.",
+    "keyTakeaways": [
+      "Intisari: Implementasi sering membuat keputusan atau penilaian menjadi tidak terlihat; artikel ini menyoroti bagaimana pilihan teknis menyembunyikan asumsi dan trade-off yang perlu diwaspadai developer.",
+      "Sumber: Tom Jones"
+    ],
+    "noteFile": "knowledge/notes/news_ai_implementation_is_where_judgements_go_to.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_onyx_dot_app_onyx",
+    "type": "ai_github_repo",
+    "title": "onyx-dot-app/onyx",
+    "source": "https://github.com/onyx-dot-app/onyx",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Platform AI sumber terbuka untuk chat AI dengan fitur lanjutan yang kompatibel dengan berbagai LLM; cocok untuk membangun asisten internal perusahaan.",
+    "keyTakeaways": [
+      "Fungsi: Platform AI sumber terbuka untuk chat AI dengan fitur lanjutan yang kompatibel dengan berbagai LLM; cocok untuk membangun asisten internal perusahaan.",
+      "Bahasa: Python | Stars: 32263"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_onyx_dot_app_onyx.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_1ay1_agentty",
+    "type": "ai_github_repo",
+    "title": "1ay1/agentty",
+    "source": "https://github.com/1ay1/agentty",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "c++"
+    ],
+    "summary": "Pair programming AI di terminal dengan satu binary statis, waktu mulai sub-milidetik, dan dukungan model apa pun; praktis untuk alur kerja coding cepat tanpa dependensi berat.",
+    "keyTakeaways": [
+      "Fungsi: Pair programming AI di terminal dengan satu binary statis, waktu mulai sub-milidetik, dan dukungan model apa pun; praktis untuk alur kerja coding cepat tanpa dependensi berat.",
+      "Bahasa: C++ | Stars: 614"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_1ay1_agentty.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_modelengine_group_nexent",
+    "type": "ai_github_repo",
+    "title": "ModelEngine-Group/nexent",
+    "source": "https://github.com/ModelEngine-Group/nexent",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Platform zero-code untuk otomatis menghasilkan agen AI siap produksi dengan prinsip Harness Engineering; menyatukan tools, skills, memori, dan orkestrasi plus batasan, loop umpan balik, serta control plane bawaan.",
+    "keyTakeaways": [
+      "Fungsi: Platform zero-code untuk otomatis menghasilkan agen AI siap produksi dengan prinsip Harness Engineering; menyatukan tools, skills, memori, dan orkestrasi plus batasan, loop umpan balik, serta control plane bawaan.",
+      "Bahasa: Python | Stars: 5893"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_modelengine_group_nexent.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_graphify_labs_graphify",
+    "type": "ai_github_repo",
+    "title": "Graphify-Labs/graphify",
+    "source": "https://github.com/Graphify-Labs/graphify",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Mengubah codebase, dokumentasi, skema SQL, konfigurasi, dan PDF menjadi knowledge graph yang bisa di-query; skill /graphify untuk Claude Code, Cursor, Codex, Gemini CLI dengan parsing AST lokal deterministik, setiap edge dijelaskan, tanpa vector store.",
+    "keyTakeaways": [
+      "Fungsi: Mengubah codebase, dokumentasi, skema SQL, konfigurasi, dan PDF menjadi knowledge graph yang bisa di-query; skill /graphify untuk Claude Code, Cursor, Codex, Gemini CLI dengan parsing AST lokal deterministik, setiap edge dijelaskan, tanpa vector store.",
+      "Bahasa: Python | Stars: 121974"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_graphify_labs_graphify.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_deepset_ai_haystack",
+    "type": "ai_github_repo",
+    "title": "deepset-ai/haystack",
+    "source": "https://github.com/deepset-ai/haystack",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Framework orkestrasi AI sumber terbuka untuk membangun aplikasi LLM siap produksi berbasis context engineering; mendukung pipeline modular, alur agen, retrieval, routing, memori, generasi, RAG, multimodal, semantic search, dan sistem percakapan.",
+    "keyTakeaways": [
+      "Fungsi: Framework orkestrasi AI sumber terbuka untuk membangun aplikasi LLM siap produksi berbasis context engineering; mendukung pipeline modular, alur agen, retrieval, routing, memori, generasi, RAG, multimodal, semantic search, dan sistem percakapan.",
+      "Bahasa: Python | Stars: 26621"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_deepset_ai_haystack.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_promptfoo_promptfoo",
+    "type": "ai_github_repo",
+    "title": "promptfoo/promptfoo",
+    "source": "https://github.com/promptfoo/promptfoo",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Alat untuk menguji prompt, agen, dan RAG; red teaming/pentest/scan kerentanan AI serta membandingkan performa GPT, Claude, Gemini, DeepSeek, dan lainnya dengan konfigurasi deklaratif dan integrasi CLI/CI-CD.",
+    "keyTakeaways": [
+      "Fungsi: Alat untuk menguji prompt, agen, dan RAG; red teaming/pentest/scan kerentanan AI serta membandingkan performa GPT, Claude, Gemini, DeepSeek, dan lainnya dengan konfigurasi deklaratif dan integrasi CLI/CI-CD.",
+      "Bahasa: TypeScript | Stars: 25518"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_promptfoo_promptfoo.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_langbot_app_langbot",
+    "type": "ai_github_repo",
+    "title": "langbot-app/LangBot",
+    "source": "https://github.com/langbot-app/LangBot",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Platform produksi untuk membangun bot IM agentik multi-platform dengan orkestrasi agen, knowledge base, dan plugin; mendukung integrasi ChatGPT, DeepSeek, Dify, n8n, Langflow, Coze, Claude, Gemini, GLM, Ollama, dan lainnya.",
+    "keyTakeaways": [
+      "Fungsi: Platform produksi untuk membangun bot IM agentik multi-platform dengan orkestrasi agen, knowledge base, dan plugin; mendukung integrasi ChatGPT, DeepSeek, Dify, n8n, Langflow, Coze, Claude, Gemini, GLM, Ollama, dan lainnya.",
+      "Bahasa: Python | Stars: 17972"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_langbot_app_langbot.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_ongridio_ongrid",
+    "type": "ai_github_repo",
+    "title": "ongridio/ongrid",
+    "source": "https://github.com/ongridio/ongrid",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "go"
+    ],
+    "summary": "Agen AI operasional yang memahami infrastruktur, menemukan akar masalah, dan memperbaikinya langsung dari Slack, Telegram, Lark, atau DingTalk; berguna untuk otomasi SRE/DevOps.",
+    "keyTakeaways": [
+      "Fungsi: Agen AI operasional yang memahami infrastruktur, menemukan akar masalah, dan memperbaikinya langsung dari Slack, Telegram, Lark, atau DingTalk; berguna untuk otomasi SRE/DevOps.",
+      "Bahasa: Go | Stars: 1083"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_ongridio_ongrid.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_teleai_uagi_awesome_agent_memory",
+    "type": "ai_github_repo",
+    "title": "TeleAI-UAGI/Awesome-Agent-Memory",
+    "source": "https://github.com/TeleAI-UAGI/Awesome-Agent-Memory",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Kumpulan sistem, benchmark, dan paper tentang memori untuk LLM/MLLM, mencakup konteks jangka panjang, retrieval, dan reasoning; cocok sebagai referensi arsitektur memori agen.",
+    "keyTakeaways": [
+      "Fungsi: Kumpulan sistem, benchmark, dan paper tentang memori untuk LLM/MLLM, mencakup konteks jangka panjang, retrieval, dan reasoning; cocok sebagai referensi arsitektur memori agen.",
+      "Bahasa: Python | Stars: 651"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_teleai_uagi_awesome_agent_memory.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_ai_deeplethe_utopia",
+    "type": "ai_github_repo",
+    "title": "deeplethe/utopia",
+    "source": "https://github.com/deeplethe/utopia",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "rust"
+    ],
+    "summary": "Model dunia perusahaan sumber terbuka pertama; berguna bagi developer untuk membangun simulasi proses bisnis dan agen AI yang memahami konteks organisasi.",
+    "keyTakeaways": [
+      "Fungsi: Model dunia perusahaan sumber terbuka pertama; berguna bagi developer untuk membangun simulasi proses bisnis dan agen AI yang memahami konteks organisasi.",
+      "Bahasa: Rust | Stars: 7931"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_deeplethe_utopia.md",
+    "learnedAt": 1790585383544
+  },
+  {
+    "id": "repo_inferstep_atlas",
+    "type": "github_repo",
+    "title": "inferstep/ATLAS",
+    "source": "https://github.com/inferstep/ATLAS.git",
+    "tags": [
+      "inferstep",
+      "atlas",
+      "deeplearning",
+      "architecture",
+      "coding-agent",
+      "test-time-learning",
+      "local-llm",
+      "gguf",
+      "self-hosted",
+      "autonomous-specialization",
+      "sandboxed-execution",
+      "model-agnostic"
+    ],
+    "summary": "ATLAS (Adaptive Test-time Learning and Autonomous Specialization) adalah local coding agent open-source (AGPL-3.0) yang membungkus model bahasa kecil/terbuka dengan lapisan sistem cerdas — planning, candidate generation, quality scoring, sandboxed testing, dan repair — sehingga model GGUF lokal dapat menyelesaikan pekerjaan rekayasa perangkat lunak nyata tanpa API berbayar atau dependensi cloud.",
+    "keyTakeaways": [
+      "Arsitektur \"system-around-the-model\": bukan menambah parameter, tetapi menambah loop reasoning (plan → generate kandidat → skor → uji di sandbox → repair) untuk menghasilkan kualitas setara frontier dari model compact.",
+      "Compute adaptif berbasis kesulitan tugas: edit sederhana melalui jalur cepat, tugas sulit mendapat lebih banyak kandidat, reasoning, dan validasi (adaptive test-time compute).",
+      "Verifikasi-first: kode wajib lolos kompilasi/tes di lingkungan eksekusi terisolasi sebelum diterima — menolak halusinasi model.",
+      "Self-hosted & model-agnostic: kompatibel dengan GGUF pada NVIDIA, AMD, Apple Silicon, Vulkan, atau CPU; autentikasi memakai service token lokal per-instalasi; tidak ada upload repo/prompt ke layanan ATLAS.",
+      "Infrastruktur produksi V3.1.x: SQLite state store (menggantikan Redis), staged upgrade/rollback dengan auto-restore, signed artifact manifests, structured logs + correlation IDs, TUI interaktif, dan sandbox dengan kontrol jaringan via `ATLAS_SANDBOX_NET_INTERNAL`."
+    ],
+    "noteFile": "knowledge/notes/repo_inferstep_atlas.md",
+    "learnedAt": 1790539433254
+  },
+  {
+    "id": "repo_fallow_rs_fallow",
+    "type": "github_repo",
+    "title": "fallow-rs/fallow",
+    "source": "https://github.com/fallow-rs/fallow.git",
+    "tags": [
+      "fallow-rs",
+      "fallow"
+    ],
+    "summary": "Repositori fallow-rs/fallow",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/repo_fallow_rs_fallow.md",
+    "learnedAt": 1790598519734
+  },
+  {
+    "id": "repo_kirodotdev_kirocrew",
+    "type": "github_repo",
+    "title": "kirodotdev/KiroCrew",
+    "source": "https://github.com/kirodotdev/KiroCrew.git",
+    "tags": [
+      "kirodotdev",
+      "kirocrew",
+      "persistent-agent",
+      "local-first-ai",
+      "self-improving-workspace",
+      "multi-channel-agent"
+    ],
+    "summary": "Kiro Crew adalah workspace pengembangan open-source berbasis Python yang menjalankan AI agent secara lokal (atau remote) di hardware pengguna, bersifat persisten lintas sesi, self-learning, dan self-evolving. Repositori ini menyediakan agent yang dapat dipanggil melalui CLI, dashboard web, desktop app, serta kanal messaging (Slack, Discord), dengan dukungan tugas multi-langkah unattended, recurring jobs, dan heartbeat monitoring.",
+    "keyTakeaways": [
+      "Arsitektur \"local-first persistent agent\" dengan state yang bertahan antar sesi, memungkinkan pekerjaan lanjut otomatis tanpa kehilangan konteks",
+      "Bootstrap entrypoint tunggal (`kiro_crew._bootstrap:main`) sebagai CLI, dengan dynamic dependencies pada `[project]` yang tetap membaca metadata dari `setup.cfg` (via `dynamic = [\"dependencies\", \"optional-dependencies\"]`)",
+      "Dukungan multiplatform dan cross-architecture yang eksplisit: macOS x86_64/arm64, Linux x86_64/aarch64, Python 3.12–3.13, dengan probe CI khusus Windows yang memverifikasi ACL, owner SID, symlink, dan rename sebelum tests dijalankan",
+      "Pemisahan tanggung jawab antara runtime (setup.cfg) dan dev tooling (dependency-groups) untuk reproducibility CI, termasuk validasi schema JSON, PyJWT, jsonschema, dan pytest-split untuk sharding paralel",
+      "Prinsip keselamatan operasional: `.vulnerability-exceptions.json` (dengan schema), `.semgrepignore`, `.woke.yml`, dan review CLI yang di-pin via lockfile (`@anthropic-ai/claude-code` dan `@openai/codex`) untuk memastikan apa yang dieksekusi di CI atas konten PR hanya berubah melalui commit"
+    ],
+    "noteFile": "knowledge/notes/repo_kirodotdev_kirocrew.md",
+    "learnedAt": 1790528346980
+  },
+  {
+    "id": "repo_tensorchord_envd",
+    "type": "github_repo",
+    "title": "tensorchord/envd",
+    "source": "https://github.com/tensorchord/envd.git",
+    "tags": [
+      "tensorchord",
+      "envd",
+      "development-environment",
+      "buildkit",
+      "starlark",
+      "oci",
+      "ai-ml",
+      "reproducible-environment",
+      "golang",
+      "kubernetes"
+    ],
+    "summary": "envd adalah CLI berbasis Go yang membangun development environment container untuk AI/ML dari deklarasi Starlark (`build.envd`). Repositori ini menggabungkan BuildKit sebagai build engine, SSH-based access (envd-sshd), dan abstraksi context (local Docker / Kubernetes cluster) untuk menghasilkan environment reproducible yang OCI-compatible dan bisa di-cache secara remote.",
+    "keyTakeaways": [
+      "Deklarasi environment menggunakan DSL Starlark (Python-like) di `build.envd`, diinterpretasikan oleh Go via `go.starlark.net`, sehingga user tidak perlu belajar DSL baru.",
+      "Arsitektur pipeline berlapis: CLI Go → Starlark interpreter → BuildKit frontend (custom) → OCI image, dengan `envd-sshd` sebagai entrypoint runtime SSH.",
+      "Multi-context abstraction: `envd context use local` / `use cluster` memungkinkan pengalaman sama di laptop maupun Kubernetes, dengan `envd-server` sebagai backend cluster.",
+      "Remote cache (`build.envd --export-cache type=registry,ref=...`) memungkinkan build incremental sangat cepat & konsisten antar mesin, kunci utama reproducible development environment.",
+      "Distribusi hybrid: binary Go (via goreleaser/Makefile) dan paket Python (`setup.py` mendeteksi/build `bin/envd` on-the-fly lalu diinstal via pip)."
+    ],
+    "noteFile": "knowledge/notes/repo_tensorchord_envd.md",
+    "learnedAt": 1790513678459
+  },
+  {
+    "id": "news_ai_openai_function_calling_and_structured_j",
+    "type": "ai_tech_news",
+    "title": "OpenAI Function Calling and Structured JSON Outputs Best Practices",
+    "source": "https://dev.to",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Panduan arsitektur modern dalam memastikan response AI 100% konsisten dengan skema JSON untuk integrasi API backend yang andal.",
+    "keyTakeaways": [
+      "Intisari: Panduan arsitektur modern dalam memastikan response AI 100% konsisten dengan skema JSON untuk integrasi API backend yang andal.",
+      "Sumber: Fullstack AI Dev"
+    ],
+    "noteFile": "knowledge/notes/news_ai_openai_function_calling_and_structured_j.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "news_ai_local_llm_inference_optimization_on_cons",
+    "type": "ai_tech_news",
+    "title": "Local LLM Inference Optimization on Consumer GPUs",
+    "source": "https://dev.to",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Perkembangan kuantisasi 4-bit, FlashAttention, dan teknik offloading memori yang memungkinkan model besar berjalan mulus di GPU laptop dan desktop.",
+    "keyTakeaways": [
+      "Intisari: Perkembangan kuantisasi 4-bit, FlashAttention, dan teknik offloading memori yang memungkinkan model besar berjalan mulus di GPU laptop dan desktop.",
+      "Sumber: ML Engineering"
+    ],
+    "noteFile": "knowledge/notes/news_ai_local_llm_inference_optimization_on_cons.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "news_ai_model_context_protocol__mcp___the_new_st",
+    "type": "ai_tech_news",
+    "title": "Model Context Protocol (MCP): The New Standard for AI Tooling",
+    "source": "https://dev.to",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Standarisasi protokol terbuka yang memungkinkan model LLM berinteraksi secara aman dengan database, API lokal, dan environment developer.",
+    "keyTakeaways": [
+      "Intisari: Standarisasi protokol terbuka yang memungkinkan model LLM berinteraksi secara aman dengan database, API lokal, dan environment developer.",
+      "Sumber: Open Source AI"
+    ],
+    "noteFile": "knowledge/notes/news_ai_model_context_protocol__mcp___the_new_st.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "news_ai_the_rise_of_autonomous_ai_coding_agents_",
+    "type": "ai_tech_news",
+    "title": "The Rise of Autonomous AI Coding Agents in Fullstack Development",
+    "source": "https://dev.to",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Membahas bagaimana coding agent modern berevolusi dari sekadar autocompletion menjadi agen otonom yang mampu menjalankan terminal, testing, dan deployment.",
+    "keyTakeaways": [
+      "Intisari: Membahas bagaimana coding agent modern berevolusi dari sekadar autocompletion menjadi agen otonom yang mampu menjalankan terminal, testing, dan deployment.",
+      "Sumber: Tech Insights"
+    ],
+    "noteFile": "knowledge/notes/news_ai_the_rise_of_autonomous_ai_coding_agents_.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "news_ai_deepseek_v3_and_r1_architecture_breakthr",
+    "type": "ai_tech_news",
+    "title": "DeepSeek-V3 and R1 Architecture Breakthroughs in Open Source AI",
+    "source": "https://dev.to",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Inovasi arsitektur Mixture of Experts (MoE) dan Multi-head Latent Attention (MLA) yang menyaingi model komersial tertutup dengan efisiensi komputasi ekstrem.",
+    "keyTakeaways": [
+      "Intisari: Inovasi arsitektur Mixture of Experts (MoE) dan Multi-head Latent Attention (MLA) yang menyaingi model komersial tertutup dengan efisiensi komputasi ekstrem.",
+      "Sumber: AI Research Group"
+    ],
+    "noteFile": "knowledge/notes/news_ai_deepseek_v3_and_r1_architecture_breakthr.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_karpathy_nanogpt",
+    "type": "ai_github_repo",
+    "title": "karpathy/nanoGPT",
+    "source": "https://github.com/karpathy/nanoGPT",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Repositori paling sederhana dan tercepat untuk melatih dan memahami arsitektur Transformer GPT dari nol",
+    "keyTakeaways": [
+      "Fungsi: Repositori paling sederhana dan tercepat untuk melatih dan memahami arsitektur Transformer GPT dari nol",
+      "Bahasa: Python | Stars: 36000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_karpathy_nanogpt.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_comfyanonymous_comfyui",
+    "type": "ai_github_repo",
+    "title": "comfyanonymous/ComfyUI",
+    "source": "https://github.com/comfyanonymous/ComfyUI",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Antarmuka grafis modular berbasis node tercanggih untuk mendesain alur kerja Stable Diffusion dan Generative AI",
+    "keyTakeaways": [
+      "Fungsi: Antarmuka grafis modular berbasis node tercanggih untuk mendesain alur kerja Stable Diffusion dan Generative AI",
+      "Bahasa: Python | Stars: 55000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_comfyanonymous_comfyui.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_openbb_finance_openbbterminal",
+    "type": "ai_github_repo",
+    "title": "OpenBB-finance/OpenBBTerminal",
+    "source": "https://github.com/OpenBB-finance/OpenBBTerminal",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Platform analitik finansial dan riset pasar komprehensif bertenaga AI agent open-source",
+    "keyTakeaways": [
+      "Fungsi: Platform analitik finansial dan riset pasar komprehensif bertenaga AI agent open-source",
+      "Bahasa: Python | Stars: 38000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_openbb_finance_openbbterminal.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_run_llama_llamaindexts",
+    "type": "ai_github_repo",
+    "title": "run-llama/LlamaIndexTS",
+    "source": "https://github.com/run-llama/LlamaIndexTS",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Framework orkestrasi data, indexing dokumen, dan Retrieval-Augmented Generation (RAG) untuk ekosistem TypeScript",
+    "keyTakeaways": [
+      "Fungsi: Framework orkestrasi data, indexing dokumen, dan Retrieval-Augmented Generation (RAG) untuk ekosistem TypeScript",
+      "Bahasa: TypeScript | Stars: 6000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_run_llama_llamaindexts.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_continuedev_continue",
+    "type": "ai_github_repo",
+    "title": "continuedev/continue",
+    "source": "https://github.com/continuedev/continue",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Asisten coding AI open-source terkemuka yang terintegrasi langsung di editor VS Code dan JetBrains",
+    "keyTakeaways": [
+      "Fungsi: Asisten coding AI open-source terkemuka yang terintegrasi langsung di editor VS Code dan JetBrains",
+      "Bahasa: TypeScript | Stars: 21000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_continuedev_continue.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_modelcontextprotocol_servers",
+    "type": "ai_github_repo",
+    "title": "modelcontextprotocol/servers",
+    "source": "https://github.com/modelcontextprotocol/servers",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Koleksi implementasi standar Model Context Protocol (MCP) untuk menghubungkan AI dengan tool eksternal dan database",
+    "keyTakeaways": [
+      "Fungsi: Koleksi implementasi standar Model Context Protocol (MCP) untuk menghubungkan AI dengan tool eksternal dan database",
+      "Bahasa: TypeScript | Stars: 12000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_modelcontextprotocol_servers.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_browser_use_browser_use",
+    "type": "ai_github_repo",
+    "title": "browser-use/browser-use",
+    "source": "https://github.com/browser-use/browser-use",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "AI agent otonom yang mampu mengendalikan browser web untuk scraping otomatis, pengisian form, dan navigasi data",
+    "keyTakeaways": [
+      "Fungsi: AI agent otonom yang mampu mengendalikan browser web untuk scraping otomatis, pengisian form, dan navigasi data",
+      "Bahasa: Python | Stars: 22000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_browser_use_browser_use.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_vllm_project_vllm",
+    "type": "ai_github_repo",
+    "title": "vllm-project/vllm",
+    "source": "https://github.com/vllm-project/vllm",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Engine inferensi dan serving LLM performa tinggi dengan throughput ultra-cepat memanfaatkan teknik PagedAttention",
+    "keyTakeaways": [
+      "Fungsi: Engine inferensi dan serving LLM performa tinggi dengan throughput ultra-cepat memanfaatkan teknik PagedAttention",
+      "Bahasa: Python | Stars: 32000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_vllm_project_vllm.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_ollama_ollama",
+    "type": "ai_github_repo",
+    "title": "ollama/ollama",
+    "source": "https://github.com/ollama/ollama",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "go"
+    ],
+    "summary": "Platform paling populer dan efisien untuk menjalankan model AI besar seperti Llama 3, DeepSeek, dan Mistral secara lokal",
+    "keyTakeaways": [
+      "Fungsi: Platform paling populer dan efisien untuk menjalankan model AI besar seperti Llama 3, DeepSeek, dan Mistral secara lokal",
+      "Bahasa: Go | Stars: 98000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_ollama_ollama.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_ai_langchain_ai_langchainjs",
+    "type": "ai_github_repo",
+    "title": "langchain-ai/langchainjs",
+    "source": "https://github.com/langchain-ai/langchainjs",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Framework orkestrasi aplikasi LLM, chains, dan agen AI cerdas berbasis JavaScript dan TypeScript",
+    "keyTakeaways": [
+      "Fungsi: Framework orkestrasi aplikasi LLM, chains, dan agen AI cerdas berbasis JavaScript dan TypeScript",
+      "Bahasa: TypeScript | Stars: 14000"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_langchain_ai_langchainjs.md",
+    "learnedAt": 1790498897421
+  },
+  {
+    "id": "repo_esengine_deepseek_reasonix",
+    "type": "github_repo",
+    "title": "esengine/DeepSeek-Reasonix",
+    "source": "https://github.com/esengine/DeepSeek-Reasonix.git",
+    "tags": [
+      "esengine",
+      "DeepSeek-Reasonix"
+    ],
+    "summary": "Reasonix adalah AI coding agent open-source (MIT) berbahasa Go yang dikompilasi menjadi satu binary tunggal, dirancang khusus untuk DeepSeek dan dioptimalkan di sekitar *prefix-cache stability* sehingga aman dibiarkan berjalan lama (long autonomous run). Satu engine lokal diekspos lewat empat antarmuka — terminal (TUI Bubble Tea v2), desktop Studio, browser via WebSocket, dan editor via protokol ACP — dengan plan mode, sistem permission, workspace sandbox, serta checkpoint per-turn yang membuat setiap langkah dapat dibaca ulang dan di-undo.",
+    "keyTakeaways": [
+      "Prefix-cache stability sebagai constraint arsitektur utama**: seluruh pipeline konteks dirancang agar byte yang dikirim ke model identik antar-turn kecuali benar-benar berubah secara semantik — invalidation palsu (false positive) dianggap sama merugikan dengan perubahan yang terlewat.",
+      "\"Truth is measured, not declared\"**: benchmark `catalog-detector` tidak mendeklarasikan perubahan secara manual, melainkan me-render blok proyeksi (apa yang benar-benar dilihat model) sebelum dan sesudah, lalu membandingkan digest-nya sebagai ground truth.",
+      "Tiga detektor perubahan dengan trade-off biaya/kebenaran eksplisit**: `projection` (walk + read, akurat), `metadata` (path+size+mtime, murah tapi bisa salah), `observed-write"
+    ],
+    "noteFile": "knowledge/notes/repo_esengine_deepseek_reasonix.md",
+    "learnedAt": 1790524665859
+  },
+  {
+    "id": "repo_qwenlm_qwen_code",
+    "type": "github_repo",
+    "title": "QwenLM/qwen-code",
+    "source": "https://github.com/QwenLM/qwen-code.git",
+    "tags": [
+      "qwenlm",
+      "qwen-code",
+      "ai-coding-agent",
+      "terminal-agent",
+      "monorepo",
+      "mcp",
+      "subagents",
+      "multi-protocol",
+      "cli",
+      "pnpm-workspace",
+      "typescript",
+      "vs-code-extension",
+      "chat-integrations",
+      "auto-memory",
+      "auto-skills",
+      "agent-teams"
+    ],
+    "summary": "Qwen Code adalah AI coding agent open-source yang berjalan di terminal, editor, desktop, browser, dan chat (Telegram/DingTalk/WeChat/Feishu). Dibangun sebagai monorepo pnpm/TypeScript dengan arsitektur berbasis skill, memory, goals, sub-agents, dan MCP, mendukung multi-protocol (OpenAI, Anthropic, Gemini, Qwen) serta model lokal (Ollama/vLLM). Repo ini dirancang agar agent dapat mengiterasi dirinya sendiri melalui workflow GitHub Actions autofix yang sangat matang.",
+    "keyTakeaways": [
+      "Monorepo workspace pnpm** (Node ≥ 22, `type: module`) dengan `packages/core` sebagai inti, dan channel per-platform (`telegram`, `weixin`, `dingtalk`, `wecom`, `feishu`, `qqbot`, `github`, `gitlab`, `dws`).",
+      "Arsitektur inti terbagi rapi**: `packages/core/src/{agents,skills,memory,goals,telemetry,extension,config,core,services,tools,utils}` — tiap modul punya CODEOWNERS di `.github/issue-owners.json`.",
+      "Konsep Agentic out-of-the-box**: Auto-Memory, Auto-Skills, SubAgents, Agent Teams, dan MCP sebagai primitif bawaan (bukan plugin eksternal).",
+      "Multi-protocol LLM routing** (OpenAI/Anthropic/Gemini/Qwen + Ollama/vLLM) yang dapat diganti runtime — menghindari vendor lock-in.",
+      "CI/CD autofix yang sangat defensif**: workflow `.github/workflows/qwen-autofix.yml` + script shell yang memisahkan file publikasi berkredensial, heartbeat live-progress, dan hermetic pins untuk mencegah eksfiltrasi PAT.",
+      "Hermetic design pattern**: skrip CI membaca file dari *trusted base checkout* (bukan branch) lalu mengalirkannya lewat step output — mencegah supply-chain attack dari branch PR.",
+      "Cross-platform delivery**: VS Code companion build, sandbox container image (`ghcr.io/qwenlm/qwen-code`), dan SDK/web-shell."
+    ],
+    "noteFile": "knowledge/notes/repo_qwenlm_qwen_code.md",
+    "learnedAt": 1790502691899
+  },
+  {
+    "id": "repo_n8n_io_n8n",
+    "type": "github_repo",
+    "title": "n8n-io/n8n",
+    "source": "https://github.com/n8n-io/n8n.git",
+    "tags": [
+      "n8n-io",
+      "n8n",
+      "workflow-automation",
+      "fair-code",
+      "ai-agents",
+      "langchain",
+      "monorepo",
+      "nodejs",
+      "turborepo",
+      "self-hosted",
+      "visual-programming",
+      "low-code"
+    ],
+    "summary": "n8n adalah platform automation workflow fair-code yang menggabungkan visual canvas building dengan kode kustom (JavaScript/Python), memiliki kemampuan AI-native melalui integrasi LangChain, 1500+ integrasi bawaan, dan dapat di-deploy self-hosted maupun cloud. Repositori ini adalah monorepo TypeScript/Node.js berskala besar (v2.41.0) yang mengelola editor UI, engine eksekusi workflow, node integrations, dan paket-paket internal via pnpm workspaces + Turborepo.",
+    "keyTakeaways": [
+      "Monorepo Turborepo + pnpm workspaces** dengan ratusan package (`n8n`, `n8n-core`, `n8n-editor-ui`, `@n8n/n8n-nodes-langchain`, `@n8n/design-system`, dll) yang di-orchestrate melalui script build bertahap (`build-n8n.mjs` → `dockerize-n8n.mjs`).",
+      "Arsitektur AI-native**: paket `@n8n/n8n-nodes-langchain` mengintegrasikan LangChain sebagai layer abstraksi AI, memungkinkan agent multi-step, tool use, RAG, dan provider-agnostic LLM (OpenAI, Anthropic, Google, open-source). `@n8n/ai-workflow-builder.ee` menyediakan AI-generated workflow (enterprise edition).",
+      "Fair-code licensing model** (Sustainable Use License + Enterprise License): source-available, self-hostable, extensible, dengan fitur enterprise terpisah (EE).",
+      "Disiplin dependency management ketat**: ada catalog `pnpm-workspace.yaml`, baseline `.code-health-baseline.json` yang melacak pelanggaran `catalog-violations` dan `single-instance-libs` (untuk lib runtime seperti `@langchain/core`, `zod`, `form-data` yang harus peerDependency agar tidak dobel instance).",
+      "Developer experience terintegrasi AI coding agents**: folder `.claude/plugins/n8n/` (Claude Code plugin), `.agents/skills`, `.opencode/skills` — repo ini mendukung AI agent untuk memahami & mengembangkan n8n sendiri (self-developing platform)."
+    ],
+    "noteFile": "knowledge/notes/repo_n8n_io_n8n.md",
+    "learnedAt": 1790583658430
+  },
+  {
+    "id": "repo_darrenburns_posting",
+    "type": "github_repo",
+    "title": "darrenburns/posting",
+    "source": "https://github.com/darrenburns/posting.git",
+    "tags": [
+      "darrenburns",
+      "posting",
+      "tui",
+      "http-client",
+      "textual",
+      "pydantic",
+      "click",
+      "httpx",
+      "api-testing",
+      "terminal-app",
+      "python"
+    ],
+    "summary": "Posting adalah HTTP client modern berbasis TUI (Textual User Interface) yang berjalan di terminal, dirancang sebagai alternatif Postman/Insomnia untuk workflow keyboard-centric dan dapat digunakan lewat SSH. Request disimpan sebagai file YAML lokal sehingga mudah dibaca, di-diff, dan di-version control. Aplikasi ini dibangun di atas Python 3.11+, Textual 6.1.0, Pydantic v2, httpx, dan Click, dengan dukungan impor/ekspor cURL, Postman, dan OpenAPI.",
+    "keyTakeaways": [
+      "Lazy Import & Monkeypatch httpx** — Modul `httpx._main` di-*null*-kan di `sys.modules` untuk mencegah httpx memuat CLI-nya yang tidak dibutuhkan, menghemat startup time TUI secara signifikan. Import berat (OpenAPI parser) juga di-*defer* ke dalam command handler (`__main__.py`).",
+      "Monitoring startup via `_start_time.py`** — Modul khusus yang di-import *paling pertama* di `posting/__init__.py` untuk menangkap `time.perf_counter_ns()` sedini mungkin, memungkinkan pengukuran presisi waktu cold-start aplikasi.",
+      "Click `DefaultGroup` dengan `default_if_no_args=True`** — Pola CLI yang membuat `posting` tanpa argumen langsung menjalankan subcommand `default` (buka TUI), sekaligus menyediakan subcommand lain seperti `locate` dan `import` sebagai CLI biasa.",
+      "Domain model Pydantic-driven (Collection-as-data)** — Request, Auth, Cookie, Header, QueryParam, RequestBody, FormItem, Options, Scripts semuanya Pydantic model; diserialisasi ke YAML sehingga file collection = source of truth yang bisa di-VCS.",
+      "XDG-compliant storage + Watchfiles** — Config, collection, dan theme disimpan mengikuti konvensi XDG (`xdg-base-dirs`), dengan `watchfiles` untuk hot-reload saat file collection/env berubah.",
+      "Scripting hook pre/post-request** — Kelas `Posting` di `posting/scripts.py` diekspos ke user untuk menjalankan kode Python sebelum/sesudah request (mirip `pre-request` script Postman), memungkinkan manipulasi variabel/dynamic data.",
+      "Multi-source import pipeline** — `posting.importing.open_api` mengonversi spec OpenAPI/Postman menjadi struktur Collection internal, dengan output default ke direktori collection user."
+    ],
+    "noteFile": "knowledge/notes/repo_darrenburns_posting.md",
+    "learnedAt": 1790375140361
+  },
+  {
+    "id": "repo_vitali87_code_graph_rag",
+    "type": "github_repo",
+    "title": "vitali87/code-graph-rag",
+    "source": "https://github.com/vitali87/code-graph-rag.git",
+    "tags": [
+      "vitali87",
+      "code-graph-rag",
+      "rag",
+      "knowledge-graph",
+      "tree-sitter",
+      "memgraph",
+      "mcp",
+      "monorepo",
+      "code-analysis",
+      "pydantic-ai",
+      "deeplearning",
+      "architecture"
+    ],
+    "summary": "Code-Graph-RAG adalah sistem RAG (Retrieval-Augmented Generation) untuk monorepo multi-bahasa yang mem-parse setiap file sumber dengan Tree-sitter, membangun knowledge graph terpadu di Memgraph, lalu memungkinkan pengguna melakukan query, memahami, mengedit, dan mengoptimalkan kode dalam bahasa alami. Sistem ini menggabungkan agent LLM (pydantic-ai), pencarian semantik, MCP server, dan patch berbasis AST dengan diff preview sebelum perubahan diterapkan.",
+    "keyTakeaways": [
+      "Arsitektur pipeline: Tree-sitter parsing → knowledge graph (Memgraph) → agent LLM → Cypher query/editing, dengan satu skema graph terpadu untuk monorepo multi-bahasa.",
+      "Pola caching berlapis: BoundedASTCache berbasis OrderedDict (LRU), embedding cache, dan drop-in replacements yang diuji benchmark, untuk efisiensi komputasi skala monorepo.",
+      "Integrasi MCP (Model Context Protocol) sebagai server resmi, memungkinkan AI agent eksternal mengakses tool codebase via protokol standar.",
+      "Editing aman dengan AST-based surgical patching dan diff preview (diff-match-patch) sebelum perubahan diterapkan, direpresentasikan dalam graph sebagai node/relationship.",
+      "Distribution multi-channel: CLI via Typer (`code-graph-rag`/`cgr`), binary PyInstaller per-platform, plugin pytest untuk tracing, dan fuzzing harnesses (OSS-Fuzz/Atheris) untuk ketahanan parser."
+    ],
+    "noteFile": "knowledge/notes/repo_vitali87_code_graph_rag.md",
+    "learnedAt": 1790557889841
+  },
+  {
+    "id": "repo_sickn33_agentic_awesome_skills",
+    "type": "github_repo",
+    "title": "sickn33/agentic-awesome-skills",
+    "source": "https://github.com/sickn33/agentic-awesome-skills.git",
+    "tags": [
+      "sickn33",
+      "agentic-awesome-skills",
+      "agent-skills",
+      "skill.md",
+      "mcp",
+      "control-plane",
+      "plugin-marketplace",
+      "agentic-bundles",
+      "local-first",
+      "cli",
+      "workbench",
+      "llm-tooling"
+    ],
+    "summary": "AAS Core adalah control plane lokal \"agent-first\" untuk katalog 2.476+ playbook `SKILL.md` yang dapat ditemukan, dipilih oleh agen, divalidasi terhadap stack, dan direncanakan sebelum di-apply. Repositori ini membungkus katalog besar itu dengan CLI, MCP lokal, Workbench browser-local, dan manifest plugin untuk Claude Code/Cursor/Codex/Gemini CLI, sehingga agen dapat mengurasi skill-nya sendiri tanpa peringkat atau rekomendasi dari pihak luar.",
+    "keyTakeaways": [
+      "Arsitektur \"local-first control plane\": discovery, selection, validation, dan plan preview dijalankan sepenuhnya di mesin pengguna; agen menjadi pemilik keputusan seleksi, sedangkan Core hanya menyediakan katalog dan validasi (tidak ada ranking/rekomendasi).",
+      "Skema penyimpanan skill berupa file `SKILL.md` mandiri di dalam folder skill, disinkronkan ke beberapa distribusi plugin (Claude, generic `.agents`, bundle editorial) melalui manifest JSON versioned (`18.8.0`) sehingga satu sumber kebenaran melayani banyak editor.",
+      "Pipeline tooling Python yang dipanggil via Node bridge (`tools/scripts/run-python.js`) dengan tugas terpisah per kabupaten masalah: validate, audit, fix-metadata, fix-sections, sync-references, generate-index, sync-bundles, plugin-compat — memungkinkan CI strict-mode.",
+      "Distribusi berlapis: `plugins/agentic-awesome-skills` (subset plugin-safe), `plugins/agentic-bundle-*` (bundle editorial per persona: security, web, AI, game, dsb.), dan `apps/web-app` Workbench sebagai antarmuka review — semuanya diikat oleh `marketplace.json` di `.agents/` dan `.claude-plugin/`."
+    ],
+    "noteFile": "knowledge/notes/repo_sickn33_agentic_awesome_skills.md",
+    "learnedAt": 1790579993118
+  },
+  {
+    "id": "repo_superset_sh_superset",
+    "type": "github_repo",
+    "title": "superset-sh/superset",
+    "source": "https://github.com/superset-sh/superset.git",
+    "tags": [
+      "superset-sh",
+      "superset",
+      "agentic-ide",
+      "multi-agent",
+      "git-worktree",
+      "monorepo",
+      "bun",
+      "turbo",
+      "claude-code",
+      "codex",
+      "plugin-marketplace",
+      "electron-desktop"
+    ],
+    "summary": "Superset adalah sebuah agentic IDE desktop yang mengorkestrasi banyak coding agent CLI (Claude Code, Codex, OpenCode, dll.) secara paralel dalam satu workspace per-task. Setiap task dijalankan di Git worktree terpisah dengan terminal, diff viewer, browser preview, dan akses plugin (GitHub, Linear, Notion, Slack, Gmail) sehingga pengguna dapat menjalankan puluhan agent sekaligus menggunakan subscription pribadi masing-masing. Repo ini merupakan monorepo Bun + Turbo berisi aplikasi desktop (Electron), web, docs, marketing, API, relay, CLI, plugin marketplace, dan kumpulan Skills untuk agent.",
+    "keyTakeaways": [
+      "Monorepo terpusat dengan Bun sebagai package manager (`bun@1.3.14`) dan Turbo sebagai task orchestrator, memisahkan apps (`desktop`, `web`, `docs`, `marketing`, `api`, `relay`) dari shared packages, plugins, dan skills.",
+      "Model \"workspace = Git worktree\": isolasi task per branch menggunakan `git worktree` (bukan sandbox proses), memberi setiap agent working dir, terminals, port preview, dan diff-nya sendiri.",
+      "Sistem plugin/marketplace first-party berbasis file JSON schema (`marketplace/1.0.0.json`) yang mendistribusikan skill + MCP tools lintas-agent — pola deklaratif (bukan code-coupled) berisi GitHub, Linear, Notion, Slack, Gmail.",
+      "Konfigurasi multi-agent pertama-class: direktori `.agents/`, `.claude/`, `.codex/`, `.cursor/`, `.mastracode/` menunjukkan dukungan paralel untuk Claude Code, Codex, Cursor, dan Mastra dengan commands & skills yang disinkronkan lewat `scripts/sync-dev-skills.ts`.",
+      "Alur Agentic Dev Loop end-to-end: describe task → workspace otomatis → agent mengeksekusi → review diff di Changes → test di terminal → preview di browser pane → commit/push, dengan feedback loop UI (Design Mode) & PR review yang bisa dikirim langsung ke agent.",
+      "Tooling kualitas ketat: Biome 2.x untuk lint+format terpadu, sherif untuk monorepo lint, TypeScript 6, SemVer terkontrol, skrip rilis otomatis (`release.ts`, `release:desktop`, `release:cli`), dan `check-dev-ports.ts` sebagai `predev` guard.",
+      "Ketergantungan pada Web sandbox modern (`@vercel/sandbox`) mengindikasikan agent dapat men-dispatcher pekerjaan yang dieksekusi di lingkungan remote/cloud — konsisten dengan `.superset/setup.cloud.sh` vs `setup.local.sh`."
+    ],
+    "noteFile": "knowledge/notes/repo_superset_sh_superset.md",
+    "learnedAt": 1790360512468
+  },
+  {
+    "id": "repo_stablyai_orca",
+    "type": "github_repo",
+    "title": "stablyai/orca",
+    "source": "https://github.com/stablyai/orca.git",
+    "tags": [
+      "stablyai",
+      "orca",
+      "agentic-ide",
+      "parallel-agents",
+      "electron",
+      "worktrees",
+      "multi-agent",
+      "ade",
+      "terminal",
+      "mobile-companion",
+      "orchestrator"
+    ],
+    "summary": "Orca adalah Agentic Development Environment (ADE) berbasis Electron yang memungkinkan developer menjalankan banyak coding agent (Codex, Claude Code, OpenCode, Pi) secara paralel, masing-masing di git worktree terisolasi, dengan terminal kelas Ghostty, mode Design untuk capture UI, serta companion app mobile & remote runtime untuk mengontrol fleet agent dari mana saja.",
+    "keyTakeaways": [
+      "Arsitektur Electron multi-proses (main / preload / renderer) dengan CLI bawaan (`out/cli/index.js`) dan packaging via electron-builder + Cask untuk distribusi Homebrew.",
+      "Model \"fleet of parallel agents\" — setiap prompt di-fan-out ke N agent, tiap agent punya worktree git sendiri; hasil dibandingkan lalu di-merge pemenangnya.",
+      "Praktik engineering ketat: oxlint + oxfmt + banyak custom oxlint plugin (mis. `sort-comparator-performance`, `app-store-performance`, `quadratic-buffer-concat`), ratchet checks (max-lines, ts-nocheck, runtime-electron), dan audit anti-slop.",
+      "Arsitektur integrasi yang memisahkan cloud runtime (`cloud/`) dari desktop Electron, dengan secrets scan (gitleaks, trufflehog), bundled ripgrep, dan skill-bundle manifest.",
+      "Terminal kelas Ghostty (WebGL), Design Mode memanfaatkan Chromium window untuk menangkap HTML/CSS/screenshot ke prompt agent.",
+      "Verifikasi berlapis: vitest performance contracts, localization coverage, RPC params catalog, dead-classes, dan reliability gates dijalankan lewat satu entry `pnpm lint`."
+    ],
+    "noteFile": "knowledge/notes/repo_stablyai_orca.md",
+    "learnedAt": 1790576329571
+  },
+  {
+    "id": "repo_shadcn_ui_ui",
+    "type": "github_repo",
+    "title": "shadcn-ui/ui",
+    "source": "https://github.com/shadcn-ui/ui.git",
+    "tags": [
+      "shadcn-ui",
+      "ui",
+      "react",
+      "tailwindcss",
+      "radix-ui",
+      "component-registry",
+      "copy-paste",
+      "accessibility",
+      "design-system"
+    ],
+    "summary": "shadcn/ui adalah kumpulan komponen React yang dirancang dengan indah dan aksesibel, didistribusikan bukan sebagai paket npm melainkan lewat pola \"copy-and-paste\" melalui CLI dan registry JSON. Komponen dibangun di atas primitif headless (Radix UI / Base UI / React Aria) dan distyling dengan Tailwind CSS, memberi developer kendali penuh atas kode yang mereka miliki.",
+    "keyTakeaways": [
+      "Model distribusi \"open code\": komponen disalin ke repo pengguna, bukan diinstal sebagai dependency, sehingga tidak ada lock-in versi library.",
+      "Menggunakan registry berbasis JSON sebagai single source of truth untuk metadata komponen (file, dependency, CSS vars, dokumentasi).",
+      "Semua komponen mengikuti pola primitif headless (Radix/Base UI) + styling Tailwind + varian via `class-variance-authority` (CVA).",
+      "Utilitas `cn()` (clsx + tailwind-merge) menjadi jembatan standar untuk komposisi className yang aman dari konflik Tailwind.",
+      "Theming lewat CSS variables (design tokens) yang memungkinkan multi-tema (light/dark/color themes) tanpa rekompilasi.",
+      "Dukungan multi-framework (Next.js, Vite, Laravel, Astro, React Router) via CLI `shadcn` yang agnostik terhadap bundler."
+    ],
+    "noteFile": "knowledge/notes/repo_shadcn_ui_ui.md",
+    "learnedAt": 1790517355810
+  },
+  {
+    "id": "url_documentation___the_go_programming__1790351101932",
+    "type": "documentation",
+    "title": "Documentation - The Go Programming Language",
+    "source": "https://go.dev/doc/",
+    "tags": [
+      "golang",
+      "docs",
+      "guide",
+      "reference",
+      "concurrency",
+      "modules",
+      "toolchain",
+      "generics",
+      "fuzzing",
+      "profiling",
+      "best-practices"
+    ],
+    "summary": "Halaman indeks resmi dokumentasi Bahasa Pemrograman Go yang menjadi pintu masuk ke seluruh ekosistem dokumentasi Go — mulai dari instalasi, tutorial pemula, konsep inti (concurrency, type system, garbage collection), hingga referensi lanjutan seperti Language Specification, Go Modules Reference, dan Go Memory Model. Materi ini penting karena memetakan seluruh knowledge base Go yang dibutuhkan engineer untuk menguasai bahasa, toolchain, dan praktik idiomatiknya secara end-to-end.",
+    "keyTakeaways": [
+      "Go adalah bahasa statically typed, compiled, open source yang dirancang untuk produktivitas: cepat dikompilasi ke machine code, memiliki garbage collection, dan dilengkapi runtime reflection — terasa seperti bahasa dinamis/interpreted.",
+      "Concurrency adalah nilai inti Go: goroutines + channels memudahkan eksploitasi multicore/networked machines; type system-nya (interface + generics) memungkinkan komposisi modular yang fleksibel.",
+      "Ekosistem dokumentasi terstruktur dalam 7 pilar: Getting Started, Using & Understanding Go, References, Accessing Databases, Developing Modules, Talks, dan Codewalks — masing-masing menjadi \"kurikulum\" resmi bertingkat.",
+      "Modul (`go.mod`, semantic versioning, major version update, workspaces) adalah unit fundamental dependency management dan publishing di Go modern.",
+      "Toolchain lanjutan mencakup fuzzing, coverage testing, Profile-Guided Optimization (PGO), race detector, data race detector, GDB debugging, dan gopls language server — semuanya first-class citizens."
+    ],
+    "noteFile": "knowledge/notes/url_documentation___the_go_programming__1790351101931.md",
+    "learnedAt": 1790351101932
+  },
+  {
+    "id": "news_ai_ask_ten_questions__read_the_text_once__m",
+    "type": "ai_tech_news",
+    "title": "Ask ten questions, read the text once: making a decision model 6.7x faster",
+    "source": "https://dev.to/_tomek7667/ask-ten-questions-read-the-text-once-making-a-decision-model-67x-faster-k0e",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Model keputusan dapat dipercepat 6,7 kali dengan mengajukan sepuluh pertanyaan namun membaca teks hanya sekali, karena banyak AI produksi sebenarnya hanya rangkaian keputusan kecil.",
+    "keyTakeaways": [
+      "Intisari: Model keputusan dapat dipercepat 6,7 kali dengan mengajukan sepuluh pertanyaan namun membaca teks hanya sekali, karena banyak AI produksi sebenarnya hanya rangkaian keputusan kecil.",
+      "Sumber: tomek7667"
+    ],
+    "noteFile": "knowledge/notes/news_ai_ask_ten_questions__read_the_text_once__m.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "news_ai_10_of_12_new_llms_remember_which_earning",
+    "type": "ai_tech_news",
+    "title": "10 of 12 new LLMs remember which earnings beat from just a name and a date. Jev doesn't.",
+    "source": "https://dev.to/lizhuojunx86/10-of-12-new-llms-remember-which-earnings-beat-from-just-a-name-and-a-date-jev-doesnt-c8i",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Dari 12 LLM baru, 10 mampu mengingat kinerja laba tertentu hanya bermodal nama dan tanggal, sedangkan Jev gagal.",
+    "keyTakeaways": [
+      "Intisari: Dari 12 LLM baru, 10 mampu mengingat kinerja laba tertentu hanya bermodal nama dan tanggal, sedangkan Jev gagal.",
+      "Sumber: Li Zhuojun"
+    ],
+    "noteFile": "knowledge/notes/news_ai_10_of_12_new_llms_remember_which_earning.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "news_ai_umkm_bench__i_tested_8_llms_on_how_indon",
+    "type": "ai_tech_news",
+    "title": "UMKM-Bench: I tested 8 LLMs on how Indonesians really text online shops",
+    "source": "https://dev.to/rizkynandapr/umkm-bench-i-tested-8-llms-on-how-indonesians-really-text-online-shops-14c6",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Uji tolok ukur UMKM: delapan LLM diuji untuk memahami gaya obrolan orang Indonesia saat menghubungi toko daring.",
+    "keyTakeaways": [
+      "Intisari: Uji tolok ukur UMKM: delapan LLM diuji untuk memahami gaya obrolan orang Indonesia saat menghubungi toko daring.",
+      "Sumber: rizkynandapr"
+    ],
+    "noteFile": "knowledge/notes/news_ai_umkm_bench__i_tested_8_llms_on_how_indon.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "news_ai_the_ai_was_right__the_answer_was_still_w",
+    "type": "ai_tech_news",
+    "title": "The AI Was Right. The Answer Was Still Wrong.",
+    "source": "https://dev.to/akanksha_sharma/the-ai-was-right-the-answer-was-still-wrong-2pl4",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Fenomena ketika AI menjawab benar secara sebagian tetapi hasil akhirnya tetap salah karena ada detail penting yang terlewat.",
+    "keyTakeaways": [
+      "Intisari: Fenomena ketika AI menjawab benar secara sebagian tetapi hasil akhirnya tetap salah karena ada detail penting yang terlewat.",
+      "Sumber: Akanksha Sharma"
+    ],
+    "noteFile": "knowledge/notes/news_ai_the_ai_was_right__the_answer_was_still_w.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "news_ai_when_should_an_agent_stop_",
+    "type": "ai_tech_news",
+    "title": "When should an agent stop?",
+    "source": "https://dev.to/azankhyder/a-stop-rule-that-trusts-one-score-is-worse-than-a-dumb-budget-428c",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Catatan lapangan 009: replikasi tolok ukur putaran agen yang sudah dipublikasikan, dan apa yang disembunyikannya.",
+    "keyTakeaways": [
+      "Intisari: Catatan lapangan 009: replikasi tolok ukur putaran agen yang sudah dipublikasikan, dan apa yang disembunyikannya.",
+      "Sumber: Azan Hyder"
+    ],
+    "noteFile": "knowledge/notes/news_ai_when_should_an_agent_stop_.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_generative_computing_mellea",
+    "type": "ai_github_repo",
+    "title": "generative-computing/mellea",
+    "source": "https://github.com/generative-computing/mellea",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Pustaka untuk menulis program generatif.",
+    "keyTakeaways": [
+      "Fungsi: Pustaka untuk menulis program generatif.",
+      "Bahasa: Python | Stars: 1818"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_generative_computing_mellea.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_strands_agents_harness_sdk",
+    "type": "ai_github_repo",
+    "title": "strands-agents/harness-sdk",
+    "source": "https://github.com/strands-agents/harness-sdk",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "SDK sumber terbuka untuk membangun kerangka kendali agen dan mengendalikannya menyeluruh; untuk agen AI produksi di Python dan TypeScript, mendukung model dan layanan awan apa pun.",
+    "keyTakeaways": [
+      "Fungsi: SDK sumber terbuka untuk membangun kerangka kendali agen dan mengendalikannya menyeluruh; untuk agen AI produksi di Python dan TypeScript, mendukung model dan layanan awan apa pun.",
+      "Bahasa: Python | Stars: 8403"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_strands_agents_harness_sdk.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_langflow_ai_langflow",
+    "type": "ai_github_repo",
+    "title": "langflow-ai/langflow",
+    "source": "https://github.com/langflow-ai/langflow",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Alat ampuh untuk membangun dan menyebarkan agen serta alur kerja berbasis AI.",
+    "keyTakeaways": [
+      "Fungsi: Alat ampuh untuk membangun dan menyebarkan agen serta alur kerja berbasis AI.",
+      "Bahasa: Python | Stars: 155242"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_langflow_ai_langflow.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_openvinotoolkit_openvino",
+    "type": "ai_github_repo",
+    "title": "openvinotoolkit/openvino",
+    "source": "https://github.com/openvinotoolkit/openvino",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "c++"
+    ],
+    "summary": "Toolkit sumber terbuka OpenVINO untuk mengoptimalkan dan menyebarkan inferensi AI.",
+    "keyTakeaways": [
+      "Fungsi: Toolkit sumber terbuka OpenVINO untuk mengoptimalkan dan menyebarkan inferensi AI.",
+      "Bahasa: C++ | Stars: 10914"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_openvinotoolkit_openvino.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_tencent_weknora",
+    "type": "ai_github_repo",
+    "title": "Tencent/WeKnora",
+    "source": "https://github.com/Tencent/WeKnora",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "go"
+    ],
+    "summary": "Platform pengetahuan LLM sumber terbuka: mengubah dokumen mentah menjadi RAG yang bisa ditanyai, agen penalaran otonom, dan Wiki yang memelihara sendiri.",
+    "keyTakeaways": [
+      "Fungsi: Platform pengetahuan LLM sumber terbuka: mengubah dokumen mentah menjadi RAG yang bisa ditanyai, agen penalaran otonom, dan Wiki yang memelihara sendiri.",
+      "Bahasa: Go | Stars: 29971"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_tencent_weknora.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_runmaestro_maestro",
+    "type": "ai_github_repo",
+    "title": "RunMaestro/Maestro",
+    "source": "https://github.com/RunMaestro/Maestro",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Pusat komando orkestrasi agen.",
+    "keyTakeaways": [
+      "Fungsi: Pusat komando orkestrasi agen.",
+      "Bahasa: TypeScript | Stars: 3358"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_runmaestro_maestro.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_hbai_ltd_toonflow_app",
+    "type": "ai_github_repo",
+    "title": "HBAI-Ltd/Toonflow-app",
+    "source": "https://github.com/HBAI-Ltd/Toonflow-app",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Platform kreatif AI sumber terbuka dengan kanvas tanpa batas, agen AI, dan alur kerja visual untuk pembuatan gambar, video, papan cerita pintar, serta drama pendek; mendukung penyebaran lokal, integrasi model bebas, desktop lintas platform, dan perluasan lewat MCP serta plugin.",
+    "keyTakeaways": [
+      "Fungsi: Platform kreatif AI sumber terbuka dengan kanvas tanpa batas, agen AI, dan alur kerja visual untuk pembuatan gambar, video, papan cerita pintar, serta drama pendek; mendukung penyebaran lokal, integrasi model bebas, desktop lintas platform, dan perluasan lewat MCP serta plugin.",
+      "Bahasa: TypeScript | Stars: 16025"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_hbai_ltd_toonflow_app.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_rohitg00_ai_engineering_from_scratch",
+    "type": "ai_github_repo",
+    "title": "rohitg00/ai-engineering-from-scratch",
+    "source": "https://github.com/rohitg00/ai-engineering-from-scratch",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Materi belajar teknik AI dari nol: pelajari, bangun, lalu rilis untuk orang lain.",
+    "keyTakeaways": [
+      "Fungsi: Materi belajar teknik AI dari nol: pelajari, bangun, lalu rilis untuk orang lain.",
+      "Bahasa: Python | Stars: 57234"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_rohitg00_ai_engineering_from_scratch.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_comfy_org_comfyui_frontend",
+    "type": "ai_github_repo",
+    "title": "Comfy-Org/ComfyUI_frontend",
+    "source": "https://github.com/Comfy-Org/ComfyUI_frontend",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Implementasi antarmuka depan resmi untuk ComfyUI.",
+    "keyTakeaways": [
+      "Fungsi: Implementasi antarmuka depan resmi untuk ComfyUI.",
+      "Bahasa: TypeScript | Stars: 2035"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_comfy_org_comfyui_frontend.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_ai_tanstack_ai",
+    "type": "ai_github_repo",
+    "title": "TanStack/ai",
+    "source": "https://github.com/TanStack/ai",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "SDK AI TypeScript yang aman tipe dan tidak terikat penyedia untuk obrolan streaming, pemanggilan tool, agen, dan aplikasi multimodal di OpenAI, Anthropic, Gemini, React, Vue, Svelte, serta Solid.",
+    "keyTakeaways": [
+      "Fungsi: SDK AI TypeScript yang aman tipe dan tidak terikat penyedia untuk obrolan streaming, pemanggilan tool, agen, dan aplikasi multimodal di OpenAI, Anthropic, Gemini, React, Vue, Svelte, serta Solid.",
+      "Bahasa: TypeScript | Stars: 3137"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_tanstack_ai.md",
+    "learnedAt": 1790350835010
+  },
+  {
+    "id": "repo_fastapi_fastapi",
+    "type": "github_repo",
+    "title": "fastapi/fastapi",
+    "source": "https://github.com/fastapi/fastapi.git",
+    "tags": [
+      "fastapi",
+      "fastapi"
+    ],
+    "summary": "Repositori fastapi/fastapi - Berhasil dipelajari dari README dan struktur kode.",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/repo_fastapi_fastapi.md",
+    "learnedAt": 1790349476500
+  },
+  {
+    "id": "repo_vllm_project_vllm",
+    "type": "github_repo",
+    "title": "vllm-project/vllm",
+    "source": "https://github.com/vllm-project/vllm.git",
+    "tags": [
+      "vllm-project",
+      "vllm"
+    ],
+    "summary": "Repositori vllm-project/vllm - Berhasil dipelajari dari README dan struktur kode.",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/repo_vllm_project_vllm.md",
+    "learnedAt": 1790345825317
+  },
+  {
+    "id": "repo_ggerganov_llama_cpp",
+    "type": "github_repo",
+    "title": "ggerganov/llama.cpp",
+    "source": "https://github.com/ggerganov/llama.cpp.git",
+    "tags": [
+      "ggerganov",
+      "llama.cpp",
+      "llm-inference",
+      "c/c++",
+      "ggml",
+      "gguf",
+      "quantization",
+      "edge-inference",
+      "cuda",
+      "metal",
+      "vulkan",
+      "sycl",
+      "hip",
+      "cpu-simd",
+      "llama-server"
+    ],
+    "summary": "llama.cpp adalah engine inferensi LLM/VLM yang ditulis murni dalam C/C++ di atas library tensor `ggml`, memungkinkan menjalankan model bahasa besar (Llama, Qwen, Mistral, Gemma, Phi, dll.) secara lokal di CPU maupun GPU dengan dependensi minimal. Repositori ini menyediakan pipeline lengkap: konversi model Hugging Face → GGUF, kuantisasi (Q4_K_M, IQ, dsb.), CLI chat (`llama-cli`), server OpenAI-compatible (`llama-server`), benchmarking, dan backend multi-hardware (CUDA, Metal, Vulkan, SYCL, HIP/ROCm, MUSA, CANN).",
+    "keyTakeaways": [
+      "Arsitektur berlapis: backend-agnostic `ggml` tensor engine → `libllama` API → tools/CLI/server; memungkinkan portabilitas ke CPU/GPU tanpa mengubah kode model.",
+      "Model disimpan dalam format GGUF (biner, single-file, metadata + tensor block-wise quantized) yang menggantikan format GGML legacy.",
+      "Kuantisasi blok-based (Q4_0, Q4_K_M, Q5_K_M, Q6_K, Q8_0, IQ-series) memungkinkan LLM 7B–70B berjalan di RAM/VRAM konsumer.",
+      "Backend GPU/akselerator dimuat dinamis via `ggml_backend` registry (CUDA, Metal, Vulkan, SYCL, HIP, MUSA, CANN, OpenCL, RPC), dengan fallback CPU SIMD (AVX/AVX2/AVX512/NEON/SVE/RVV).",
+      "Pola eksekusi: build compute graph sekali → reuse tiap token (decode), dengan KV cache persisten + optimisasi Flash Attention, RoPE, GQA/MQA, sliding window.",
+      "Repo ini juga meng-host `llama-server` (REST/OpenAI-compatible) yang mendukung continuous batching, speculative decoding, dan multimodal (VLM) input."
+    ],
+    "noteFile": "knowledge/notes/repo_ggerganov_llama_cpp.md",
+    "learnedAt": 1790404642903
+  },
+  {
+    "id": "news_ai_asking_a_vision_model_what_and_where_in_",
+    "type": "ai_tech_news",
+    "title": "Asking a vision model what and where in the same call makes it worse at both",
+    "source": "https://dev.to/maazkazi/asking-a-vision-model-what-and-where-in-the-same-call-makes-it-worse-at-both-26e9",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Menanyakan 'apa' dan 'di mana' dalam satu panggilan ke vision model justru menurunkan akurasi keduanya, sehingga tugas lokalisasi dan identifikasi sebaiknya dipisah.",
+    "keyTakeaways": [
+      "Intisari: Menanyakan 'apa' dan 'di mana' dalam satu panggilan ke vision model justru menurunkan akurasi keduanya, sehingga tugas lokalisasi dan identifikasi sebaiknya dipisah.",
+      "Sumber: Maaz Kazi"
+    ],
+    "noteFile": "knowledge/notes/news_ai_asking_a_vision_model_what_and_where_in_.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "news_ai_my_agent_spent__23_overnight__here_s_why",
+    "type": "ai_tech_news",
+    "title": "My Agent Spent $23 Overnight. Here's Why My Limits Held and My Alerts Didn't.",
+    "source": "https://dev.to/samhartley_dev/my-agent-spent-23-overnight-heres-why-my-limits-held-and-my-alerts-didnt-38f4",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Agen menghabiskan $23 dalam semalam; batas biaya berfungsi tetapi alert tidak, menegaskan pentingnya monitoring dan notifikasi biaya agen, bukan sekadar hard limit.",
+    "keyTakeaways": [
+      "Intisari: Agen menghabiskan $23 dalam semalam; batas biaya berfungsi tetapi alert tidak, menegaskan pentingnya monitoring dan notifikasi biaya agen, bukan sekadar hard limit.",
+      "Sumber: Sam Hartley"
+    ],
+    "noteFile": "knowledge/notes/news_ai_my_agent_spent__23_overnight__here_s_why.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "news_ai_does_jev_remember_2023__a_naive_test_say",
+    "type": "ai_tech_news",
+    "title": "Does Jev remember 2023? A naive test says yes at p = 0.001. A within-company test says no.",
+    "source": "https://dev.to/lizhuojunx86/does-jev-remember-2023-a-naive-test-says-yes-at-p-0001-a-within-company-test-says-no-5fja",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Uji naif mengklaim model 'Jev' mengingat data 2023 (p=0,001) tetapi uji within-company menyanggahnya, menandakan risiko kebocoran data dan kesimpulan palsu pada benchmark LLM sehingga validasi ketat wajib dilakukan.",
+    "keyTakeaways": [
+      "Intisari: Uji naif mengklaim model 'Jev' mengingat data 2023 (p=0,001) tetapi uji within-company menyanggahnya, menandakan risiko kebocoran data dan kesimpulan palsu pada benchmark LLM sehingga validasi ketat wajib dilakukan.",
+      "Sumber: Li Zhuojun"
+    ],
+    "noteFile": "knowledge/notes/news_ai_does_jev_remember_2023__a_naive_test_say.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "news_ai_i_built_nabsun__an_open_source_ai_browse",
+    "type": "ai_tech_news",
+    "title": "I Built Nabsun: An Open-Source AI Browser That Works in Your Real Tabs",
+    "source": "https://dev.to/naveen_alavilli/i-built-nabsun-an-open-source-ai-browser-that-works-in-your-real-tabs-1ea3",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Nabsun adalah browser AI open source yang beroperasi langsung di tab nyata pengguna, memanfaatkan konteks dokumen, form, dan sesi login yang sudah terbuka alih-alih lingkungan terisolasi.",
+    "keyTakeaways": [
+      "Intisari: Nabsun adalah browser AI open source yang beroperasi langsung di tab nyata pengguna, memanfaatkan konteks dokumen, form, dan sesi login yang sudah terbuka alih-alih lingkungan terisolasi.",
+      "Sumber: Naveen Alavilli"
+    ],
+    "noteFile": "knowledge/notes/news_ai_i_built_nabsun__an_open_source_ai_browse.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "news_ai_i_trusted_my_agent_demos_for_years__then",
+    "type": "ai_tech_news",
+    "title": "I Trusted My Agent Demos for Years. Then I Built a Gate That Says No.",
+    "source": "https://dev.to/debashish_ghosal/i-trusted-my-agent-demos-for-years-then-i-built-a-gate-that-says-no-4183",
+    "tags": [
+      "ai",
+      "news",
+      "trend"
+    ],
+    "summary": "Demo agen yang terlihat berhasil sekali tidak cukup jadi bukti kualitas; perlu gate/evaluasi otomatis yang berani menolak output gagal sebelum dipakai produksi.",
+    "keyTakeaways": [
+      "Intisari: Demo agen yang terlihat berhasil sekali tidak cukup jadi bukti kualitas; perlu gate/evaluasi otomatis yang berani menolak output gagal sebelum dipakai produksi.",
+      "Sumber: Debashish Ghosal"
+    ],
+    "noteFile": "knowledge/notes/news_ai_i_trusted_my_agent_demos_for_years__then.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_hkuds_nanobot",
+    "type": "ai_github_repo",
+    "title": "HKUDS/nanobot",
+    "source": "https://github.com/HKUDS/nanobot",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Framework agen AI pribadi ultra-ringan berbasis Python yang di-host sendiri, dilengkapi WebUI, tools, memori, MCP, alur multi-agen, otomasi, dan integrasi aplikasi chat.",
+    "keyTakeaways": [
+      "Fungsi: Framework agen AI pribadi ultra-ringan berbasis Python yang di-host sendiri, dilengkapi WebUI, tools, memori, MCP, alur multi-agen, otomasi, dan integrasi aplikasi chat.",
+      "Bahasa: Python | Stars: 48566"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_hkuds_nanobot.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_bojieli_ai_agent_book",
+    "type": "ai_github_repo",
+    "title": "bojieli/ai-agent-book",
+    "source": "https://github.com/bojieli/ai-agent-book",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Repositori open source buku 《深入理解 AI Agent》 karya Li Bojie yang memuat teks lengkap, PDF terkompilasi, dan kode pendamping per bab.",
+    "keyTakeaways": [
+      "Fungsi: Repositori open source buku 《深入理解 AI Agent》 karya Li Bojie yang memuat teks lengkap, PDF terkompilasi, dan kode pendamping per bab.",
+      "Bahasa: Python | Stars: 50916"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_bojieli_ai_agent_book.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_cherryhq_cherry_studio",
+    "type": "ai_github_repo",
+    "title": "CherryHQ/cherry-studio",
+    "source": "https://github.com/CherryHQ/cherry-studio",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "typescript"
+    ],
+    "summary": "Studio produktivitas AI dengan chat pintar, agen otonom, dan 300+ asisten yang menyatukan akses ke berbagai LLM terdepan.",
+    "keyTakeaways": [
+      "Fungsi: Studio produktivitas AI dengan chat pintar, agen otonom, dan 300+ asisten yang menyatukan akses ke berbagai LLM terdepan.",
+      "Bahasa: TypeScript | Stars: 52140"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_cherryhq_cherry_studio.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_hugohe3_ppt_master",
+    "type": "ai_github_repo",
+    "title": "hugohe3/ppt-master",
+    "source": "https://github.com/hugohe3/ppt-master",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Mengubah dokumen atau topik menjadi deck PowerPoint native lengkap dengan shape, transisi, animasi, chart/tabel berbasis data, narasi audio dari speaker notes, serta dukungan template .pptx milik sendiri.",
+    "keyTakeaways": [
+      "Fungsi: Mengubah dokumen atau topik menjadi deck PowerPoint native lengkap dengan shape, transisi, animasi, chart/tabel berbasis data, narasi audio dari speaker notes, serta dukungan template .pptx milik sendiri.",
+      "Bahasa: Python | Stars: 56357"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_hugohe3_ppt_master.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_zhulinsen_daily_stock_analysis",
+    "type": "ai_github_repo",
+    "title": "ZhuLinsen/daily_stock_analysis",
+    "source": "https://github.com/ZhuLinsen/daily_stock_analysis",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Sistem analisis saham multi-pasar bertenaga LLM dengan data multi-sumber, berita real-time, dashboard keputusan, notifikasi otomatis, dan penjadwalan tanpa biaya.",
+    "keyTakeaways": [
+      "Fungsi: Sistem analisis saham multi-pasar bertenaga LLM dengan data multi-sumber, berita real-time, dashboard keputusan, notifikasi otomatis, dan penjadwalan tanpa biaya.",
+      "Bahasa: Python | Stars: 65634"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_zhulinsen_daily_stock_analysis.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_career_ops_hq_career_ops",
+    "type": "ai_github_repo",
+    "title": "career-ops-hq/career-ops",
+    "source": "https://github.com/career-ops-hq/career-ops",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "javascript"
+    ],
+    "summary": "Alat pencarian kerja berbasis AI yang memindai portal lowongan, menilai tiap lowongan ke laporan terstruktur A-H dengan skor 1-5, menyesuaikan CV, dan melacak lamaran secara lokal di CLI coding AI.",
+    "keyTakeaways": [
+      "Fungsi: Alat pencarian kerja berbasis AI yang memindai portal lowongan, menilai tiap lowongan ke laporan terstruktur A-H dengan skor 1-5, menyesuaikan CV, dan melacak lamaran secara lokal di CLI coding AI.",
+      "Bahasa: JavaScript | Stars: 72700"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_career_ops_hq_career_ops.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_thedaviddias_front_end_checklist",
+    "type": "ai_github_repo",
+    "title": "thedaviddias/Front-End-Checklist",
+    "source": "https://github.com/thedaviddias/Front-End-Checklist",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "mdx"
+    ],
+    "summary": "Checklist esensial pengembangan web modern yang bisa dipakai manusia maupun agen AI untuk validasi kualitas proyek front-end.",
+    "keyTakeaways": [
+      "Fungsi: Checklist esensial pengembangan web modern yang bisa dipakai manusia maupun agen AI untuk validasi kualitas proyek front-end.",
+      "Bahasa: MDX | Stars: 74260"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_thedaviddias_front_end_checklist.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_shareai_lab_learn_claude_code",
+    "type": "ai_github_repo",
+    "title": "shareAI-lab/learn-claude-code",
+    "source": "https://github.com/shareAI-lab/learn-claude-code",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Agent harness minimalis bergaya Claude Code yang dibangun dari nol dan hanya mengandalkan Bash sebagai inti eksekusinya.",
+    "keyTakeaways": [
+      "Fungsi: Agent harness minimalis bergaya Claude Code yang dibangun dari nol dan hanya mengandalkan Bash sebagai inti eksekusinya.",
+      "Bahasa: Python | Stars: 77594"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_shareai_lab_learn_claude_code.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_panniantong_agent_reach",
+    "type": "ai_github_repo",
+    "title": "Panniantong/Agent-Reach",
+    "source": "https://github.com/Panniantong/Agent-Reach",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Memberi agen AI kemampuan membaca dan mencari konten di Twitter, Reddit, YouTube, GitHub, Bilibili, dan XiaoHongShu hanya lewat satu CLI tanpa biaya API.",
+    "keyTakeaways": [
+      "Fungsi: Memberi agen AI kemampuan membaca dan mencari konten di Twitter, Reddit, YouTube, GitHub, Bilibili, dan XiaoHongShu hanya lewat satu CLI tanpa biaya API.",
+      "Bahasa: Python | Stars: 85374"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_panniantong_agent_reach.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_ai_nousresearch_hermes_agent",
+    "type": "ai_github_repo",
+    "title": "NousResearch/hermes-agent",
+    "source": "https://github.com/NousResearch/hermes-agent",
+    "tags": [
+      "ai",
+      "open_source",
+      "devtools",
+      "python"
+    ],
+    "summary": "Agen AI yang dirancang untuk terus berkembang dan meningkatkan kemampuannya seiring waktu mengikuti kebutuhan pengguna.",
+    "keyTakeaways": [
+      "Fungsi: Agen AI yang dirancang untuk terus berkembang dan meningkatkan kemampuannya seiring waktu mengikuti kebutuhan pengguna.",
+      "Bahasa: Python | Stars: 248850"
+    ],
+    "noteFile": "knowledge/notes/repo_ai_nousresearch_hermes_agent.md",
+    "learnedAt": 1790340287684
+  },
+  {
+    "id": "repo_astral_sh_uv",
+    "type": "github_repo",
+    "title": "astral-sh/uv",
+    "source": "https://github.com/astral-sh/uv.git",
+    "tags": [
+      "astral-sh",
+      "uv",
+      "rust",
+      "python-packaging",
+      "resolver",
+      "pubgrub",
+      "pip-alternative",
+      "deeplearning"
+    ],
+    "summary": "uv adalah package & project manager Python yang ditulis ulang dari nol dalam Rust oleh Astral (pembuat Ruff), dirancang sebagai drop-in replacement untuk `pip`, `pip-tools`, `virtualenv`, `pipx`, dan sebagian `poetry`. Arsitekturnya menggabungkan resolver versi berbasis SAT (PubGrub), cache global berlapis (hardlink/reflink), serta eksekutor wheel paralel yang membuat instalasi 10–100x lebih cepat daripada pip. Cocok dipakai untuk CI/CD cepat, monorepo Python, dan sebagai fondasi tooling agentic yang butuh manajemen environment deterministik.",
+    "keyTakeaways": [
+      "Resolver universal ala PubGrub + backtracking cerdas**: uv mengimplementasikan varian PubGrub (dipakai Cargo) untuk resolusi dependensi, mendukung resolusi lintas platform, lintas Python version, dan `--universal` lock untuk multi-OS dalam satu lockfile.",
+      "Arsitektur workspace Cargo multi-crate**: kode dipecah menjadi crate seperti `uv-resolver`, `uv-installer`, `uv-cache`, `uv-distribution`, `uv-cli`, `uv-python`, `uv-workspace` sehingga tiap komponen dapat diuji & di-reuse terpisah.",
+      "Cache global content-addressable + hardlink/reflink**: instalasi tidak menyalin file tetapi hardlink/reflink dari cache bersama (`~/.cache/uv`) menuju `site-packages`, sehingga paket besar tidak diduplikasi.",
+      "Lockfile deterministik (`uv.lock`) + interoperabilitas standar**: mendukung `pyproject.toml` (PEP 621), `[tool.uv]`, `requirements.txt`, PEP 723 inline scripts (`uv run script.py`) dan invokasi zero-config.",
+      "Rust async runtime (Tokio) + rayon**: download HTTP paralel, ekstraksi wheel paralel, verifikasi hash concurrent, dengan backpressure dan deduplikasi request.",
+      "Python interpreter discovery & manajemen sendiri** (`uv python install`, `uv python pin`): uv bisa mengunduh dan mengelola build CPython standalone (python-build-standalone) tanpa pyenv."
+    ],
+    "noteFile": "knowledge/notes/repo_astral_sh_uv.md",
+    "learnedAt": 1790550519822
+  },
+  {
+    "id": "url_user_interface_design___wikipedia_1790304169480",
+    "type": "documentation",
+    "title": "User interface design - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/User_interface_design",
+    "tags": [
+      "docs",
+      "guide",
+      "ui-design",
+      "ux-design",
+      "design-thinking",
+      "iso-9241",
+      "usability",
+      "human-computer-interaction"
+    ],
+    "summary": "Dokumen ini merupakan artikel ensiklopedis yang memaparkan definisi, jenis, prinsip, dan metodologi desain antarmuka pengguna (UI) dengan fokus pada maksimalisasi usability dan user experience. Nilai pentingnya terletak pada penyatuan kerangka praktis (design thinking EDIPT, usability testing) dengan standar internasional (ISO 9241) yang dapat langsung dijadikan acuan oleh AI Agent Hermes saat membantu pengguna merancang, mengevaluasi, atau mengaudit antarmuka digital.",
+    "keyTakeaways": [
+      "UI design adalah proses membangun antarmuka yang mengomunikasikan secara jelas apa yang penting kepada pengguna, dengan tujuan membuat interaksi sesederhana dan seefisien mungkin (user-centered design).",
+      "Terdapat tiga jenis antarmuka utama: GUI (visual), voice-controlled (Siri/Alexa), dan gesture-based (VR/3D), masing-masing menuntut keahlian desain yang berbeda.",
+      "Kerangka design thinking modern adalah EDIPT (Empathize, Define, Ideate, Prototype, Test) yang bersifat non-linear dan iteratif, dicetuskan oleh David M. Kelley (2004) dari Stanford d.school.",
+      "ISO 9241 menetapkan 7 prinsip dialog (dinamis/\"feel\"), 7 atribut presentasi informasi (statis/\"look\"), serta definisi usability berdasarkan effectiveness, efficiency, dan satisfaction.",
+      "UI ≠ UX: UI adalah bagian dari UX. UI yang sempurna tidak menyelamatkan UX yang buruk jika konten/database di baliknya tidak memadai (contoh kasus website review film)."
+    ],
+    "noteFile": "knowledge/notes/url_user_interface_design___wikipedia_1790304169480.md",
+    "learnedAt": 1790304169480
+  },
+  {
+    "id": "url_fitts_s_law___wikipedia_1790304067267",
+    "type": "documentation",
+    "title": "Fitts's law - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/Fitts%27s_law",
+    "tags": [
+      "docs",
+      "guide"
+    ],
+    "summary": "Materi dari Fitts's law - Wikipedia",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/url_fitts_s_law___wikipedia_1790304067267.md",
+    "learnedAt": 1790304067267
+  },
+  {
+    "id": "url_heuristic_evaluation___wikipedia_1790304050001",
+    "type": "documentation",
+    "title": "Heuristic evaluation - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/Heuristic_evaluation",
+    "tags": [
+      "docs",
+      "guide",
+      "usability",
+      "ui-design",
+      "hci",
+      "nielsen-heuristics",
+      "ux-evaluation",
+      "heuristic-evaluation"
+    ],
+    "summary": "Dokumen ini menjelaskan heuristic evaluation—metode inspeksi usability untuk mengidentifikasi masalah pada desain antarmuka (UI) dengan menilai kepatuhannya terhadap prinsip usability yang diakui. Nilai utamanya adalah menyediakan framework evaluasi UI cepat, murah, dan tidak bergantung pada user testing, dengan Nielsen's 10 Usability Heuristics sebagai standar industri yang paling banyak dipakai untuk mendesain UI yang mudah dipahami manusia.",
+    "keyTakeaways": [
+      "Heuristic evaluation adalah usability inspection method informal di mana evaluator memeriksa UI dan menilai kepatuhannya terhadap prinsip usability (\"heuristics\"); dikembangkan oleh Rolf Molich dan Jakob Nielsen.",
+      "Nielsen's 10 Heuristics (versi final 2005) adalah standar paling banyak digunakan: Visibility of system status, Match with real world, User control & freedom, Consistency & standards, Error prevention, Recognition rather than recall, Flexibility & efficiency, Aesthetic & minimalist design, Help users recover from errors, Help & documentation.",
+      "Direkomendasikan 3–5 evaluator per studi; evaluasi harus dimulai secara individual lalu diagregasi untuk mengurangi group confirmation bias (individual-first, aggregate-later).",
+      "Kelebihan: cepat (hitungan hari), murah, tidak butuh user; Kekurangan: hasil sangat dipengaruhi pengetahuan expert, tidak ada hard data, dan hasilnya sering berbeda dari performance/user testing (masing-masing menemukan masalah berbeda).",
+      "Ada kerangka alternatif: Gerhardt-Powals' Cognitive Engineering Principles, Shneiderman's Eight Golden Rules, dan Weinschenk-Barker Classification (20 tipe)."
+    ],
+    "noteFile": "knowledge/notes/url_heuristic_evaluation___wikipedia_1790304049998.md",
+    "learnedAt": 1790304050001
+  },
+  {
+    "id": "url_heuristic_evaluation___wikipedia_1790303924236",
+    "type": "documentation",
+    "title": "Heuristic evaluation - Wikipedia",
+    "source": "https://en.wikipedia.org/wiki/Heuristic_evaluation",
+    "tags": [
+      "docs",
+      "guide"
+    ],
+    "summary": "Materi dari Heuristic evaluation - Wikipedia",
+    "keyTakeaways": [],
+    "noteFile": "knowledge/notes/url_heuristic_evaluation___wikipedia_1790303924235.md",
+    "learnedAt": 1790303924236
+  },
+  {
+    "id": "url_https___lawsofux_com__1790303904597",
+    "type": "documentation",
+    "title": "https://lawsofux.com/",
+    "source": "https://lawsofux.com/",
+    "tags": [
+      "docs",
+      "guide",
+      "ux",
+      "ui",
+      "design-principles",
+      "cognitive-psychology",
+      "hci",
+      "design-system"
+    ],
+    "summary": "Laws of UX adalah kompilasi 30 prinsip psikologi kognitif dan perilaku manusia (seperti Hick's Law, Fitts's Law, Miller's Law, dan Jakob's Law) yang menjadi fondasi ilmiah untuk merancang antarmuka pengguna. Materi ini krusial bagi AI Agent Hermes dalam memberikan rekomendasi desain, audit UX, atau mengevaluasi keputusan UI karena setiap hukum memiliki dasar empiris yang dapat diterjemahkan menjadi aturan implementasi konkret.",
+    "keyTakeaways": [
+      "UX bukan soal selera, melainkan hasil dari hukum kognitif manusia yang terukur — seperti keterbatasan working memory (Miller's Law: 7±2 item) dan waktu keputusan (Hick's Law: waktu naik seiring jumlah pilihan).",
+      "Desain yang baik mengurangi beban kognitif (Cognitive Load) melalui teknik Chunking, Law of Proximity, Law of Common Region, dan Law of Prägnanz — mengelompokkan elemen menjadi unit bermakna agar mudah diproses.",
+      "Familiaritas mengalahkan inovasi semata: Jakob's Law dan Mental Model mengajarkan bahwa pengguna lebih cepat memahami UI yang meniru pola yang sudah mereka kenal di situs/aplikasi lain.",
+      "Persepsi dan retensi pengguna dapat direkayasa: Aesthetic-Usability Effect, Von Restorff Effect, Serial Position Effect, Peak-End Rule, dan Goal-Gradient Effect memengaruhi apakah pengguna menyukai, mengingat, dan menyelesaikan pengalaman."
+    ],
+    "noteFile": "knowledge/notes/url_https___lawsofux_com__1790303904596.md",
+    "learnedAt": 1790303904597
+  },
+  {
+    "id": "repo_miqdadbadjuber_anti_slop",
+    "type": "github_repo",
+    "title": "miqdadbadjuber/anti-slop",
+    "source": "https://github.com/miqdadbadjuber/anti-slop.git",
+    "tags": [
+      "miqdadbadjuber",
+      "anti-slop",
+      "ai-agent-rules",
+      "prompt-architecture",
+      "design-filter",
+      "plugin-marketplace",
+      "mcp-server",
+      "agent-skills"
+    ],
+    "summary": "Repositori \"anti-slop\" adalah sistem aturan (rules) untuk AI coding agent yang berfungsi sebagai *filter* — bukan style guide — untuk menghapus \"AI slop\": copy generik, angka palsu, pola UI klise (sparkle logo, beta pill, fake terminal), tanpa membuat hasil jadi steril. Ia didistribusikan sebagai multi-plugin (Claude, Cline, Codex, Cursor, Kimi) dengan 38 aturan bertingkat (R-01 s/d R-38), Liveliness Toolkit, Delivery Gate, dan CLI + MCP server untuk validasi kontras.",
+    "keyTakeaways": [
+      "Arsitektur \"filter, not style guide\": repositori sengaja TIDAK menetapkan warna/font/layout — arah estetika diserahkan ke `DESIGN.md` milik user (R-37). Ini pemisahan concern yang tajam antara *removal* (anti-slop) vs *direction* (DESIGN.md).",
+      "aturan terbagi tiga tier: **Hard Gate** (absolut, tidak bisa dinegosiasi), **Purpose-Gate** (teknik boleh dipakai, tapi wajib ada alasan/justifikasi), dan **Quality Locks** (menjaga konsistensi output).",
+      "Distribusi plugin-first multi-ekosistem: file manifest terpisah untuk `.claude-plugin/`, `.cline-plugin/`, `.codex-plugin/`, `.cursor-plugin/`, `.kimi-plugin/`, dan `.agents/plugins/`, semuanya menunjuk ke source yang sama (`./` atau `./skills/`).",
+      "\"Additive skills\" — skill dimuat satu per concern, sehingga agent hanya load yang relevan (hemat context window, hemat token) alih-alih monolit prompt raksasa.",
+      "Delivery Gate mewajibkan laporan PASS/FAIL empat blok sebelum artefak apa pun dikirim (ship), menjadikan proses self-audit sebagai bagian dari output, bukan langkah opsional.",
+      "Ada MCP server `antislop-contrast` (diluncurkan via `node .claude-plugin/contrast-mcp-launcher.mjs`) yang mengindikasikan validasi aksesibilitas warna dijalankan sebagai tool callable oleh agent, bukan sekadar rule di teks prompt."
+    ],
+    "noteFile": "knowledge/notes/repo_miqdadbadjuber_anti_slop.md",
+    "learnedAt": 1790301322643
+  },
+  {
+    "id": "url_attention_is_all_you_need_1790285409336",
+    "type": "research_paper",
+    "title": "Attention Is All You Need",
+    "source": "https://arxiv.org/abs/1706.03762",
+    "tags": [
+      "arxiv",
+      "paper-ai",
+      "research",
+      "transformer",
+      "attention"
+    ],
+    "summary": "Paper ini memperkenalkan arsitektur Transformer, yang pertama kali mengandalkan mekanisme attention sepenuhnya tanpa memakai RNN/CNN untuk pemrosesan sekuensial. Transformer menjadi fondasi bagi model NLP modern seperti BERT, GPT, dan berbagai model multimodal. Kontribusi utamanya adalah multi-head self-attention, positional encoding, dan pelatihan yang sangat paralel dengan performa SOTA di bidang machine translation.",
+    "keyTakeaways": [
+      "Arsitektur Transformer menggantikan recurrent dan convolution layers dengan mekanisme attention, sehingga komputasi dapat diparalelkan dan jarak antar token dalam sekuens menjadi pendek (O(1) untuk setiap pasangan token).",
+      "Inti dari Transformer adalah Scaled Dot-Product Attention: Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) V.",
+      "Multi-head attention memungkinkan model memperhatikan informasi dari berbagai representasi subspace secara bersamaan, meningkatkan kemampuan ekspresif dibanding attention tunggal.",
+      "Posisi token dalam sekuens disuntikkan melalui positional encoding dengan fungsi sinus/kosinus, karena attention tidak memiliki urutan bawaan.",
+      "Teknik pelatihan penting: Adam optimizer dengan learning rate warmup, label smoothing, dropout, residual connection, dan layer normalization."
+    ],
+    "noteFile": "knowledge/notes/url_attention_is_all_you_need_1790285409273.md",
+    "learnedAt": 1790285409336
+  },
+  {
+    "id": "url_readme_md_1790285365892",
+    "type": "code_file",
+    "title": "nanoGPT (Andrej Karpathy)",
+    "source": "https://raw.githubusercontent.com/karpathy/nanoGPT/master/README.md",
+    "tags": [
+      "nanogpt",
+      "gpt-training",
+      "deeplearning",
+      "pytorch",
+      "karpathy"
+    ],
+    "summary": "Dokumen ini adalah README dari repositori nanoGPT, implementasi GPT yang sederhana dan cepat untuk training/finetuning model GPT ukuran menengah. Materi menjelaskan cara instalasi, quick start training karakter Shakespeare, reproduksi GPT-2 di OpenWebText, finetuning, sampling, dan efisiensi komputasi. Nilai pentingnya terletak pada desain kode yang minimal, mudah di-hack, dan menjadi referensi praktis untuk memahami pipeline GPT end-to-end.",
+    "keyTakeaways": [
+      "nanoGPT adalah rewrite minGPT yang mengutamakan kesederhanaan: train.py dan model.py masing-masing ~300 baris; bisa memuat pretrained GPT-2 OpenAI.",
+      "Workflow inti: siapkan data tokenisasi menjadi `train.bin`/`val.bin`, atur hyperparameter via config, jalankan `train.py`, lalu `sample.py` untuk generate teks.",
+      "Reproduksi GPT-2 124M membutuhkan 8x A100 40GB dan DDP, sekitar 4 hari, mencapai loss ~2.85 pada OpenWebText.",
+      "Finetuning tinggal menginisialisasi dari pretrained GPT-2 dengan `init_from` dan learning rate kecil; PyTorch 2.0 `compile` memberi speedup signifikan, tapi bisa dimatikan dengan `--compile=False`."
+    ],
+    "noteFile": "knowledge/notes/url_readme_md_1790285365872.md",
+    "learnedAt": 1790285365892
+  }
 ]
